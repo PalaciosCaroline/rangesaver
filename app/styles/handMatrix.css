@@ -2,9 +2,9 @@
   text-align: center;
   user-select: none;
   width: 100%;
-  max-width: 350px; /* ✅ Taille maximale */
-  min-width: 320px; /* ✅ Taille minimale */
-  aspect-ratio: 1 / 1; /* ✅ Assure un carré parfait */
+  max-width: 350px;
+  min-width: 320px;
+  aspect-ratio: 1 / 1;
   margin: 0 auto;
   overflow: hidden;
   touch-action: none;
@@ -17,18 +17,18 @@
 }
 
 .hand-matrix-cell {
-  border: 1px solid grey;
+  border: 1px solid #D0D0D0; /* Bordure plus claire par défaut */
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.8rem; /* ✅ Réduction de la taille du texte */
+  font-size: 0.8rem;
   width: 7.691%;
-  aspect-ratio: 1 / 1; /* ✅ Maintient la forme carrée */
-  position: relative; /* ✅ Assure que le texte reste visible */
+  aspect-ratio: 1 / 1;
+  position: relative;
   overflow: hidden;
 }
 
-/* ✅ Centrer parfaitement le texte dans la case */
+/* Centrage du texte dans les cases */
 .hand-matrix-cell > div {
   position: absolute;
   top: 50%;
@@ -38,12 +38,13 @@
   width: 100%;
 }
 
-/* ✅ Ajustement de la couleur des paires */
+/* Bordure plus foncée pour les paires */
 .hand-matrix-cell.pair {
-  background-color: #D0D0D0; /* ✅ Gris plus foncé pour mieux ressortir */
+  border-color: #A0A0A0; /* Bordure plus foncée */
+  border-color:black; /* Bordure plus foncée */
 }
 
-/* ✅ Les autres cases restent légèrement plus claires */
+/* Couleurs des autres cases */
 .hand-matrix-cell.suited {
   background-color: #FFFFFF;
 }
@@ -52,37 +53,13 @@
   background-color: #F5F5F5;
 }
 
-/* ✅ Assurer que les couleurs des actions sont bien visibles */
-.hand-matrix-cell.fill-blue {
-  background-color: #1890ff;
-}
 
-.hand-matrix-cell.fill-red {
-  background-color: #ff2018;
-}
-
-.hand-matrix-cell.fill-orange {
-  background-color: #ffae18;
-}
-
-.hand-matrix-cell.fill-yellow {
-  background-color: #fffb18;
-}
-
-.hand-matrix-cell.fill-light-green {
-  background-color: #18ff3e;
-}
-
-.hand-matrix-cell.fill-green {
-  background-color: #00c90a;
-}
-
-/* ✅ Empêche le mouvement de la page lorsqu'on touche la matrice */
+/* Empêche le mouvement de la page lors de la sélection */
 body.lock-scroll {
   overflow: hidden;
 }
 
-/* ✅ Réduction encore plus sur mobile */
+/* Ajustement de la taille du texte sur mobile */
 @media screen and (max-width: 768px) {
   .hand-matrix-cell {
     font-size: 0.6rem;
@@ -94,46 +71,46 @@ body.lock-scroll {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 5px; /* ✅ Réduction de l’espace entre les boutons */
-    padding: 10px;
-    flex-wrap: nowrap; /* ✅ Empêche les boutons de passer en colonne */
+    gap: 5px; /* Réduction de l’espace entre les boutons */
+    padding: 5px;
+    flex-wrap: nowrap; /* Empêche les boutons de passer en colonne */
   }
   
   .action-btn {
-    flex: 1; /* ✅ Tous les boutons ont une largeur uniforme */
-    padding: 8px 10px; /* ✅ Taille réduite */
-    font-size: 0.9rem; /* ✅ Texte légèrement plus petit */
+    flex: 1; /*  Tous les boutons ont une largeur uniforme */
+    padding: 8px 10px; /* Taille réduite */
+    font-size: 0.9rem; /*  Texte légèrement plus petit */
     font-weight: bold;
-    border: 2px solid black; /* ✅ Bordure fixe pour éviter le changement de taille */
+    border: 2px solid black; /*  Bordure fixe pour éviter le changement de taille */
     text-align: center;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
-    height: 40px; /* ✅ Fixe une hauteur pour tous les boutons */
-    min-width: 90px; /* ✅ Fixe une largeur minimale */
+    height: 40px; /*  Fixe une hauteur pour tous les boutons */
+    min-width: 90px; /* Fixe une largeur minimale */
   }
   
-  /* ✅ Ajout d'un effet de sélection sans agrandir le bouton */
+  /* Ajout d'un effet de sélection sans agrandir le bouton */
   .action-btn.selected {
     box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
-    border-color: black; /* ✅ Garde la bordure fine */
+    border-color: rgb(42, 42, 42); /* Garde la bordure fine */
   }
   
   /* ✅ Ajustement automatique pour petits écrans */
   @media screen and (max-width: 768px) {
     .action-btn {
-      padding: 6px 8px;
-      font-size: 0.8rem; /* ✅ Réduction de la taille du texte */
-      height: 35px; /* ✅ Ajustement de la hauteur */
-      min-width: 80px; /* ✅ Ajustement de la largeur */
+      padding: 3px 3px;
+      font-size: 0.5rem; /*  Réduction de la taille du texte */
+      height: 35px; /*  Ajustement de la hauteur */
+      min-width: 60px; /*  Ajustement de la largeur */
     }
   }
   
   @media screen and (max-width: 480px) {
     .action-btn {
-      padding: 5px 6px;
-      font-size: 0.75rem;
+      padding: 2px 3px;
+      font-size: 0.6rem;
       height: 30px; /* ✅ Encore plus compact sur mobile */
-      min-width: 70px;
+      min-width: 60px;
     }
   }
   
