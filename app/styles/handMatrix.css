@@ -6,12 +6,12 @@
   -moz-user-select: none;
   -ms-user-select: none;
   width: 100%;
-  max-width: 350px; /* ✅ Empêche la matrice d’être trop large */
-  min-width: 320px; /* ✅ Empêche une matrice trop petite */
-  aspect-ratio: 1 / 1; /* ✅ Force un carré parfait */
-  margin: 0 auto; /* ✅ Centre la matrice */
-  overflow: hidden; /* ✅ Évite les décalages */
-  touch-action: none; /* ✅ Désactive le scroll sur mobile */
+  max-width: 350px; 
+  min-width: 320px; 
+  aspect-ratio: 1 / 1; 
+  margin: 0 auto; 
+  overflow: hidden; 
+  touch-action: none; 
 }
 
 .hand-matrix-row {
@@ -22,26 +22,37 @@
 
 .hand-matrix-cell {
   border: 1px solid grey;
-  display: inline-block;
-  font-size: 1rem;
+  display: flex; /*  Utilisation de flexbox pour centrer le texte */
+  align-items: center; /*  Centrage vertical */
+  justify-content: center; /* Centrage horizontal */
+  font-size: 0.8rem; /*  Taille de texte réduite pour tenir dans la case */
   width: 7.691%;
+  aspect-ratio: 1 / 1; /* Assure que chaque case est carrée */
   overflow: hidden;
-  aspect-ratio: 1 / 1; /* ✅ Assure que chaque case est un carré */
 }
 
 .hand-matrix-cell:before {
   content: "";
   display: block;
-  padding-top: 100%; /* ✅ Maintient la forme carrée */
+  padding-top: 100%; /* Maintient la forme carrée */
 }
 
 .hand-matrix-cell > div {
   height: 100%;
   width: 100%;
-  background-color: lightgrey;
+  display: flex; /* Assure le centrage du texte */
+  align-items: center;
+  justify-content: center;
 }
 
-/* ✅ Ajout d'une couleur gris foncé pour les paires */
+/*  Réduction du texte encore plus sur mobile */
+@media screen and (max-width: 768px) {
+  .hand-matrix-cell {
+    font-size: 0.6rem;
+  }
+}
+
+/*  Ajout d'une couleur gris foncé pour les paires */
 .hand-matrix-cell.pair {
   background-color: #E0E0E0; /* Gris plus foncé */
 }
@@ -55,7 +66,7 @@
 }
 
 
-/* ✅ Empêche le mouvement de la page lorsqu'on touche la matrice */
+/* Empêche le mouvement de la page lorsqu'on touche la matrice */
 body.lock-scroll {
   overflow: hidden;
 }
