@@ -102,7 +102,7 @@ function HandMatrix({ rangeId }) {
         backgroundColor: actions[action],
         border: selectedAction === action ? "1px solid black" : "1px solid gray",
         color: action === "fold" || action === "reset" ? "black" : "white",
-        fontWeight: action === "reset" ? "bold" : "normal", // Met en valeur le bouton Réinitialiser
+        fontWeight: action === "reset" ? "bold" : "normal", // Met en valeur le bouton Reset
       }}
       onClick={() => {
         if (action === "reset") {
