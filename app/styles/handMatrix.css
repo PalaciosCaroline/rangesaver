@@ -1,31 +1,23 @@
 .hand-matrix {
   text-align: center;
-  user-select: none; /* Empêche la sélection de texte */
+  user-select: none; /* Désactive la sélection de texte */
   -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   width: 100%;
-  max-width: 350px; /* ✅ Limite la largeur pour éviter les bugs */
+  max-width: 350px; /* ✅ Empêche la matrice d’être trop large */
   min-width: 320px; /* ✅ Empêche une matrice trop petite */
+  aspect-ratio: 1 / 1; /* ✅ Force un carré parfait */
   margin: 0 auto; /* ✅ Centre la matrice */
-  overflow: hidden; /* ✅ Empêche le décalage visuel */
+  overflow: hidden; /* ✅ Évite les décalages */
   touch-action: none; /* ✅ Désactive le scroll sur mobile */
 }
 
-.hand-matrix.no-scroll {
-  touch-action: none;
-}
-
 .hand-matrix-row {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
   display: flex;
-  flex-flow: row;
+  justify-content: center;
   flex-wrap: nowrap;
-  overflow: hidden;
-  width: 100%;
 }
 
 .hand-matrix-cell {
@@ -34,26 +26,13 @@
   font-size: 1rem;
   width: 7.691%;
   overflow: hidden;
-}
-
-.hand-matrix.no-scroll .hand-matrix-cell {
-  touch-action: none;
-}
-
-@media screen and (max-width: 992px) {
-  .hand-matrix-cell {
-    font-size: 0.85em;
-  }
-}
-
-.hand-matrix.selectable .hand-matrix-cell {
-  cursor: pointer;
+  aspect-ratio: 1 / 1; /* ✅ Assure que chaque case est un carré */
 }
 
 .hand-matrix-cell:before {
   content: "";
-  display: block; /* ✅ Remplace float:left pour une meilleure compatibilité */
-  padding-top: 100%;
+  display: block;
+  padding-top: 100%; /* ✅ Maintient la forme carrée */
 }
 
 .hand-matrix-cell > div {
@@ -62,25 +41,17 @@
   background-color: lightgrey;
 }
 
-.hand-matrix-cell div {
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+/* ✅ Ajout d'une couleur gris foncé pour les paires */
+.hand-matrix-cell.pair {
+  background-color: #E0E0E0; /* Gris plus foncé */
 }
 
-.hand-matrix-cell .pair {
-  background-color: #f3f2f2;
-}
-
-.hand-matrix-cell .suited {
+.hand-matrix-cell.suited {
   background-color: #fff;
 }
 
-.hand-matrix-cell .offsuit {
-  background-color: #fff;
+.hand-matrix-cell.offsuit {
+  background-color: #F5F5F5;
 }
 
 
