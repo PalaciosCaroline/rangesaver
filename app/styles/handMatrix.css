@@ -111,24 +111,31 @@
   }
   
   .action-btn {
-    flex: 1 1 auto; /* Permet aux boutons de s'adapter */
-    padding: 10px 15px;
-    font-size: 1rem;
+    flex: 1; /* ✅ Tous les boutons ont une largeur uniforme */
+    padding: 8px 10px; /* ✅ Taille réduite */
+    font-size: 0.9rem; /* ✅ Texte légèrement plus petit */
     font-weight: bold;
-    border: 2px solid black;
+    border: 2px solid black; /* ✅ Bordure fixe pour éviter le changement de taille */
     text-align: center;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
+    height: 40px; /* ✅ Fixe une hauteur pour tous les boutons */
+    min-width: 90px; /* ✅ Fixe une largeur minimale */
   }
   
+  /* ✅ Ajout d'un effet de sélection sans agrandir le bouton */
   .action-btn.selected {
     box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+    border-color: black; /* ✅ Garde la bordure fine */
   }
   
+  /* ✅ Ajustement automatique pour petits écrans */
   @media screen and (max-width: 768px) {
     .action-btn {
       padding: 6px 8px;
       font-size: 0.8rem; /* ✅ Réduction de la taille du texte */
+      height: 35px; /* ✅ Ajustement de la hauteur */
+      min-width: 80px; /* ✅ Ajustement de la largeur */
     }
   }
   
@@ -136,5 +143,8 @@
     .action-btn {
       padding: 5px 6px;
       font-size: 0.75rem;
+      height: 30px; /* ✅ Encore plus compact sur mobile */
+      min-width: 70px;
     }
   }
+  
