@@ -1,0 +1,140 @@
+.hand-matrix {
+    text-align: center;
+    user-select: none; /* supported by Chrome and Opera */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+  }
+  
+  .hand-matrix.no-scroll {
+    touch-action: none;
+  }
+  
+  .hand-matrix-row {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: row;
+    flex-wrap: nowrap;
+    overflow: hidden;
+    width: 100%;
+  }
+  
+  .hand-matrix-cell {
+    border: 1px solid grey;
+    display: inline-block;
+    font-size: 1rem;
+    width: 7.691%;
+    overflow: hidden;
+  }
+  
+  .hand-matrix.no-scroll .hand-matrix-cell{
+    touch-action: none;
+  }
+  
+  @media screen and (max-width: 992px) {
+    .hand-matrix-cell {
+      font-size: 0.85em;
+    }
+  }
+  
+  .hand-matrix.selectable .hand-matrix-cell {
+    cursor: pointer;
+  }
+  
+  .hand-matrix-cell:before {
+    content:'';
+    float:left;
+    padding-top:100%;
+  }
+  
+  .hand-matrix-cell > div {
+    height: 100%;
+    width: 100%;
+    background-color: lightgrey;
+  }
+  
+  .hand-matrix-cell div {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+  }
+  
+  .hand-matrix-cell .pair {
+    background-color: #f3f2f2;
+  }
+  
+  .hand-matrix-cell .suited {
+    background-color: #fff;
+  }
+  
+  .hand-matrix-cell .offsuit {
+    background-color: #fff;
+  }
+  
+  .hand-matrix-cell .fill-blue {
+    background-color: #1890ff;
+  }
+  
+  .hand-matrix-cell .fill-red {
+    background-color: #ff2018;
+  }
+  
+  .hand-matrix-cell.fill-orange {
+    background-color: #ffae18;
+  }
+  
+  .hand-matrix-cell.fill-yellow {
+    background-color: #fffb18;
+  }
+  
+  .hand-matrix-cell.fill-light-green {
+    background-color: #18ff3e;
+  }
+  
+  .hand-matrix-cell.fill-green {
+    background-color: #00c90a;
+  }
+  
+  .actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px; /* ✅ Réduction de l’espace entre les boutons */
+    padding: 10px;
+    flex-wrap: nowrap; /* ✅ Empêche les boutons de passer en colonne */
+  }
+  
+  .action-btn {
+    flex: 1 1 auto; /* Permet aux boutons de s'adapter */
+    padding: 10px 15px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: 2px solid black;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .action-btn.selected {
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+  }
+  
+  @media screen and (max-width: 768px) {
+    .action-btn {
+      padding: 6px 8px;
+      font-size: 0.8rem; /* ✅ Réduction de la taille du texte */
+    }
+  }
+  
+  @media screen and (max-width: 480px) {
+    .action-btn {
+      padding: 5px 6px;
+      font-size: 0.75rem;
+    }
+  }
