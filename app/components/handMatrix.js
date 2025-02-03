@@ -4,11 +4,11 @@ import PropTypes from "prop-types";
 import "./../styles/handMatrix.css";
 import { db } from "@/lib/firebase";
 import { doc, setDoc, getDoc } from "firebase/firestore";
-import { combos } from "./../utils/combos"; // ✅ Import des combinaisons depuis un fichier externe
+import { combos } from "./../utils/combos"; // ✅ Import des combinaisons
 
 // Actions et couleurs associées
 const actions = {
-  fold: "#F5F5F5", // ✅ Plus clair pour le "fold" normal
+  fold: "#F5F5F5",
   allin: "firebrick",
   raise: "lightcoral",
   check: "green",
@@ -22,11 +22,10 @@ const chunk = (arr, size) =>
 
 function HandMatrix({ rangeId }) {
   const [handColors, setHandColors] = useState({});
-  const [selectedAction, setSelectedAction] = useState("fold"); // ✅ "Fold" par défaut
+  const [selectedAction, setSelectedAction] = useState("fold");
   const [isMouseDown, setIsMouseDown] = useState(false);
   const currentlyPointingAt = useRef(null);
 
-  // Charger la range depuis Firebase
   useEffect(() => {
     const loadRange = async () => {
       const docRef = doc(db, "ranges", rangeId);
@@ -34,7 +33,6 @@ function HandMatrix({ rangeId }) {
       if (docSnap.exists()) {
         setHandColors(docSnap.data().handColors || {});
       } else {
-        // ✅ Initialiser toutes les cases en "fold"
         setHandColors(
           combos.reduce((acc, combo) => {
             acc[combo] = "fold";
@@ -46,6 +44,15 @@ function HandMatrix({ rangeId }) {
     loadRange();
   }, [rangeId]);
 
+  // ✅ Empêche le scroll pendant le touch
+  const disableScroll = () => {
+    document.body.classList.add("lock-scroll");
+  };
+
+  const enableScroll = () => {
+    document.body.classList.remove("lock-scroll");
+  };
+
   // ✅ Fonction pour sélectionner une case
   const handleComboSelection = (combo) => {
     setHandColors((prev) => {
@@ -55,22 +62,22 @@ function HandMatrix({ rangeId }) {
     });
   };
 
-  // ✅ Début de la sélection (clic ou toucher)
+  // ✅ Sélection par clic (desktop)
   const handleMouseDown = (combo) => {
     setIsMouseDown(true);
     handleComboSelection(combo);
   };
 
-  // ✅ Sélectionner en glissant sur desktop
+  // ✅ Sélection en glissant (desktop)
   const handleMouseEnter = (combo) => {
     if (isMouseDown) {
       handleComboSelection(combo);
     }
   };
 
-  // ✅ Sélectionner en glissant sur mobile (touch)
+  // ✅ Sélection en glissant (mobile)
   const handleTouchMove = (e) => {
-    const touch = e.touches[0]; // Récupère le premier doigt
+    const touch = e.touches[0];
     const element = document.elementFromPoint(touch.clientX, touch.clientY);
     if (element && element.dataset.combo) {
       handleComboSelection(element.dataset.combo);
@@ -114,9 +121,18 @@ function HandMatrix({ rangeId }) {
       {/* Matrice des mains */}
       <div
         className="hand-matrix"
-        onMouseUp={() => setIsMouseDown(false)}
-        onMouseLeave={() => setIsMouseDown(false)}
-        onTouchMove={handleTouchMove} // ✅ Ajout du support tactile
+        onMouseDown={disableScroll} // ✅ Empêche le scroll lors du clic
+        onMouseUp={() => {
+          setIsMouseDown(false);
+          enableScroll();
+        }}
+        onMouseLeave={() => {
+          setIsMouseDown(false);
+          enableScroll();
+        }}
+        onTouchStart={disableScroll} // ✅ Empêche le scroll lors du touch
+        onTouchMove={handleTouchMove}
+        onTouchEnd={enableScroll}
       >
         {chunk(combos, 13).map((row, rowIndex) => (
           <div key={rowIndex} className="hand-matrix-row">
@@ -127,7 +143,7 @@ function HandMatrix({ rangeId }) {
                 style={{
                   backgroundColor: actions[handColors[combo]] || "#F5F5F5",
                 }}
-                data-combo={combo} // ✅ Ajout d'un dataset pour identifier les cases touchées
+                data-combo={combo}
                 onMouseDown={() => handleMouseDown(combo)}
                 onMouseEnter={() => handleMouseEnter(combo)}
               >
