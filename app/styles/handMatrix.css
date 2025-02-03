@@ -1,17 +1,13 @@
 .hand-matrix {
   text-align: center;
-  user-select: none; /* Désactive la sélection de texte */
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
+  user-select: none;
   width: 100%;
-  max-width: 350px; 
-  min-width: 320px; 
-  aspect-ratio: 1 / 1; 
-  margin: 0 auto; 
-  overflow: hidden; 
-  touch-action: none; 
+  max-width: 350px; /* ✅ Taille maximale */
+  min-width: 320px; /* ✅ Taille minimale */
+  aspect-ratio: 1 / 1; /* ✅ Assure un carré parfait */
+  margin: 0 auto;
+  overflow: hidden;
+  touch-action: none;
 }
 
 .hand-matrix-row {
@@ -22,56 +18,78 @@
 
 .hand-matrix-cell {
   border: 1px solid grey;
-  display: flex; /*  Utilisation de flexbox pour centrer le texte */
-  align-items: center; /*  Centrage vertical */
-  justify-content: center; /* Centrage horizontal */
-  font-size: 0.8rem; /*  Taille de texte réduite pour tenir dans la case */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem; /* ✅ Réduction de la taille du texte */
   width: 7.691%;
-  aspect-ratio: 1 / 1; /* Assure que chaque case est carrée */
+  aspect-ratio: 1 / 1; /* ✅ Maintient la forme carrée */
+  position: relative; /* ✅ Assure que le texte reste visible */
   overflow: hidden;
 }
 
-.hand-matrix-cell:before {
-  content: "";
-  display: block;
-  padding-top: 100%; /* Maintient la forme carrée */
-}
-
+/* ✅ Centrer parfaitement le texte dans la case */
 .hand-matrix-cell > div {
-  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
   width: 100%;
-  display: flex; /* Assure le centrage du texte */
-  align-items: center;
-  justify-content: center;
 }
 
-/*  Réduction du texte encore plus sur mobile */
-@media screen and (max-width: 768px) {
-  .hand-matrix-cell {
-    font-size: 0.6rem;
-  }
-}
-
-/*  Ajout d'une couleur gris foncé pour les paires */
+/* ✅ Ajustement de la couleur des paires */
 .hand-matrix-cell.pair {
-  background-color: #E0E0E0; /* Gris plus foncé */
+  background-color: #D0D0D0; /* ✅ Gris plus foncé pour mieux ressortir */
 }
 
+/* ✅ Les autres cases restent légèrement plus claires */
 .hand-matrix-cell.suited {
-  background-color: #fff;
+  background-color: #FFFFFF;
 }
 
 .hand-matrix-cell.offsuit {
   background-color: #F5F5F5;
 }
 
+/* ✅ Assurer que les couleurs des actions sont bien visibles */
+.hand-matrix-cell.fill-blue {
+  background-color: #1890ff;
+}
 
-/* Empêche le mouvement de la page lorsqu'on touche la matrice */
+.hand-matrix-cell.fill-red {
+  background-color: #ff2018;
+}
+
+.hand-matrix-cell.fill-orange {
+  background-color: #ffae18;
+}
+
+.hand-matrix-cell.fill-yellow {
+  background-color: #fffb18;
+}
+
+.hand-matrix-cell.fill-light-green {
+  background-color: #18ff3e;
+}
+
+.hand-matrix-cell.fill-green {
+  background-color: #00c90a;
+}
+
+/* ✅ Empêche le mouvement de la page lorsqu'on touche la matrice */
 body.lock-scroll {
   overflow: hidden;
 }
 
-  
+/* ✅ Réduction encore plus sur mobile */
+@media screen and (max-width: 768px) {
+  .hand-matrix-cell {
+    font-size: 0.6rem;
+  }
+}
+
+
   .actions {
     display: flex;
     justify-content: center;
