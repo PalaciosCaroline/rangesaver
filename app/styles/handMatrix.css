@@ -67,50 +67,134 @@ body.lock-scroll {
 }
 
 
-  .actions {
-    display: flex;
-    justify-content: center;
+/* ============================= */
+/* 📌 Styles pour les sélecteurs */
+/* ============================= */
+
+.selectors {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto 15px auto;
+}
+
+/* Labels des sélecteurs */
+.selectors label {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #333;
+  margin-right: 5px;
+}
+
+/* Sélecteurs (dropdown) */
+.selectors select {
+  padding: 8px 10px;
+  font-size: 0.9rem;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  outline: none;
+}
+
+.selectors select:hover {
+  border-color: #007bff;
+}
+
+.selectors select:focus {
+  border-color: #0056b3;
+  box-shadow: 0px 0px 5px rgba(0, 91, 187, 0.4);
+}
+
+/* Responsive pour mobile */
+@media screen and (max-width: 768px) {
+  .selectors {
+    flex-direction: column;
     align-items: center;
-    gap: 5px; /* Réduction de l’espace entre les boutons */
-    padding: 5px;
-    flex-wrap: nowrap; /* Empêche les boutons de passer en colonne */
+    gap: 8px;
+    max-width: 90%;
   }
-  
+
+  .selectors select {
+    width: 100%;
+    font-size: 0.8rem;
+  }
+}
+
+/* ============================= */
+/* 🎮 Styles pour les boutons */
+/* ============================= */
+
+.actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  flex-wrap: wrap;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Style des boutons */
+.action-btn {
+  flex: 1;
+  padding: 10px 12px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  border: 2px solid black;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  height: 42px;
+  min-width: 95px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  background: white;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+/* Effet au survol */
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Effet de sélection */
+.action-btn.selected {
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+  border-color: rgb(42, 42, 42);
+}
+
+/* Responsive pour mobile */
+@media screen and (max-width: 768px) {
+  .actions {
+    gap: 5px;
+    max-width: 90%;
+  }
+
   .action-btn {
-    flex: 1; /*  Tous les boutons ont une largeur uniforme */
-    padding: 8px 10px; /* Taille réduite */
-    font-size: 0.9rem; /*  Texte légèrement plus petit */
-    font-weight: bold;
-    border: 2px solid black; /*  Bordure fixe pour éviter le changement de taille */
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    height: 40px; /*  Fixe une hauteur pour tous les boutons */
-    min-width: 90px; /* Fixe une largeur minimale */
+    padding: 8px 10px;
+    font-size: 0.8rem;
+    height: 38px;
+    min-width: 80px;
   }
-  
-  /* Ajout d'un effet de sélection sans agrandir le bouton */
-  .action-btn.selected {
-    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
-    border-color: rgb(42, 42, 42); /* Garde la bordure fine */
+}
+
+@media screen and (max-width: 480px) {
+  .action-btn {
+    padding: 6px 8px;
+    font-size: 0.7rem;
+    height: 34px;
+    min-width: 70px;
   }
-  
-  /*Ajustement automatique pour petits écrans */
-  @media screen and (max-width: 768px) {
-    .action-btn {
-      padding: 3px 3px;
-      font-size: 0.5rem; /*  Réduction de la taille du texte */
-      height: 35px; /*  Ajustement de la hauteur */
-      min-width: 60px; /*  Ajustement de la largeur */
-    }
-  }
-  
-  @media screen and (max-width: 480px) {
-    .action-btn {
-      padding: 2px 3px;
-      font-size: 0.6rem;
-      height: 30px; /* Encore plus compact sur mobile */
-      min-width: 60px;
-    }
-  }
-  
+}
