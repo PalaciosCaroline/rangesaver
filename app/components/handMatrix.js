@@ -8,9 +8,9 @@ import { combos } from "./../utils/combos"; // Import des combinaisons
 
 // Actions et couleurs associées
 const actions = {
-    allin: "firebrick",
-    raise: "lightcoral",
-    check: "green",
+    allin: "#c72727",
+    raise: "#ea3b3b",
+    check: "#5dd85d",
     fold: "#F5F5F5", // Fold est maintenant placé après Check
     reset: "gray", // Ajout du bouton Réinitialiser dans le tableau
   };
@@ -102,7 +102,7 @@ function HandMatrix({ rangeId }) {
         backgroundColor: actions[action],
         border: selectedAction === action ? "1px solid black" : "1px solid gray",
         color: action === "fold" || action === "reset" ? "black" : "white",
-        fontWeight: action === "reset" ? "bold" : "normal", // Met en valeur le bouton Reset
+        fontWeight: action === "reset" ? "bold" : "normal", 
       }}
       onClick={() => {
         if (action === "reset") {

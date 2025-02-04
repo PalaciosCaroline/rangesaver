@@ -5,7 +5,7 @@
   max-width: 350px;
   min-width: 320px;
   aspect-ratio: 1 / 1;
-  margin: 0 auto;
+  margin: 20px auto;
   overflow: hidden;
   touch-action: none;
 }
@@ -95,7 +95,7 @@ body.lock-scroll {
     border-color: rgb(42, 42, 42); /* Garde la bordure fine */
   }
   
-  /* ✅ Ajustement automatique pour petits écrans */
+  /*Ajustement automatique pour petits écrans */
   @media screen and (max-width: 768px) {
     .action-btn {
       padding: 3px 3px;
@@ -109,7 +109,7 @@ body.lock-scroll {
     .action-btn {
       padding: 2px 3px;
       font-size: 0.6rem;
-      height: 30px; /* ✅ Encore plus compact sur mobile */
+      height: 30px; /* Encore plus compact sur mobile */
       min-width: 60px;
     }
   }

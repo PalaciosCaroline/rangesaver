@@ -7,7 +7,7 @@ import HandMatrix from "./components/handMatrix";
 export default function Home() {
   return (
     <div>
-      <h1>Entraîneur de ranges</h1>
+      <h1>Enregistreur de ranges</h1>
       <HandMatrix rangeId="default-range" />
     </div>
   );
