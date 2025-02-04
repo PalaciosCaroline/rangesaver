@@ -38,6 +38,21 @@ const [villainPosition, setVillainPosition] = useState(""); // Choix de l’adve
 const blindsOptions = [5, 20, 50, 100];
 const [blinds, setBlinds] = useState(20);
 
+useEffect(() => {
+  const preventScroll = (e) => {
+    e.preventDefault();
+  };
+
+  document.addEventListener("mousedown", preventScroll);
+
+  return () => {
+    document.removeEventListener("mousedown", preventScroll);
+  };
+}, []);
+
+document.addEventListener("mousedown", (e) => {
+  e.preventDefault();
+});
 
   // Désactive le scroll pendant la sélection
   const disableScroll = () => {
