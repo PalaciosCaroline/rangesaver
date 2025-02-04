@@ -39,28 +39,26 @@ const blindsOptions = [5, 20, 50, 100];
 const [blinds, setBlinds] = useState(20);
 
 
-useEffect(() => {
-  const loadRange = async () => {
-    try {
-      const docRef = doc(db, "ranges", rangeId);
-      const docSnap = await getDoc(docRef);
-
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        setHandColors(data.handColors || {});
-        setHeroPosition(data.heroPosition || ""); 
-        setSpot(data.spot || ""); 
-        setVillainPosition(data.situation !== "Open" ? data.villainPosition || "" : ""); 
-        setBlinds(data.blinds || 20);
-      }
-    } catch (error) {
-      console.error("Erreur lors de la récupération des données Firebase:", error);
-      alert("⚠️ Impossible de charger les données. Vérifiez votre connexion.");
+const loadRangeFromFirebase = async (rangeId) => {
+  try {
+    if (!db) {
+      console.error("⚠️ Erreur : Firestore n'a pas été initialisé.");
+      return;
     }
-  };
+    const docRef = doc(db, "ranges", rangeId);
+    const docSnap = await getDoc(docRef);
 
-  loadRange();
-}, [rangeId]);
+    if (docSnap.exists()) {
+      console.log("📌 Données Firebase récupérées :", docSnap.data());
+      setHandColors(docSnap.data().handColors || {});
+    } else {
+      console.warn("⚠️ Aucun document trouvé pour cet ID.");
+    }
+  } catch (error) {
+    console.error("🚨 Erreur Firebase :", error.message);
+    alert("⚠️ Impossible de charger les données. Vérifiez votre connexion ou reconfigurez Firebase.");
+  }
+};
 
   // Désactive le scroll pendant la sélection
   const disableScroll = () => {
