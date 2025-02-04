@@ -49,7 +49,7 @@ useEffect(() => {
         const data = docSnap.data();
         setHandColors(data.handColors || {});
         setHeroPosition(data.heroPosition || ""); 
-        setSituation(data.situation || ""); 
+        setSpot(data.spot || ""); 
         setVillainPosition(data.situation !== "Open" ? data.villainPosition || "" : ""); 
         setBlinds(data.blinds || 20);
       }
