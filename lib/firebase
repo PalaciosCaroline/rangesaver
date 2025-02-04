@@ -15,4 +15,21 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-export { db };
+const saveToFirebase = async (updatedColors, rangeId) => {
+  try {
+    if (!db) {
+      console.error("⚠️ Erreur : Firestore n'a pas été initialisé.");
+      return;
+    }
+
+    const docRef = doc(db, "ranges", rangeId);
+    await setDoc(docRef, { handColors: updatedColors }, { merge: true });
+
+    console.log("✅ Range enregistrée avec succès !");
+  } catch (error) {
+    console.error("🚨 Erreur lors de l'enregistrement Firebase :", error.message);
+  }
+};
+
+export { db, saveToFirebase };
+

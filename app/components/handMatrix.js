@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
+import {db, saveToFirebase } from "@/lib/firebase"; 
 import PropTypes from "prop-types";
 import "./../styles/handMatrix.css";
-import { db } from "@/lib/firebase";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { combos } from "./../utils/combos"; // Import des combinaisons
 
@@ -38,27 +38,6 @@ const [villainPosition, setVillainPosition] = useState(""); // Choix de l’adve
 const blindsOptions = [5, 20, 50, 100];
 const [blinds, setBlinds] = useState(20);
 
-
-const loadRangeFromFirebase = async (rangeId) => {
-  try {
-    if (!db) {
-      console.error("⚠️ Erreur : Firestore n'a pas été initialisé.");
-      return;
-    }
-    const docRef = doc(db, "ranges", rangeId);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      console.log("📌 Données Firebase récupérées :", docSnap.data());
-      setHandColors(docSnap.data().handColors || {});
-    } else {
-      console.warn("⚠️ Aucun document trouvé pour cet ID.");
-    }
-  } catch (error) {
-    console.error("🚨 Erreur Firebase :", error.message);
-    alert("⚠️ Impossible de charger les données. Vérifiez votre connexion ou reconfigurez Firebase.");
-  }
-};
 
   // Désactive le scroll pendant la sélection
   const disableScroll = () => {
