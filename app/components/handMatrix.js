@@ -6,6 +6,7 @@ import { db } from "@/lib/firebase";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { combos } from "./../utils/combos"; // Import des combinaisons
 
+
 // Actions et couleurs associées
 const actions = {
   allin: "#c72727",
@@ -25,13 +26,14 @@ const chunk = (arr, size) =>
   );
 
 function HandMatrix({ rangeId }) {
+  const [rangeName, setRangeName] = useState(""); 
   const [handColors, setHandColors] = useState({});
   const [selectedAction, setSelectedAction] = useState("fold");
   const [isMouseDown, setIsMouseDown] = useState(false);
   const currentlyPointingAt = useRef(null);
   const positions = ["UTG", "MP", "CO", "BTN", "SB", "BB"];
 const [heroPosition, setHeroPosition] = useState(""); // On force l'utilisateur à choisir
-const [situation, setSituation] = useState(""); // Choix de la situation après le héros
+const [spot, setSpot] = useState(""); // Choix de la situation après le héros
 const [villainPosition, setVillainPosition] = useState(""); // Choix de l’adversaire si nécessaire
 const blindsOptions = [5, 20, 50, 100];
 const [blinds, setBlinds] = useState(20);
@@ -39,17 +41,24 @@ const [blinds, setBlinds] = useState(20);
 
 useEffect(() => {
   const loadRange = async () => {
-    const docRef = doc(db, "ranges", rangeId);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      setHandColors(data.handColors || {});
-      setHeroPosition(data.heroPosition || ""); // Doit être choisi en premier
-      setSituation(data.situation || ""); // Ne peut pas être défini avant le héros
-      setVillainPosition(data.situation !== "Open" ? data.villainPosition || "" : ""); // Uniquement pour Vs Raise/Limp
-      setBlinds(data.blinds || 20);
+    try {
+      const docRef = doc(db, "ranges", rangeId);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        setHandColors(data.handColors || {});
+        setHeroPosition(data.heroPosition || ""); 
+        setSituation(data.situation || ""); 
+        setVillainPosition(data.situation !== "Open" ? data.villainPosition || "" : ""); 
+        setBlinds(data.blinds || 20);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la récupération des données Firebase:", error);
+      alert("⚠️ Impossible de charger les données. Vérifiez votre connexion.");
     }
   };
+
   loadRange();
 }, [rangeId]);
 
@@ -94,127 +103,139 @@ useEffect(() => {
   };
 
   // Sauvegarde dans Firebase
-  const saveToFirebase = async (updatedColors) => {
-    if (!heroPosition) {
-      alert("Veuillez choisir la position du héros.");
-      return;
-    }
+  const saveRangeToFirebase = async (rangeId, blinds, heroPosition, situation, villainPosition, handColors) => {
+    try {
+      // Construction de l'objet à enregistrer
+      const rangeData = {
+        rangeName: rangeName || "Sans Nom", // Si l'utilisateur ne donne pas de nom
+        blinds,
+        heroPosition,
+        spot,
+        villainPosition: situation === "Open" ? "" : villainPosition, // Si Open, pas d’adversaire
+        handColors
+      };
   
-    if (!situation) {
-      alert("Veuillez choisir une situation.");
-      return;
-    }
+      // Référence au document Firebase
+      const docRef = doc(db, "ranges", rangeId);
   
-    if ((situation === "Vs Raise" || situation === "Vs Limp") && !villainPosition) {
-      alert("Veuillez choisir la position de l’adversaire.");
-      return;
-    }
+      // Enregistrer les données (merge pour éviter d'écraser tout le document)
+      await setDoc(docRef, rangeData, { merge: true });
   
-    await setDoc(doc(db, "ranges", rangeId), {
-      handColors: updatedColors,
-      heroPosition,
-      villainPosition: situation !== "Open" ? villainPosition : "",
-      blinds,
-      situation,
-    }, { merge: true });
+      console.log("Range enregistrée avec succès !");
+    } catch (error) {
+      console.error("Erreur lors de l'enregistrement de la range :", error);
+    }
   };
 
   return (
     <div>
-    <div className="selectors">
-  {/* Sélection du héros */}
-  <label>Héros : </label>
-  <select
-    value={heroPosition}
-    onChange={(e) => {
-      setHeroPosition(e.target.value);
-      setSituation(""); // Réinitialise la situation après le changement du héros
-      setVillainPosition(""); // Réinitialise le vilain si besoin
-    }}
-  >
-    <option value="" disabled>Choisir une position</option>
-    {positions.map((pos) => (
-      <option key={pos} value={pos}>{pos}</option>
-    ))}
-  </select>
+<div className="selectors">
+  {/* 📌 Champ pour nommer la range */}
+  <div className="row">
+    <div className="selector-group">
+      <label>Nom :</label>
+      <input
+        type="text"
+        value={rangeName}
+        onChange={(e) => setRangeName(e.target.value)}
+        placeholder="Nom de la range"
+        className="range-input"
+      />
+    </div>
+  </div>
 
-  {/* Sélection de la situation (uniquement si le héros est choisi) */}
-  {heroPosition && (
-    <>
-      <label>Situation : </label>
-      <select
-        value={situation}
-        onChange={(e) => {
-          setSituation(e.target.value);
-          if (e.target.value === "Open") {
-            setVillainPosition(""); // Pas d’adversaire en Open
-          } else {
-            // Pré-remplit une valeur par défaut pour éviter d'avoir rien de sélectionné
-            setVillainPosition(positions.find(pos => pos !== heroPosition) || "");
-          }
-        }}
-      >
-        <option value="" disabled>Choisir une situation</option>
-        <option value="Open">Open</option>
-        <option value="Vs Raise">Vs Raise</option>
-        <option value="Vs Limp">Vs Limp</option>
-      </select>
-    </>
-  )}
-
-  {/* Sélection de l’adversaire si "Vs Raise" ou "Vs Limp" est sélectionné */}
-  {heroPosition && (situation === "Vs Raise" || situation === "Vs Limp") && (
-    <>
-      <label>Adversaire : </label>
-      <select
-        value={villainPosition}
-        onChange={(e) => setVillainPosition(e.target.value)}
-      >
-        {positions
-          .filter(pos => pos !== heroPosition) // Exclut la position du héros
-          .map((pos) => (
-            <option key={pos} value={pos}>{pos}</option>
-          ))}
-      </select>
-    </>
-  )}
-
-  {/* Sélection du nombre de blindes */}
-  {heroPosition && (
-    <>
-      <label>BB : </label>
+  {/* 📌 Première ligne : BB + HÉROS alignés sur la même ligne */}
+  <div className="row">
+    <div className="selector-group">
+      <label>BB :</label>
       <select value={blinds} onChange={(e) => setBlinds(Number(e.target.value))}>
         {blindsOptions.map((blind) => (
           <option key={blind} value={blind}>{blind} BB</option>
         ))}
       </select>
-    </>
-  )}
+    </div>
+
+    <div className="selector-group">
+      <label>Héros :</label>
+      <select value={heroPosition} onChange={(e) => setHeroPosition(e.target.value)}>
+        {positions.map((pos) => (
+          <option key={pos} value={pos}>{pos}</option>
+        ))}
+      </select>
+    </div>
+  </div>
+
+  {/* 📌 Deuxième ligne : SITUATION + ADVERSAIRE alignés sur la même ligne */}
+  <div className="row">
+    <div className="selector-group">
+      <label>Spot :</label>
+      <select
+        value={spot}
+        onChange={(e) => {
+          setSituation(e.target.value);
+          if (e.target.value === "Open") {
+            setVillainPosition(""); // Réinitialisation de l’adversaire si Open
+          } else {
+            setVillainPosition(positions.find(pos => pos !== heroPosition) || "");
+          }
+        }}
+      >
+        <option value="Open">Open</option>
+        <option value="Vs Raise">Vs Raise</option>
+        <option value="Vs Limp">Vs Limp</option>
+      </select>
+    </div>
+
+    {/* 📌 Affichage du choix de l’adversaire seulement si Vs Raise ou Vs Limp */}
+    {spot !== "Open" && (
+      <div className="selector-group">
+        <label>Villain :</label>
+        <select value={villainPosition} onChange={(e) => setVillainPosition(e.target.value)}>
+          {positions.filter(pos => pos !== heroPosition).map((pos) => (
+            <option key={pos} value={pos}>{pos}</option>
+          ))}
+        </select>
+      </div>
+    )}
+  </div>
 </div>
 
+  
+
       {/* Boutons d'action */}
+  
       <div className="actions">
-  {Object.keys(actions).map((action) => (
+  {/* Boutons principaux (All-in, 3bet, 4bet, Raise) */}
+  {["allin", "4bet", "3bet", "raise"].map((action) => (
     <button
       key={action}
       className={`action-btn ${selectedAction === action ? "selected" : ""}`}
-      style={{
-        backgroundColor: actions[action],
-        border: selectedAction === action ? "1px solid black" : "1px solid gray",
-        color: action === "fold" || action === "reset" ? "black" : "white",
-        fontWeight: action === "reset" ? "bold" : "normal", 
-      }}
-      onClick={() => {
-        if (action === "reset") {
-          setHandColors(combos.reduce((acc, combo) => ({ ...acc, [combo]: "fold" }), {}));
-        } else {
-          setSelectedAction(action);
-        }
-      }}
+      style={{ backgroundColor: actions[action] }}
+      onClick={() => setSelectedAction(action)}
     >
       {action.toUpperCase()}
     </button>
   ))}
+
+  {/* Groupe des boutons Call, Fold et Reset alignés sur une seule ligne */}
+  <div className="action-group">
+    {["call", "fold", "reset"].map((action) => (
+      <button
+        key={action}
+        className={`action-btn ${selectedAction === action ? "selected" : ""}`}
+        style={{ backgroundColor: actions[action] }}
+        onClick={() => {
+          if (action === "reset") {
+            setHandColors(combos.reduce((acc, combo) => ({ ...acc, [combo]: "fold" }), {}));
+          } else {
+            setSelectedAction(action);
+          }
+        }}
+      >
+        {action.toUpperCase()}
+      </button>
+    ))}
+  </div>
 </div>
 
       {/* Matrice des mains */}
@@ -255,6 +276,12 @@ useEffect(() => {
           </div>
         ))}
       </div>
+      <button
+  className="save-btn"
+  onClick={() => saveRangeToFirebase(rangeId,rangeName, blinds, heroPosition, spot, villainPosition, handColors)}
+>
+  Enregistrer la Range
+</button>
     </div>
   );
 }
