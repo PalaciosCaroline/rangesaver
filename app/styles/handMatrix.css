@@ -1,3 +1,11 @@
+
+html, body {
+  overflow-y: overlay; /* 🔹 Scrollbar cachée jusqu'à interaction */
+}
+body.lock-scroll {
+  overflow: hidden;
+}
+
 .hand-matrix {
   text-align: center;
   user-select: none;
@@ -8,6 +16,7 @@
   margin: 20px auto;
   overflow: hidden;
   touch-action: none;
+  position: relative; 
 }
 
 .hand-matrix-row {
@@ -26,6 +35,9 @@
   aspect-ratio: 1 / 1;
   position: relative;
   overflow: hidden;
+}
+.hand-matrix-cell:focus {
+  outline: none;
 }
 
 /* Centrage du texte dans les cases */
@@ -65,6 +77,7 @@ body.lock-scroll {
     font-size: 0.6rem;
   }
 }
+
 
 /* ============================= */
 /* 📌 Conteneur principal des sélecteurs */

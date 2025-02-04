@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import {db, saveToFirebase } from "@/lib/firebase"; 
+import { v4 as uuidv4 } from "uuid";
+import {db, saveRangeToFirebase } from "@/lib/firebase"; 
 import PropTypes from "prop-types";
 import "./../styles/handMatrix.css";
 import { doc, setDoc, getDoc } from "firebase/firestore";
@@ -26,6 +27,7 @@ const chunk = (arr, size) =>
   );
 
 function HandMatrix({ rangeId }) {
+  const [currentRangeId, setCurrentRangeId] = useState(rangeId);
   const [rangeName, setRangeName] = useState(""); 
   const [handColors, setHandColors] = useState({});
   const [selectedAction, setSelectedAction] = useState("fold");
@@ -39,20 +41,54 @@ const blindsOptions = [5, 20, 50, 100];
 const [blinds, setBlinds] = useState(20);
 
 useEffect(() => {
-  const preventScroll = (e) => {
-    e.preventDefault();
+  const initializeRange = async () => {
+    if (!currentRangeId) {
+      const newRangeId = uuidv4();
+      setCurrentRangeId(newRangeId); // Met à jour le state avec le nouvel ID
+      console.log("🆕 Nouvelle range créée avec ID :", newRangeId);
+
+      try {
+        if (!handColors || Object.keys(handColors).length === 0) {
+          console.warn("⚠️ Aucune main sélectionnée. Initialisation de handColors.");
+        }
+        await setDoc(doc(db, "ranges", newRangeId), {
+          rangeName: "Nouvelle range",
+          createdAt: new Date(),
+          blinds: 20,
+          heroPosition: "",
+          spot: "",
+          villainPosition: "",
+          handColors: {}
+        });
+      } catch (error) {
+        console.error("🚨 Erreur lors de la création de la range :", error);
+      }
+    } else {
+      try {
+        // Charger la range existante
+        const docRef = doc(db, "ranges", currentRangeId);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          console.log("📄 Range chargée :", data);
+          setRangeName(data.rangeName || "");
+          setBlinds(data.blinds || 20);
+          setHeroPosition(data.heroPosition || "");
+          setSpot(data.spot || "");
+          setVillainPosition(data.villainPosition || "");
+          setHandColors(data.handColors || {});
+        } else {
+          console.warn("⚠️ Range introuvable, création d'une nouvelle.");
+          setCurrentRangeId(null); // Force la création d'une nouvelle range
+        }
+      } catch (error) {
+        console.error("🚨 Erreur lors du chargement de la range :", error);
+      }
+    }
   };
 
-  document.addEventListener("mousedown", preventScroll);
-
-  return () => {
-    document.removeEventListener("mousedown", preventScroll);
-  };
-}, []);
-
-document.addEventListener("mousedown", (e) => {
-  e.preventDefault();
-});
+  initializeRange();
+}, [currentRangeId]);
 
   // Désactive le scroll pendant la sélection
   const disableScroll = () => {
@@ -63,11 +99,12 @@ document.addEventListener("mousedown", (e) => {
     document.body.classList.remove("lock-scroll");
   };
 
+
   // Sélection d'une case
   const handleComboSelection = (combo) => {
     setHandColors((prev) => {
       const updatedColors = { ...prev, [combo]: selectedAction };
-      saveToFirebase(updatedColors);
+      saveRangeToFirebase(rangeId, blinds, heroPosition, spot, villainPosition, updatedColors);
       return updatedColors;
     });
   };
@@ -94,31 +131,7 @@ document.addEventListener("mousedown", (e) => {
     }
   };
 
-  // Sauvegarde dans Firebase
-  const saveRangeToFirebase = async (rangeId, blinds, heroPosition, situation, villainPosition, handColors) => {
-    try {
-      // Construction de l'objet à enregistrer
-      const rangeData = {
-        rangeName: rangeName || "Sans Nom", // Si l'utilisateur ne donne pas de nom
-        blinds,
-        heroPosition,
-        spot,
-        villainPosition: situation === "Open" ? "" : villainPosition, // Si Open, pas d’adversaire
-        handColors
-      };
   
-      // Référence au document Firebase
-      const docRef = doc(db, "ranges", rangeId);
-  
-      // Enregistrer les données (merge pour éviter d'écraser tout le document)
-      await setDoc(docRef, rangeData, { merge: true });
-  
-      console.log("Range enregistrée avec succès !");
-    } catch (error) {
-      console.error("Erreur lors de l'enregistrement de la range :", error);
-    }
-  };
-
   return (
     <div>
 <div className="selectors">
@@ -270,7 +283,15 @@ document.addEventListener("mousedown", (e) => {
       </div>
       <button
   className="save-btn"
-  onClick={() => saveRangeToFirebase(rangeId,rangeName, blinds, heroPosition, spot, villainPosition, handColors)}
+  onClick={() => saveRangeToFirebase(
+    currentRangeId,  // ID généré ou existant
+    rangeName,       // Nom de la range
+    blinds,          // Blinds sélectionnées
+    heroPosition,    // Position du héros
+    spot,            // Situation (Open, Vs Raise...)
+    villainPosition, // Position de l'adversaire
+    handColors       // Actions enregistrées sur la matrice
+  )}
 >
   Enregistrer la Range
 </button>
@@ -285,8 +306,9 @@ function getComboClassName(combo) {
   return "offsuit";
 }
 
+
 HandMatrix.propTypes = {
-  rangeId: PropTypes.string.isRequired,
+  rangeId: PropTypes.string,
 };
 
 export default HandMatrix;

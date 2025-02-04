@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
 
-// 📌 Remplace avec TES clés Firebase
+// 📌 Remplace avec TES clés Firebase (assure-toi que les variables d’environnement sont bien définies)
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -11,25 +11,35 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
 };
 
-// Initialisation Firebase
+// 🔹 Initialise Firebase AVANT d'utiliser Firestore
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const saveToFirebase = async (updatedColors, rangeId) => {
+// 🔹 Correction : s'assurer que les données sont valides avant d'écrire dans Firestore
+const saveRangeToFirebase = async (rangeId, rangeName, blinds, heroPosition, spot, villainPosition, handColors) => {
+  if (!rangeId) {
+    console.error("🚨 Aucun ID de range, impossible d'enregistrer !");
+    return;
+  }
+
+  // Vérifier que handColors est bien un objet
+  const safeHandColors = handColors && typeof handColors === "object" ? handColors : {};
+
   try {
-    if (!db) {
-      console.error("⚠️ Erreur : Firestore n'a pas été initialisé.");
-      return;
-    }
-
     const docRef = doc(db, "ranges", rangeId);
-    await setDoc(docRef, { handColors: updatedColors }, { merge: true });
+    await setDoc(docRef, {
+      rangeName: rangeName || "Sans Nom",
+      blinds,
+      heroPosition,
+      spot,
+      villainPosition,
+      handColors: safeHandColors // ✅ Toujours un objet, jamais undefined
+    }, { merge: true });
 
-    console.log("✅ Range enregistrée avec succès !");
+    console.log("✅ Range mise à jour !");
   } catch (error) {
-    console.error("🚨 Erreur lors de l'enregistrement Firebase :", error.message);
+    console.error("🚨 Erreur lors de la sauvegarde :", error);
   }
 };
 
-export { db, saveToFirebase };
-
+export { db, saveRangeToFirebase };
