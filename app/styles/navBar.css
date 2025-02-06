@@ -22,14 +22,14 @@
     max-width: 1200px;
 }
 
-/* 📌 Logo */
+/* Logo */
 .logo img {
     cursor: pointer;
     width: 50px;
     height: 50px;
 }
 
-/* 📌 Liens principaux */
+/* Liens principaux */
 .nav-links {
     list-style: none;
     display: flex;
@@ -51,7 +51,7 @@
     color: #e6ae05;
 }
 
-/* 📌 Bouton Déconnexion en Desktop */
+/* Bouton Déconnexion en Desktop */
 .auth-button button {
     background: rgba(255, 193, 7, 0.8);
     border: none;
@@ -67,7 +67,7 @@
     background: #e6ae05;
 }
 
-/* 📌 Menu burger pour mobile */
+/* Menu burger pour mobile */
 .burger-menu {
     display: none;
     flex-direction: column;
@@ -79,7 +79,7 @@
     position: relative;
 }
 
-/* 📌 Barres du menu burger */
+/* Barres du menu burger */
 .burger-bar {
     width: 30px;
     height: 3px;
@@ -90,7 +90,7 @@
     transform-origin: center;
 }
 
-/* 📌 Position initiale des barres */
+/* Position initiale des barres */
 .burger-bar:nth-child(1) {
     top: 6px;
 }
@@ -103,7 +103,7 @@
     top: 22px;
 }
 
-/* 📌 Effet du menu burger qui se transforme en croix */
+/* Effet du menu burger qui se transforme en croix */
 .burger-menu.open .burger-bar:nth-child(1) {
     transform: translateY(8px) rotate(45deg);
 }
@@ -116,7 +116,7 @@
     transform: translateY(-8px) rotate(-45deg);
 }
 
-/* 📌 Responsive - Mobile */
+/* Responsive - Mobile */
 @media (max-width: 768px) {
     .nav-container {
         padding: 0 10px;
@@ -126,25 +126,25 @@
         padding: 0;
     }
 
-    /* 📌 Animation du menu burger (slide de gauche à droite) */
+    /* Animation du menu burger (slide de gauche à droite) */
     .nav-links {
         position: absolute;
         top: 60px;
         left: 0;
         width: 100%;
-        height: 100vh; /* ✅ Pleine hauteur pour éviter les problèmes */
+        height: 100vh; 
         background: rgba(38, 39, 39, 0.9);
         text-align: center;
         padding-top: 30px;
         flex-direction: column;
-        transform: translateX(-100%); /* ✅ Caché au départ */
+        transform: translateX(-100%); 
         transition: transform 0.4s ease-in-out, opacity 0.3s ease-in-out;
-        opacity: 0; /* ✅ Caché initialement */
+        opacity: 0; 
         visibility: hidden;
     }
 
     .nav-links.open {
-        transform: translateX(0); /* ✅ Fait apparaître le menu */
+        transform: translateX(0); 
         opacity: 1;
         visibility: visible;
         padding-left:0;
@@ -158,7 +158,7 @@
     height:40px;
     }
 
-     /* 📌 Bouton Déconnexion en Mobile */
+     /* Bouton Déconnexion en Mobile */
      .logout-mobile button {
         width: 100%;
         background: rgba(255, 193, 7, 0.8);
