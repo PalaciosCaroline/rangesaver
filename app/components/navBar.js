@@ -9,7 +9,7 @@ export default function Navbar() {
   const { user, logout, loading } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
 
-   // ✅ Empêche le re-render inutile de la navbar
+     // ✅ Empêche le re-render inutile de la navbar
    const authButton = useMemo(() => {
     if (loading) return <span>Chargement...</span>;
     return user ? (
@@ -21,6 +21,10 @@ export default function Navbar() {
     );
   }, [user, loading]);
 
+  if(!loading && !user){
+    return null;
+  } 
+  
   return (
     <nav className="navbar">
       <div className="nav-container">
