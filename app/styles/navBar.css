@@ -51,7 +51,7 @@
     color: #e6ae05;
 }
 
-/* 📌 Bouton Connexion / Déconnexion */
+/* 📌 Bouton Déconnexion en Desktop */
 .auth-button button {
     background: rgba(255, 193, 7, 0.8);
     border: none;
@@ -129,7 +129,7 @@
     /* 📌 Animation du menu burger (slide de gauche à droite) */
     .nav-links {
         position: absolute;
-        top: 45px;
+        top: 60px;
         left: 0;
         width: 100%;
         height: 100vh; /* ✅ Pleine hauteur pour éviter les problèmes */
@@ -156,5 +156,26 @@
 
     .logo img{
     height:40px;
+    }
+
+     /* 📌 Bouton Déconnexion en Mobile */
+     .logout-mobile button {
+        width: 100%;
+        background: rgba(255, 193, 7, 0.8);
+        border: none;
+        color: rgb(238, 238, 238);
+        padding: 12px;
+        margin-top: 10px;
+        border-radius: 3px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+    .logout-mobile button:hover {
+        background: #e6ae05;
+    }
+
+    .auth-button{
+    display:none;
     }
 }
