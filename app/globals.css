@@ -7,3 +7,11 @@ body {
   font-size: var(--font-size);
   background-color: rgb(253, 253, 253);
 }
+
+.h1home{
+margin-top:100px;
+text-align: center;
+}
+.pHome{
+  text-align: center;
+}

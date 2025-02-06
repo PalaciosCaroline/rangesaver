@@ -19,8 +19,8 @@ export default function HomePage() {
 
   return (
     <div>
-      <h1>Bienvenue sur l&apos;application</h1>
-      <p>Vous êtes connecté !</p>
+      <h1 className="h1home">Bienvenue sur l&apos;application</h1>
+      <p className="pHome">Vous êtes connecté !</p>
     </div>
   );
 }
