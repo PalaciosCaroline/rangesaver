@@ -1,31 +1,26 @@
 "use client";
-import React from "react";
+import { useEffect } from "react";
 import { useAuth } from "./components/authContext";
-import HandMatrix from "./components/handMatrix";
-import Logout from "./auth/logout";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function HomePage() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push("/auth/login"); // ✅ Redirige si l'utilisateur n'est pas connecté
+    }
+  }, [user, loading, router]);
+
+  if (loading) {
+    return <p>Chargement...</p>; // ✅ Affiche un texte pendant le chargement de l'état utilisateur
+  }
 
   return (
     <div>
-      <h1>Enregistreur de ranges</h1>
-      {user ? (
-        <>
-          <Logout />
-          <HandMatrix rangeId="default-range" />
-        </>
-      ) : (
-        <>
-          <p>Vous devez être connecté pour voir la matrice.</p>
-          <Link href="/auth/login">Se connecter</Link>
-          <Link href="/auth/signup">Créer un compte</Link>
-        </>
-      )}
+      <h1>Bienvenue sur l&apos;application</h1>
+      <p>Vous êtes connecté !</p>
     </div>
   );
 }
-
-
-

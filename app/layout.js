@@ -6,13 +6,15 @@ import "./styles/navBar.css";
 
 export default function RootLayout({ children }) {
   return (
-    <AuthProvider>
+    
     <html lang="fr">
       <body>
+      <AuthProvider>
         <Navbar />
         {children}
+        </AuthProvider>
       </body>
     </html>
-    </AuthProvider>
+  
   );
 }
