@@ -1,7 +1,8 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
-// 📌 Remplace avec TES clés Firebase (assure-toi que les variables d’environnement sont bien définies)
+// 📌 Vérification des variables d’environnement Firebase
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -14,16 +15,14 @@ const firebaseConfig = {
 // 🔹 Initialise Firebase AVANT d'utiliser Firestore
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
-// 🔹 Correction : s'assurer que les données sont valides avant d'écrire dans Firestore
+// 🔹 Fonction pour sauvegarder les ranges
 const saveRangeToFirebase = async (rangeId, rangeName, blinds, heroPosition, spot, villainPosition, handColors) => {
   if (!rangeId) {
     console.error("🚨 Aucun ID de range, impossible d'enregistrer !");
     return;
   }
-
-  // Vérifier que handColors est bien un objet
-  const safeHandColors = handColors && typeof handColors === "object" ? handColors : {};
 
   try {
     const docRef = doc(db, "ranges", rangeId);
@@ -33,7 +32,7 @@ const saveRangeToFirebase = async (rangeId, rangeName, blinds, heroPosition, spo
       heroPosition,
       spot,
       villainPosition,
-      handColors: safeHandColors // ✅ Toujours un objet, jamais undefined
+      handColors: handColors || {}
     }, { merge: true });
 
     console.log("✅ Range mise à jour !");
@@ -42,4 +41,5 @@ const saveRangeToFirebase = async (rangeId, rangeName, blinds, heroPosition, spo
   }
 };
 
-export { db, saveRangeToFirebase };
+export { db, saveRangeToFirebase, getDoc, auth };
+

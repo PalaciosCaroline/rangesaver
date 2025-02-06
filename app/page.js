@@ -1,14 +1,31 @@
 "use client";
 import React from "react";
-import {db} from "@/lib/firebase";
-import HandMatrix from "./components/handMatrix"; 
+import { useAuth } from "./components/authContext";
+import HandMatrix from "./components/handMatrix";
+import Logout from "./auth/logout";
+import Link from "next/link";
 
+export default function HomePage() {
+  const { user } = useAuth();
 
-export default function Home() {
   return (
     <div>
       <h1>Enregistreur de ranges</h1>
-      <HandMatrix rangeId="default-range" />
+      {user ? (
+        <>
+          <Logout />
+          <HandMatrix rangeId="default-range" />
+        </>
+      ) : (
+        <>
+          <p>Vous devez être connecté pour voir la matrice.</p>
+          <Link href="/auth/login">Se connecter</Link>
+          <Link href="/auth/signup">Créer un compte</Link>
+        </>
+      )}
     </div>
   );
 }
+
+
+
