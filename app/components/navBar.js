@@ -24,14 +24,14 @@ export default function Navbar() {
 
         {/* 📌 Liens principaux + Déconnexion en mobile */}
         <ul className={`nav-links ${menuOpen ? "open" : ""}`}>
-          <li><Link href="/handmatrix">Créer un range</Link></li> 
-          <li><Link href="/my-ranges">Voir ses ranges</Link></li>
-          <li><Link href="/training">S&apos;entraîner</Link></li>
+          <li><Link href="/handmatrix" onClick={() => setMenuOpen(false)}>Créer un range</Link></li> 
+          <li><Link href="/my-ranges" onClick={() => setMenuOpen(false)}>Voir ses ranges</Link></li>
+          <li><Link href="/training" onClick={() => setMenuOpen(false)}>S&apos;entraîner</Link></li>
           
           {/* 📌 Bouton Déconnexion en version mobile */}
           {user && (
             <li className="logout-mobile">
-              <button onClick={logout}>Déconnexion</button>
+              <button onClick={()=>{logout(); setMenuOpen(false)}}>Déconnexion</button>
             </li>
           )}
         </ul>

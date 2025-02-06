@@ -67,6 +67,10 @@
     background: #e6ae05;
 }
 
+.logout-mobile button{
+    display:none;
+}
+
 /* Menu burger pour mobile */
 .burger-menu {
     display: none;
@@ -85,7 +89,7 @@
     height: 3px;
     background: white;
     position: absolute;
-    transition: all 0.3s ease-in-out;
+    transition: all 0.1s ease-in-out;
     border-radius: 2px;
     transform-origin: center;
 }
@@ -130,6 +134,7 @@
     .nav-links {
         position: absolute;
         top: 60px;
+        margin-top:0;
         left: 0;
         width: 100%;
         height: 100vh; 
@@ -138,7 +143,7 @@
         padding-top: 30px;
         flex-direction: column;
         transform: translateX(-100%); 
-        transition: transform 0.4s ease-in-out, opacity 0.3s ease-in-out;
+        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
         opacity: 0; 
         visibility: hidden;
     }
@@ -160,6 +165,9 @@
 
      /* Bouton Déconnexion en Mobile */
      .logout-mobile button {
+        display:flex;
+        text-align: center;
+        justify-content: center;
         width: 100%;
         background: rgba(255, 193, 7, 0.8);
         border: none;
