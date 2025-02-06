@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     eslint: {
-      ignoreDuringBuilds: true,
+      ignoreDuringBuilds: true, // ✅ Désactive ESLint lors du build
     },
   };
   
-  module.exports = nextConfig;
+  export default nextConfig; // ✅ Utilisation correcte en `.mjs`
   
