@@ -122,8 +122,8 @@
         padding: 0 10px;
     }
 
-    .navbar {
-        padding: 10px 0;
+    nav.navbar {
+        padding: 0;
     }
 
     /* 📌 Animation du menu burger (slide de gauche à droite) */
@@ -151,5 +151,9 @@
 
     .burger-menu {
         display: flex;
+    }
+
+    .logo img{
+    height:40px;
     }
 }

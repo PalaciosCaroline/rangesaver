@@ -5,6 +5,5 @@
 
 body {
   font-size: var(--font-size);
-  background-color: white;
-  padding-top:70px;
+  background-color: rgb(253, 253, 253);
 }
