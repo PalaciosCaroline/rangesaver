@@ -31,9 +31,9 @@ export default function Navbar() {
 
         {/* 📌 Liens principaux */}
         <ul className={`nav-links ${menuOpen ? "open" : ""}`}>
-          <li><Link href="/create-range">Créer une range</Link></li>
-          <li><Link href="/my-ranges">Voir ses ranges</Link></li>
-          <li><Link href="/training">S&apos;entraîner</Link></li>
+            <li><Link href="/handmatrix">Créer un range</Link></li> 
+            <li><Link href="/my-ranges">Voir ses ranges</Link></li>
+            <li><Link href="/training">S&apos;entraîner</Link></li>
         </ul>
 
         {/* 📌 Bouton Connexion/Déconnexion */}

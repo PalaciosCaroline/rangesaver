@@ -5,6 +5,11 @@ html, body {
 body.lock-scroll {
   overflow: hidden;
 }
+.h1handMatrix {
+  font-size: 1.5rem;
+margin-bottom:10px;
+text-align: center;
+}
 
 .hand-matrix {
   text-align: center;

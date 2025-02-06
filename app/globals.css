@@ -6,4 +6,5 @@
 body {
   font-size: var(--font-size);
   background-color: white;
+  padding-top:70px;
 }
