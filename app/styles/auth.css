@@ -45,7 +45,7 @@
   position: relative;
   background: linear-gradient(250deg, rgba(206, 206, 211, 0.2), rgba(193, 189, 189, 0.15));
   padding: 1rem 3rem 3rem 3rem;
-  border-radius: 15px;
+  border-radius: 0px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   text-align: center;
   width: 400px;
@@ -56,6 +56,24 @@
   color: rgb(228, 227, 227);
   border: 1px solid rgba(255, 255, 255, 0.2); /* ✅ Bordure subtile */
   overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .auth-box {
+    background: linear-gradient(250deg, rgba(244, 244, 244, 0.2), rgba(193, 189, 189, 0.15));
+    border-radius: 0px;
+    backdrop-filter: blur(10px); /* ✅ Effet de flou */
+    color: rgb(228, 227, 227);
+    border: 1px solid rgba(255, 255, 255, 0.2); /* ✅ Bordure subtile */
+    width: 90%;
+    max-width: 320px; 
+    padding: 2rem; 
+  }
+ 
+
+  .auth-container {
+    background: url("/images/auth_mobile_bg.jpg") center/cover no-repeat; /* ✅ Image pour mobile */
+  }
 }
 
 
@@ -71,37 +89,36 @@
   padding: 14px;
   margin: 12px 0;
   border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 8px;
+  border-radius: 3px;
   font-size: 1rem;
   background: rgba(255, 255, 255, 0.6);
   outline: none;
 }
 
 .auth-box input::placeholder {
-  color: rgba(255, 255, 255, 0.6);
   color: rgba(78, 78, 78, 0.6);
 }
 
 .auth-box input:focus {
-  border-color: white;
   border-color: rgb(117, 117, 117);
 }
 
 /* 📌 Bouton stylisé */
 .auth-box button {
   width: 100%;
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 193, 7,0.5);
   border: none;
   padding: 14px;
-  border-radius: 8px;
+  border-radius: 3px;
   font-size: 1rem;
   cursor: pointer;
   transition: background 0.3s ease;
   margin-top: 1.2rem;
+  color: #e7e5e5;
 }
 
 .auth-box button:hover {
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 193, 7,0.3);
 }
 
 /* 📌 Lien vers login/signup */
@@ -112,14 +129,14 @@
 }
 
 .auth-box a {
-  color: rgb(211, 209, 88); /* ✅ Corrige la couleur du texte */
+  color:#d5b03d; 
   font-weight: bold;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .auth-box a:hover {
-  color: #b3b3b3; /* ✅ Change légèrement au survol */
+  color: #b3b3b3; 
 }
 
 
