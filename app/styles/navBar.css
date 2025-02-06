@@ -10,6 +10,14 @@
     padding: 15px 20px;
     display: flex;
     justify-content: center;
+    min-height: 60px; /* ✅ Garde toujours la même hauteur */
+    transition: all 0.3s ease-in-out; /* ✅ Évite des changements brusques */
+  }
+
+  
+  /* 📌 Garde le même espacement pour le bouton connexion/déconnexion */
+  .auth-button button {
+    min-width: 120px; /* ✅ Empêche le bouton de changer de taille */
   }
   
   .nav-container {
