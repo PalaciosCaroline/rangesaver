@@ -9,12 +9,12 @@ export default function HomePage() {
 
   useEffect(() => {
     if (!loading && !user) {
-      router.push("/auth/login"); // ✅ Redirige si l'utilisateur n'est pas connecté
+      router.replace("/auth/login"); // ✅ Utilisation de `replace` pour éviter de revenir en arrière
     }
   }, [user, loading, router]);
 
-  if (loading) {
-    return <p>Chargement...</p>; // ✅ Affiche un texte pendant le chargement de l'état utilisateur
+  if (loading || !user) {
+    return null; // ✅ Empêche d'afficher quoi que ce soit avant la redirection
   }
 
   return (
