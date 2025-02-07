@@ -13,17 +13,23 @@ export default function Signup() {
   const [error, setError] = useState("");
   const router = useRouter();
 
+  // Attente d'ouverture d'inscription nouvel
+  // const handleSignup = async (e) => {
+  //   e.preventDefault();
+  //   setError("");
+
+  //   try {
+  //     await createUserWithEmailAndPassword(auth, email, password);
+  //     router.push("/"); 
+  //   } catch (error) {
+  //     setError("Erreur lors de l'inscription.");
+  //     console.error("🚨 Erreur d'inscription :", error);
+  //   }
+  // };
+
   const handleSignup = async (e) => {
     e.preventDefault();
-    setError("");
-
-    try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      router.push("/"); 
-    } catch (error) {
-      setError("Erreur lors de l'inscription.");
-      console.error("🚨 Erreur d'inscription :", error);
-    }
+    setError("Les inscriptions sont fermées.");
   };
 
   return (
