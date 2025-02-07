@@ -66,9 +66,9 @@
     backdrop-filter: blur(10px); /* ✅ Effet de flou */
     color: rgb(228, 227, 227);
     border: 1px solid rgba(255, 255, 255, 0.2); /* ✅ Bordure subtile */
-    width: 90%;
+    width: 85%;
     max-width: 320px; 
-    padding: 2rem; 
+    padding: 1.8rem; 
     margin-top:20px;
   }
  
@@ -81,8 +81,8 @@
 
 /* 📌 Titre */
 .auth-box h2 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
+  font-size: 1.8rem;
+  margin-bottom: 0.6rem;
 }
 
 /* 📌 Champs de saisie */
@@ -115,7 +115,7 @@
   font-size: 1rem;
   cursor: pointer;
   transition: background 0.3s ease;
-  margin-top: 1.2rem;
+  margin-top: 1rem;
   color: #e7e5e5;
 }
 
