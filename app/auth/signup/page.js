@@ -44,7 +44,7 @@ export default function Signup() {
         <form onSubmit={handleSignup}>
           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="Email" />
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="Mot de passe" />
-          <button type="submit">S&apos;inscrire</button>
+          <button type="submit" disabled>S&apos;inscrire</button>
         </form>
         <p>Déjà un compte ? <Link href="/auth/login">Se connecter</Link></p>
       </div>
