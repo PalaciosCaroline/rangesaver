@@ -1,48 +1,46 @@
-import { RANGES } from "./ranges";
-
 export const VILLAIN_DECISIONS = {
   "LJ": {
-    "vs_HJ_3Bet": RANGES["LJ"]["vs_HJ_3Bet"],
-    "vs_CO_3Bet": RANGES["LJ"]["vs_CO_3Bet"],
-    "vs_BTN_3Bet": RANGES["LJ"]["vs_BTN_3Bet"],
-    "vs_SB_3Bet": RANGES["LJ"]["vs_SB_3Bet"],
-    "vs_BB_3Bet": RANGES["LJ"]["vs_BB_3Bet"]
+    "HJ 3Bet": "LJ vs HJ 3bet",
+    "CO 3Bet": "LJ vs CO 3bet",
+    "BTN 3Bet": "LJ vs BTN 3bet",
+    "SB 3Bet": "LJ vs SB 3bet",
+    "BB 3Bet": "LJ vs BB 3bet"
   },
   "HJ": {
-    "vs_LJ_RFI": RANGES["HJ"]["vs_LJ_RFI"],
-    "vs_CO_3Bet": RANGES["HJ"]["vs_CO_3Bet"],
-    "vs_BTN_3Bet": RANGES["HJ"]["vs_BTN_3Bet"],
-    "vs_SB_3Bet": RANGES["HJ"]["vs_SB_3Bet"],
-    "vs_BB_3Bet": RANGES["HJ"]["vs_BB_3Bet"]
+    "LJ RFI": "HJ vs LJ RFI",
+    "CO 3Bet": "HJ vs CO 3bet",
+    "BTN 3Bet": "HJ vs BTN 3bet",
+    "SB 3Bet": "HJ vs SB 3bet",
+    "BB 3Bet": "HJ vs BB 3bet"
   },
   "CO": {
-    "vs_LJ_RFI": RANGES["CO"]["vs_LJ_RFI"],
-    "vs_HJ_RFI": RANGES["CO"]["vs_HJ_RFI"],
-    "vs_BTN_3Bet": RANGES["CO"]["vs_BTN_3Bet"],
-    "vs_SB_3Bet": RANGES["CO"]["vs_SB_3Bet"],
-    "vs_BB_3Bet": RANGES["CO"]["vs_BB_3Bet"]
+    "LJ RFI": "CO vs LJ RFI",
+    "HJ RFI": "CO vs HJ RFI",
+    "BTN 3Bet": "CO vs BTN/SB 3bet",
+    "SB 3Bet": "CO vs BTN/SB 3bet",
+    "BB 3Bet": "CO vs BB 3bet"
   },
   "BTN": {
-    "vs_LJ_RFI": RANGES["BTN"]["vs_LJ_RFI"],
-    "vs_HJ_RFI": RANGES["BTN"]["vs_HJ_RFI"],
-    "vs_CO_RFI": RANGES["BTN"]["vs_CO_RFI"],
-    "vs_SB_3Bet": RANGES["BTN"]["vs_SB_3Bet"],
-    "vs_BB_3Bet": RANGES["BTN"]["vs_BB_3Bet"]
+    "LJ RFI": "BTN vs LJ RFI",
+    "HJ RFI": "BTN vs HJ RFI",
+    "CO RFI": "BTN vs CO RFI",
+    "SB 3Bet": "BTN vs SB 3bet",
+    "BB 3Bet": "BTN vs BB 3bet"
   },
   "SB": {
-    "vs_LJ_RFI": RANGES["SB"]["vs_LJ_RFI"],
-    "vs_HJ_RFI": RANGES["SB"]["vs_HJ_RFI"],
-    "vs_CO_RFI": RANGES["SB"]["vs_CO_RFI"],
-    "vs_BTN_RFI": RANGES["SB"]["vs_BTN_RFI"],
-    "vs_BB_3Bet": RANGES["SB"]["vs_BB_3Bet"],
-    "vs_BB_Raise": RANGES["SB"]["vs_BB_Raise"]
+    "LJ RFI": "SB vs LJ RFI",
+    "HJ RFI": "SB vs HJ RFI",
+    "CO RFI": "SB vs CO RFI",
+    "BTN RFI": "SB vs BTN RFI",
+    "BB 3Bet": "SB RFI vs BB 3bet",
+    "BB Raise": "SB Limp vs BB Raise"
   },
   "BB": {
-    "vs_LJ_RFI": RANGES["BB"]["vs_LJ_RFI"],
-    "vs_HJ_RFI": RANGES["BB"]["vs_HJ_RFI"],
-    "vs_CO_RFI": RANGES["BB"]["vs_CO_RFI"],
-    "vs_BTN_RFI": RANGES["BB"]["vs_BTN_RFI"],
-    "vs_SB_Limp": RANGES["BB"]["vs_SB_Limp"],
-    "vs_SB_Raise": RANGES["BB"]["vs_SB_Raise"]
+    "LJ RFI": "BB vs LJ RFI",
+    "HJ RFI": "BB vs HJ RFI",
+    "CO RFI": "BB vs CO RFI",
+    "BTN RFI": "BB vs BTN RFI",
+    "SB Limp": "BB vs SB Limp",
+    "SB Raise": "BB vs SB Raise"
   }
 };

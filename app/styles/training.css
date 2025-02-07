@@ -1,0 +1,171 @@
+/* ======== CONTAINER PRINCIPAL ======== */
+.poker-containerTraining {
+    max-width: 600px;
+    margin: 0 auto;
+    /* background-color: #1c2541; */
+    padding: 20px;
+    border-radius: 10px;
+    /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); */
+}
+
+/* ======== TITRE ======== */
+h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-align: center;
+    /* color: #ffcc00; */
+}
+
+/* ======== BOUTONS ======== */
+.buttonTraining {
+    background-color: #ffc107; 
+  
+}
+
+.buttonTraining:hover {
+    background-color: #ffcc00; /* Jaune doré */
+}
+
+/* ======== CARTES DE JEU (MAIN DU HÉROS) ======== */
+.cardTraining {
+    display: inline-block;
+    background-color: #ffcc00; /* Fond jaune */
+    color: #000;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    margin: 5px;
+}
+
+/* ======== MESSAGES DE FEEDBACK ======== */
+.feedbackTraining {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px;
+    margin-top: 15px;
+    border-radius: 5px;
+}
+
+/* Message si bonne décision */
+.successTraining {
+    background-color: #28a745; /* Vert */
+    color: white;
+}
+
+/* Message si mauvaise décision */
+.errorTraining {
+    background-color: #dc3545; /* Rouge */
+    color: white;
+}
+
+/* ======== STYLES GÉNÉRAUX DES BOUTONS ======== */
+.btn {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, filter 0.2s ease-in-out;
+    margin: 5px;
+    min-width: 120px;
+}
+
+/* Supprime l'effet d'agrandissement et assombrit le bouton */
+.btn:hover {
+    filter: brightness(85%); /* Assombrit le bouton */
+}
+
+/* ======== COULEURS DES ACTIONS ======== */
+
+/* FOLD (Gris) */
+.action-fold {
+    background-color: #6c757d;
+}
+.action-Fold {
+    background-color: #6c757d;
+}
+
+/* CALL (Vert) */
+.action-call {
+    background-color: #28a745;
+}
+
+/* RAISE (Rouge) */
+.action-raise {
+    background-color: #dc3545;
+}
+
+/* 3BET (Rouge foncé) */
+.action-3Bet {
+    background-color: #8b0000;
+}
+
+/* RAISE OR 4BET (Rouge) */
+.action-raiseOr4Bet {
+    background-color: #dc3545;
+}
+
+/* RAISE AND CALL (Rouge & Vert) */
+.action-raiseAndCall {
+    background: linear-gradient(135deg, #dc3545 50%, #28a745 50%);
+}
+
+/* RAISE AND FOLD (Rouge & Gris) */
+.action-raiseAndFold {
+    background: linear-gradient(135deg, #dc3545 50%, #6c757d 50%);
+}
+
+/* LIMP AND RAISE (Rose & Rouge) */
+.action-limpAndRaise {
+    background: linear-gradient(135deg, #ff69b4 50%, #dc3545 50%);
+}
+
+/* LIMP AND CALL (Rose & Vert) */
+.action-limpAndCall {
+    background: linear-gradient(135deg, #ff69b4 50%, #28a745 50%);
+}
+
+/* 4BET FOR VALUE (Rouge foncé) */
+.action-4BetForValue {
+    background-color: #8b0000;
+}
+
+/* 4BET AS A BLUFF (Rouge & Ivoire) */
+.action-4BetAsABluff {
+    background: linear-gradient(135deg, #dc3545 50%, #2a2a27 50%);
+}
+
+/* 3BET AS A BLUFF (Rouge foncé & Noir) */
+.action-3BetAsABluff {
+    background: linear-gradient(135deg, #8b0000 50%, #000000 50%);
+}
+
+/* ======== STYLE PAR DÉFAUT POUR ÉVITER BOUTONS INVISIBLES ======== */
+.action-default {
+    background-color: #007bff; /* Bleu */
+}
+
+/* Container des cartes */
+.card-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+/* Style des images de cartes */
+.card-img {
+    width: 80px;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s ease-in-out;
+}
+
+.card-img:hover {
+    transform: scale(1.1);
+}

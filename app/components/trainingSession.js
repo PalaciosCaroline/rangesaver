@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import "./../styles/training.css";
 import { POSITIONS } from "@/data/positions";
 import { RANGES } from "@/data/ranges";
 import { VILLAIN_DECISIONS } from "@/data/villainDecisions";
@@ -12,80 +13,139 @@ export default function TrainingSession() {
   const [heroHand, setHeroHand] = useState(null);
   const [availableActions, setAvailableActions] = useState([]);
   const [feedback, setFeedback] = useState("");
+  const [cardImages, setCardImages] = useState([]);
 
   // Fonction pour obtenir un élément aléatoire d'un tableau
-  const getRandomElement = (array) => array[Math.floor(Math.random() * array.length)];
+  const getRandomElement = (array) => {
+    if (!array || array.length === 0) return null;
+    return array[Math.floor(Math.random() * array.length)];
+  };
+
+  // Conversion des noms des cartes pour correspondre à ton format `A_of_spades.svg`
+  const SUITS = ["spades", "hearts", "diamonds", "clubs"];
+  const RANKS = {
+    "A": "A",
+    "K": "K",
+    "Q": "Q",
+    "J": "J",
+    "T": "T",
+    "9": "9",
+    "8": "8",
+    "7": "7",
+    "6": "6",
+    "5": "5",
+    "4": "4",
+    "3": "3",
+    "2": "2"
+  };
+
+  // Fonction pour récupérer les fichiers SVG des cartes en fonction de la main
+  const getCardFilenames = (hand) => {
+    if (!hand || hand.length < 3) {
+      console.error("🚨 Format de main invalide !");
+      return [];
+    }
+
+    const rank1 = RANKS[hand[0]];
+    const rank2 = RANKS[hand[1]];
+    const suited = hand[2] === "s";
+    const offsuit = hand[2] === "o";
+
+    if (!rank1 || !rank2) {
+      console.error("🚨 Rang inconnu :", hand);
+      return [];
+    }
+
+    if (suited) {
+      const suit = getRandomElement(SUITS);
+      return [`${rank1}_of_${suit}.svg`, `${rank2}_of_${suit}.svg`];
+    }
+
+    if (offsuit) {
+      let suit1 = getRandomElement(SUITS);
+      let suit2;
+      do {
+        suit2 = getRandomElement(SUITS);
+      } while (suit1 === suit2);
+      return [`${rank1}_of_${suit1}.svg`, `${rank2}_of_${suit2}.svg`];
+    }
+
+    return [];
+  };
 
   // Fonction principale pour lancer une nouvelle situation d'entraînement
   const startNewHand = () => {
+    console.clear();
+    console.log("🔄 Début d'une nouvelle main...");
+
     // 1️⃣ Choix aléatoire d'une position pour le HÉROS
     const hero = getRandomElement(POSITIONS);
-    
-    // 2️⃣ Sélection aléatoire d'un spot en fonction du HÉROS
-    const spots = Object.keys(VILLAIN_DECISIONS[hero] || {});
-    if (spots.length === 0) {
-      startNewHand(); // Relancer si aucune situation n'existe
+    if (!hero) {
+      console.error("🚨 ERREUR : Impossible de choisir une position pour le héros !");
       return;
     }
-    const selectedVillainSpot = getRandomElement(spots);
+    console.log(`📍 Héros sélectionné : ${hero}`);
 
-    // 3️⃣ Générer une main aléatoire pour le HÉROS
-    const heroHand = getRandomElement(DECK);
+    // 2️⃣ Vérification et sélection d'un villainSpot valide
+    const villainSpots = Object.keys(VILLAIN_DECISIONS[hero] || {});
+    if (!villainSpots.length) {
+      console.warn(`⚠️ Aucune situation trouvée pour ${hero}. Relance...`);
+      return startNewHand();
+    }
+    const selectedVillainSpot = getRandomElement(villainSpots);
+    console.log(`🎭 Spot du Villain : ${selectedVillainSpot}`);
 
-    // 4️⃣ Vérifier si des actions existent pour cette situation
-    const heroRanges = RANGES[hero]?.[selectedVillainSpot];
-
-    if (!heroRanges) {
-      console.warn(`Aucune range trouvée pour ${hero} contre ${selectedVillainSpot}`);
-      startNewHand();
+    // 3️⃣ Génération d'une main aléatoire pour le héros
+    const newHeroHand = getRandomElement(DECK);
+    if (!newHeroHand) {
+      console.error("🚨 ERREUR : Le deck est vide ou incorrect !");
       return;
     }
+    console.log(`🃏 Main du héros : ${newHeroHand}`);
 
-    // 5️⃣ Extraire toutes les actions possibles
-    const possibleActions = Object.keys(heroRanges).filter(action => heroRanges[action].length > 0);
-    
-    // Ajouter systématiquement l'option "Fold"
-    const allActions = [...possibleActions, "Fold"];
+    // 4️⃣ Conversion de la main en fichiers SVG
+    const cardFilenames = getCardFilenames(newHeroHand);
+    if (!cardFilenames.length) {
+      console.error("🚨 ERREUR : Impossible de récupérer les fichiers des cartes !");
+      return;
+    }
+    console.log(`📸 Cartes générées : ${cardFilenames}`);
 
-    // Mettre à jour l'état
+    // 🔄 Mise à jour de l'état
     setHeroPosition(hero);
     setVillainSpot(selectedVillainSpot);
-    setHeroHand(heroHand);
-    setAvailableActions(allActions);
+    setHeroHand(newHeroHand);
+    setCardImages(cardFilenames);
     setFeedback("");
   };
 
-  // Fonction pour gérer le choix du joueur
-  const handleAction = (action) => {
-    if (action === "Fold") {
-      setFeedback("✅ Fold est toujours une option !");
-      return;
-    }
-
-    // Vérifier si la main est bien dans la range pour cette action
-    const validHands = RANGES[heroPosition]?.[villainSpot]?.[action] || "";
-    if (validHands.includes(heroHand)) {
-      setFeedback("✅ Bonne décision !");
-    } else {
-      setFeedback("❌ Mauvaise décision, cette main ne correspond pas.");
-    }
+  // Fonction pour attribuer une classe CSS selon l'action
+  const getActionClass = (action) => {
+    return `action-${action.replace(/\s+/g, "")}`;
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-xl font-bold">Entraînement Poker</h1>
-      {heroPosition && (
+    <div className="poker-containerTraining">
+      {!heroPosition ? (
+        <button className="btn buttonTraining" onClick={startNewHand}>
+          Lancer une nouvelle main
+        </button>
+      ) : (
         <>
-          <p>🃏 Main : <strong>{heroHand}</strong></p>
-          <p>📍 Héros : <strong>{heroPosition}</strong></p>
-          <p>🎭 Spot Villain : <strong>{villainSpot}</strong></p>
-          <h2 className="font-semibold mt-4">Quelle action prends-tu ?</h2>
+          <p>Main du Héros :</p>
+          <div className="card-container">
+            {cardImages.map((filename, index) => (
+              <img key={index} src={`/cards/${filename}`} alt={filename} className="card-img" />
+            ))}
+          </div>
+          <p>Position Héros : <strong>{heroPosition}</strong></p>
+          <p>Spot Villain : <strong>{villainSpot}</strong></p>
 
           <div className="mt-2">
             {availableActions.map((action) => (
               <button
                 key={action}
-                className="m-2 p-2 bg-blue-500 text-white rounded"
+                className={`btn ${getActionClass(action)}`}
                 onClick={() => handleAction(action)}
               >
                 {action}
@@ -93,12 +153,16 @@ export default function TrainingSession() {
             ))}
           </div>
 
-          <p className="mt-4">{feedback}</p>
+          {/* Message de feedback */}
+          <p className={`feedback ${feedback.includes("✅") ? "success" : "error"}`}>
+            {feedback}
+          </p>
+
+          <button className="buttonTraining" onClick={startNewHand}>
+            🔄 Nouvelle main
+          </button>
         </>
       )}
-      <button className="mt-4 p-2 bg-green-500 text-white rounded" onClick={startNewHand}>
-        🔄 Nouvelle main
-      </button>
     </div>
   );
 }

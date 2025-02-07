@@ -66,7 +66,7 @@
     backdrop-filter: blur(10px); /* ✅ Effet de flou */
     color: rgb(228, 227, 227);
     border: 1px solid rgba(255, 255, 255, 0.2); /* ✅ Bordure subtile */
-    width: 85%;
+    width: 90%;
     max-width: 320px; 
     padding: 1.8rem; 
     margin-top:20px;
