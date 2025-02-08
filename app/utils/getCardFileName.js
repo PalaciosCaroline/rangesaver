@@ -24,7 +24,7 @@ export default function getCardFilenames(hand) {
     }
 
     const SUITS = ["spades", "hearts", "diamonds", "clubs"];
-    const RANKS = { "A": "A", "K": "K", "Q": "Q", "J": "J", "T": "10", "9": "9", "8": "8", "7": "7", "6": "6", "5": "5", "4": "4", "3": "3", "2": "2" };
+    const RANKS = { "A": "A", "K": "K", "Q": "Q", "J": "J", "T": "T", "9": "9", "8": "8", "7": "7", "6": "6", "5": "5", "4": "4", "3": "3", "2": "2" };
 
     const rank1 = RANKS[hand[0]];
     const rank2 = RANKS[hand[1]];
@@ -35,7 +35,7 @@ export default function getCardFilenames(hand) {
     }
 
     if (hand.length === 2) {
-        // 🔹 CAS DES PAIRES (ex: "AA", "KK", "22")
+        // CAS DES PAIRES (ex: "AA", "KK", "22")
         let suit1 = getRandomElement(SUITS);
         let suit2;
         do {
