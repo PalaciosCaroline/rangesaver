@@ -9,6 +9,8 @@ import { DECK } from "@/data/deck";
 import getCardFilenames from "./../utils/getCardFileName";
 import getRandomElement from "./../utils/getRandomElement";
 import handleAction from "../utils/handleAction";
+import Image from "next/image";
+import FishIcon from "./FishIcon"; // Import du SVG
 
 export default function TrainingSession() {
   const [heroPosition, setHeroPosition] = useState(null);
@@ -17,6 +19,22 @@ export default function TrainingSession() {
   const [availableActions, setAvailableActions] = useState([]);
   const [feedback, setFeedback] = useState("");
   const [cardImages, setCardImages] = useState([]);
+  const [correctAction, setCorrectAction] = useState(null);
+
+  const getColorFromAction = (action) => {
+    switch (action) {
+      case "Fold":
+        return "red";
+      case "Raise":
+        return "blue";
+      case "Call":
+        return "yellow";
+      default:
+        return "black";
+    }
+  };
+
+  const color = getColorFromAction(correctAction);
 
 
   // Fonction principale pour lancer une nouvelle situation d'entraînement
@@ -87,8 +105,7 @@ export default function TrainingSession() {
   const getActionClass = (action) => {
     return `action-${action.replace(/\s+/g, "")}`; 
 };
-
-    
+  
 
   return (
     <div className="poker-containerTraining">
@@ -99,7 +116,7 @@ export default function TrainingSession() {
         </button>
       ) : (
         <>
-           <p>Main du Héros :</p>
+         
            <div className="card-container">
          {cardImages.map((filename, index) => (
               <img key={index} src={`/cards/${filename}`} alt={filename} className="card-img" />
@@ -111,10 +128,26 @@ export default function TrainingSession() {
           <div className="mt-2">
             {availableActions.map((action) => (
               <button
-                key={action}
-                className={`btn ${getActionClass(action)}`}
-                onClick={() => handleAction(action, heroPosition, villainSpot, heroHand, setFeedback, VILLAIN_DECISIONS, RANGES)}
-        >
+              key={action}
+              className={`btn ${getActionClass(action)} ${correctAction === action ? "correct-action" : ""}`}
+              onClick={() => {
+                const isCorrect = handleAction(
+                  action,
+                  heroPosition,
+                  villainSpot,
+                  heroHand,
+                  setFeedback,
+                  VILLAIN_DECISIONS,
+                  RANGES
+                );
+        
+                if (isCorrect) {
+                  setCorrectAction(action); // Stocke l’action correcte
+                } else {
+                  setCorrectAction(null); // Réinitialise si incorrect
+                }
+              }}
+            >
                 {action}
               </button>
             ))}

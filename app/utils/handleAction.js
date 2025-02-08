@@ -29,8 +29,10 @@ export default function handleAction(action, heroPosition, villainSpot, heroHand
     if (action === "Fold") {
         if (!allValidHands.has(heroHand)) {
             setFeedback("✅ Bonne décision, cette main doit être fold !");
+            return true; 
         } else {
             setFeedback("❌ Mauvaise décision, cette main peut être jouée.");
+            return false; 
         }
     } else {
         const validHandsForAction = new Set(
@@ -41,8 +43,10 @@ export default function handleAction(action, heroPosition, villainSpot, heroHand
 
         if (validHandsForAction.has(heroHand)) {
             setFeedback("✅ Bonne décision !");
+            return true;
         } else {
             setFeedback("❌ Mauvaise décision, cette main ne correspond pas.");
+            return false;
         }
     }
 }

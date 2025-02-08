@@ -39,6 +39,8 @@ function HandMatrix({ rangeId }) {
   const [villainPosition, setVillainPosition] = useState("");
   const [villainAction, setVillainAction] = useState(""); 
   const [blinds, setBlinds] = useState(20);
+  const [isTouching, setIsTouching] = useState(false);
+
 
   const [isMouseDown, setIsMouseDown] = useState(false);
   const matrixRef = useRef(null); 
@@ -66,13 +68,11 @@ function HandMatrix({ rangeId }) {
     fetchRange();
   }, [currentRangeId]);
 
-  // ✅ Sélection de la main en cliquant
   const handleComboSelection = (combo) => {
-    setHandColors((prev) => {
-      const updatedColors = { ...prev, [combo]: selectedAction };
-      saveRangeToFirebase(currentRangeId, rangeName, blinds, heroPosition, spot, villainPosition, updatedColors);
-      return updatedColors;
-    });
+    setHandColors((prev) => ({
+      ...prev,
+      [combo]: selectedAction
+    }));
   };
 
   // ✅ Permet de sélectionner plusieurs cases en maintenant le clic de la souris
@@ -90,6 +90,26 @@ function HandMatrix({ rangeId }) {
   const handleMouseUp = () => {
     setIsMouseDown(false);
   };
+
+  // ✅ Permet de sélectionner plusieurs cases en maintenant le toucher sur mobile
+const handleTouchStart = (combo) => {
+  setIsTouching(true);
+  handleComboSelection(combo);
+};
+
+const handleTouchMove = (event) => {
+  if (isTouching) {
+    const touch = event.touches[0];
+    const target = document.elementFromPoint(touch.clientX, touch.clientY);
+    if (target && target.dataset.combo) {
+      handleComboSelection(target.dataset.combo);
+    }
+  }
+};
+
+const handleTouchEnd = () => {
+  setIsTouching(false);
+};
 
   // ✅ Réinitialisation de la matrice
   const handleReset = async () => {
@@ -212,6 +232,10 @@ function HandMatrix({ rangeId }) {
                 style={{ backgroundColor: actions[handColors[combo]] || "#F5F5F5" }}
                 onMouseDown={() => handleMouseDown(combo)}
                 onMouseEnter={() => handleMouseEnter(combo)}
+                onTouchStart={() => handleTouchStart(combo)}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+                data-combo={combo} // Permet d'identifier la case touchée
               >
                 {combo}
               </div>
@@ -219,6 +243,10 @@ function HandMatrix({ rangeId }) {
           </div>
         ))}
       </div>
+      <button className="btn buttonTraining" onClick={() => saveRangeToFirebase(currentRangeId, rangeName, blinds, heroPosition, spot, villainPosition, handColors)}>
+  Enregistrer la range
+</button>
+
     </div>
   );
 }

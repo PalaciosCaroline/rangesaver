@@ -243,7 +243,6 @@ body.lock-scroll {
   transition: all 0.2s ease-in-out;
   height: 32px; /* Hauteur réduite */
   min-width: 80px;
-  border-radius: 5px;
   text-transform: uppercase;
   background: white;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
@@ -279,3 +278,31 @@ body.lock-scroll {
     min-width: 65px;
   }
 }
+
+.btn {
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 8px 8px;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, filter 0.2s ease-in-out;
+  margin: 5px;
+  min-width: 120px;
+}
+
+/* Supprime l'effet d'agrandissement et assombrit le bouton */
+.btn:hover {
+  filter: brightness(85%); /* Assombrit le bouton */
+}
+
+.buttonTraining {
+  background-color: #ffc107; 
+
+}
+
+.buttonTraining:hover {
+  background-color: #ffcc00; /* Jaune doré */
+}
+
