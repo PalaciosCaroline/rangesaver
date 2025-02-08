@@ -46,11 +46,11 @@ export default function RangeDetail() {
 
   return (
     <div>
-      <h1>📌 Détails de la Range : {range.rangeName}</h1>
-      <p>🃏 Blinds : {range.blinds}BB</p>
-      <p>💼 Héros : {range.heroPosition}</p>
-      <p>🎯 Spot : {range.spot}</p>
-      <p>⚔️ Villain : {range.villainPosition || "Aucun"}</p>
+      <h1>Détails de la Range : {range.rangeName}</h1>
+      <p>Blinds : {range.blinds}BB</p>
+      <p>Héros : {range.heroPosition}</p>
+      <p>Spot : {range.spot}</p>
+      <p>Villain : {range.villainPosition || "Aucun"}</p>
 
       <button onClick={() => router.push("/ranges")}>🔙 Retour</button>
     </div>
