@@ -19,8 +19,12 @@ const auth = getAuth(app);
 
 // 🔹 Fonction pour sauvegarder les ranges
 const saveRangeToFirebase = async (rangeId, rangeName, blinds, heroPosition, spot, villainPosition, handColors) => {
-  if (!rangeId) {
-    console.error("🚨 Aucun ID de range, impossible d'enregistrer !");
+  console.log("🔍 Données avant validation :", {
+    rangeId, rangeName, blinds, heroPosition, spot, villainPosition, handColors
+  });
+
+  if (!heroPosition || !spot) {
+    console.error("🚨 Position du héros ou spot manquant !");
     return;
   }
 
@@ -31,11 +35,11 @@ const saveRangeToFirebase = async (rangeId, rangeName, blinds, heroPosition, spo
       blinds,
       heroPosition,
       spot,
-      villainPosition,
+      villainPosition: villainPosition || "", 
       handColors: handColors || {}
     }, { merge: true });
 
-    console.log("✅ Range mise à jour !");
+    console.log("✅ Range enregistrée avec succès !");
   } catch (error) {
     console.error("🚨 Erreur lors de la sauvegarde :", error);
   }

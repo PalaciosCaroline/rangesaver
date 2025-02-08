@@ -30,33 +30,42 @@ const chunk = (arr, size) =>
   );
 
 function HandMatrix({ rangeId }) {
-  const [currentRangeId, setCurrentRangeId] = useState(rangeId || uuidv4());
   const [rangeName, setRangeName] = useState(""); 
   const [handColors, setHandColors] = useState({});
   const [selectedAction, setSelectedAction] = useState("fold");
-  const [heroPosition, setHeroPosition] = useState("");
+  const [heroPosition, setHeroPosition] = useState(positions[0]);
   const [spot, setSpot] = useState(""); 
   const [villainPosition, setVillainPosition] = useState("");
   const [villainAction, setVillainAction] = useState(""); 
   const [blinds, setBlinds] = useState(20);
   const [isTouching, setIsTouching] = useState(false);
 
+  const [currentRangeId, setCurrentRangeId] = useState(uuidv4());
 
   const [isMouseDown, setIsMouseDown] = useState(false);
-  const matrixRef = useRef(null); 
-
+  const matrixRef = useRef(null);
+  
   useEffect(() => {
+    console.log("📌 Nouvelle range créée avec ID :", currentRangeId);
+  }, [currentRangeId]);
+
+  
+  useEffect(() => {
+    if (!rangeId || rangeId === "default-range") return; 
+  
     const fetchRange = async () => {
       try {
-        const docRef = doc(db, "ranges", currentRangeId);
+        const docRef = doc(db, "ranges", rangeId);
         const docSnap = await getDoc(docRef);
-
+  
         if (docSnap.exists()) {
           const data = docSnap.data();
-          setRangeName(data.rangeName || "");
+          console.log("📌 Données chargées depuis Firebase :", data);
+  
+          setRangeName(data.rangeName || ""); 
           setBlinds(data.blinds || 20);
-          setHeroPosition(data.heroPosition || "");
-          setSpot(data.spot || "");
+          setHeroPosition(data.heroPosition || positions[0]); // ✅ Ne pas mettre "" si vide
+          setSpot(data.spot || spotOptions[0]); // ✅ Valeur par défaut si vide
           setVillainPosition(data.villainPosition || "");
           setHandColors(data.handColors || {});
         }
@@ -64,9 +73,12 @@ function HandMatrix({ rangeId }) {
         console.error("🚨 Erreur lors du chargement de la range :", error);
       }
     };
-
+  
     fetchRange();
-  }, [currentRangeId]);
+  }, [rangeId]); // Déclenche seulement si `rangeId` change
+
+    
+  
 
   const handleComboSelection = (combo) => {
     setHandColors((prev) => ({
@@ -149,14 +161,13 @@ const handleTouchEnd = () => {
             </select>
           </div>
 
-          <div className="column">
-            <label>Héros :</label>
-            <select value={heroPosition} onChange={(e) => setHeroPosition(e.target.value)}>
-              {positions.map((pos) => (
-                <option key={pos} value={pos}>{pos}</option>
-              ))}
-            </select>
-          </div>
+          <select value={heroPosition} onChange={(e) => {
+    setHeroPosition(e.target.value);
+}}>
+  {positions.map((pos) => (
+    <option key={pos} value={pos}>{pos}</option>
+  ))}
+</select>
         </div>
 
         {/* 📌 Sélection du Spot et Villain sur la même ligne */}
@@ -193,7 +204,7 @@ const handleTouchEnd = () => {
       <option value="">Sélectionner une action</option>
       <option value="Limp">Limp</option>
       <option value="Raise">Raise</option>
-      <option value="Raise">Allin</option>
+      <option value="Allin">Allin</option>
     </select>
   </div>
 )}
@@ -243,7 +254,8 @@ const handleTouchEnd = () => {
           </div>
         ))}
       </div>
-      <button className="btn buttonTraining" onClick={() => saveRangeToFirebase(currentRangeId, rangeName, blinds, heroPosition, spot, villainPosition, handColors)}>
+      <button className="btn buttonTraining" 
+   onClick={() => saveRangeToFirebase(currentRangeId, rangeName, blinds, heroPosition, spot, villainPosition, handColors)}>
   Enregistrer la range
 </button>
 

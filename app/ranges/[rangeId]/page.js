@@ -1,7 +1,12 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { db, doc, getDoc } from "@/lib/firebase";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 import { useParams, useRouter } from "next/navigation";
+import { combos } from "./../../utils/combos"; // Vérifie le chemin correct de `combos`
+import "./../../styles/handMatrix.css"; // Assure-toi d'inclure les styles
+
+
 
 export default function RangeDetail() {
   const params = useParams();
@@ -10,8 +15,11 @@ export default function RangeDetail() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  console.log("🧐 Vérification des params :", params);
-  console.log("🔍 rangeId récupéré :", rangeId);
+  
+  console.log("📌 Paramètres récupérés dans l'URL :", params);
+  console.log("🔍 ID de la range extrait :", rangeId);
+
+
 
   useEffect(() => {
     if (!rangeId) {
@@ -19,40 +27,73 @@ export default function RangeDetail() {
       setLoading(false);
       return;
     }
-
+  
     const fetchRange = async () => {
       try {
+        console.log("📡 Récupération de la range avec ID :", rangeId);
+  
         const docRef = doc(db, "ranges", rangeId);
         const docSnap = await getDoc(docRef);
-
+  
         if (docSnap.exists()) {
           console.log("✅ Range trouvée :", docSnap.data());
           setRange({ id: rangeId, ...docSnap.data() });
         } else {
           console.error("🚨 Aucun document trouvé pour l'ID :", rangeId);
+          setRange(null);
         }
       } catch (error) {
-        console.error("🚨 Erreur lors du chargement de la range :", error);
+        console.error("🚨 Erreur Firestore :", error.message);
       } finally {
         setLoading(false);
       }
     };
-
-    fetchRange();
+  
+    fetchRange(); // ✅ Correction : Appel de la fonction
   }, [rangeId]);
-
+  
   if (loading) return <p>Chargement...</p>;
   if (!range) return <p>Aucune range trouvée.</p>;
 
-  return (
-    <div>
-      <h1>Détails de la Range : {range.rangeName}</h1>
-      <p>Blinds : {range.blinds}BB</p>
-      <p>Héros : {range.heroPosition}</p>
-      <p>Spot : {range.spot}</p>
-      <p>Villain : {range.villainPosition || "Aucun"}</p>
+  // 🎯 Couleurs des actions
+const actions = {
+  allin: "#c72727",
+  "3bet": "#FFD700",
+  raise: "#ea3b3b",
+  call: "#5dd85d",
+  fold: "#F5F5F5",
+};
 
-      <button onClick={() => router.push("/ranges")}>🔙 Retour</button>
-    </div>
+// 📌 Fonction pour diviser en lignes de 13 colonnes
+const chunk = (arr, size) =>
+  Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
+    arr.slice(i * size, i * size + size)
   );
+
+return (
+  <div>
+    <h1>Détails de la Range : {range.rangeName}</h1>
+    <p>Blinds : {range.blinds}BB</p>
+    <p>Héros : {range.heroPosition}</p>
+    <p>Spot : {range.spot}</p>
+    <p>Villain : {range.villainPosition || "Aucun"}</p>
+
+    {/* 📌 Matrice des mains */}
+    <div className="hand-matrix">
+      {chunk(combos, 13).map((row, rowIndex) => (
+        <div key={rowIndex} className="hand-matrix-row">
+          {row.map((combo) => (
+            <div
+              key={combo}
+              className="hand-matrix-cell"
+              style={{ backgroundColor: actions[range.handColors?.[combo]] || "#F5F5F5" }}
+            >
+              {combo}
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  </div>
+);
 }
