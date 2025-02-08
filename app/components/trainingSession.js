@@ -10,7 +10,6 @@ import getCardFilenames from "./../utils/getCardFileName";
 import getRandomElement from "./../utils/getRandomElement";
 import handleAction from "../utils/handleAction";
 import Image from "next/image";
-import FishIcon from "./FishIcon"; // Import du SVG
 
 export default function TrainingSession() {
   const [heroPosition, setHeroPosition] = useState(null);
