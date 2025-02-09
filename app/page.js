@@ -17,6 +17,7 @@ export default function HomePage() {
     return null; // ✅ Empêche d'afficher quoi que ce soit avant la redirection
   }
 
+
   return (
     <div>
       <h1 className="h1home">Bienvenue sur l&apos;application</h1>

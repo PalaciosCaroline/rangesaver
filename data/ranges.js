@@ -135,13 +135,13 @@
       "SB vs LJ RFI": {
                         "raise": "AA AKs AQs AJs ATs A5s AKo KK KQs KJs KTs AQo QQ QJs JJ TT 99"
                     },
-                    "SB vs HJ RFI": {
+    "SB vs HJ RFI": {
                         "raise": "AA AKs AQs AJs ATs A5s AKo KK KQs KJs KTs AQo QQ QJs QTs JJ JTs TT 99 88 77"
                     },
-                    "SB vs CO RFI": {
+    "SB vs CO RFI": {
                         "raise": "AA AKs AQs AJs ATs A9s A5s AKo KK KQs KJs KTs AQo KQo QQ QJs QTs AQo KQo QQ QJs QTs JJ JTs J9s TT T9s 99 88 77 66"
                     },
-                    "SB vs BTN RFI": {
+        "SB vs BTN RFI": {
                         "raise": "AA AKs AQs AJs ATs A9s A8s A7s A5s A4s AKo KK KQs KJs KTs K9s AQo KQo QQ QJs QTs Q9s AJo KJ0 JJ JTs J9s TT T9s T8s 99 88 77 66 55"
                     },
                     // SB RFI vs 3BET

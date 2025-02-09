@@ -28,6 +28,7 @@ export const VILLAIN_DECISIONS = {
     "BB 3Bet": "BTN vs BB 3bet"
   },
   "SB": {
+   
     "LJ RFI": "SB vs LJ RFI",
     "HJ RFI": "SB vs HJ RFI",
     "CO RFI": "SB vs CO RFI",

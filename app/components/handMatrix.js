@@ -5,7 +5,7 @@ import { db, saveRangeToFirebase, getDoc } from "@/lib/firebase";
 import PropTypes from "prop-types";
 import "./../styles/handMatrix.css";
 import { doc } from "firebase/firestore";
-import { combos } from "./../utils/combos";
+import { COMBOS } from "@/data/combos";
 import Modal from "react-modal";
 
 
@@ -281,7 +281,7 @@ const handleTouchEnd = () => {
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
       >
-        {chunk(combos, 13).map((row, rowIndex) => (
+        {chunk(COMBOS, 13).map((row, rowIndex) => (
           <div key={rowIndex} className="hand-matrix-row">
             {row.map((combo) => (
               <div

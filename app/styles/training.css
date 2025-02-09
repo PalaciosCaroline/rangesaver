@@ -128,6 +128,10 @@ h1 {
 .action-limpAndCall {
     background: linear-gradient(135deg, #ff69b4 50%, #28a745 50%);
 }
+/* LIMP AND CALL (Rose & Vert) */
+.action-limpAndFold {
+    background: linear-gradient(135deg, #ff69b4 50%,#6c757d 50%) ;
+}
 
 /* 4BET FOR VALUE (Rouge foncé) */
 .action-4BetForValue {
@@ -169,5 +173,41 @@ h1 {
 .card-img:hover {
     transform: scale(1.1);
 }
+
+.position-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .btn-position, .btn-random, .btn.buttonTraining, .btn.buttonReset {
+    background-color: #ffc107;
+    color: white;
+    padding: 8px 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .btn-position:hover, .btn.buttonTraining:hover {
+    background-color: #e6ae05;
+  }
+  
+  .btn-random {
+    background-color: #323b3d;
+  }
+  
+  .btn-random:hover {
+    background-color: #252b2d;
+  }
+  
+  .btn.buttonReset {
+    background-color: #dc3545;
+  }
+  
+  .btn.buttonReset:hover {
+    background-color: #c82333;
+  }
 
 

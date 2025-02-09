@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useParams, useRouter } from "next/navigation";
-import { combos } from "./../../utils/combos"; // Vérifie le chemin correct de `combos`
+import { combos } from "../../../data/combos"; // Vérifie le chemin correct de `combos`
 import "./../../styles/handMatrix.css"; // Assure-toi d'inclure les styles
 
 
