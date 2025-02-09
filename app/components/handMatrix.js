@@ -6,6 +6,8 @@ import PropTypes from "prop-types";
 import "./../styles/handMatrix.css";
 import { doc } from "firebase/firestore";
 import { combos } from "./../utils/combos";
+import Modal from "react-modal";
+
 
 // 🎯 Actions et couleurs pour la matrice
 const actions = {
@@ -39,6 +41,7 @@ function HandMatrix({ rangeId }) {
   const [villainAction, setVillainAction] = useState(""); 
   const [blinds, setBlinds] = useState(20);
   const [isTouching, setIsTouching] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [currentRangeId, setCurrentRangeId] = useState(uuidv4());
 
@@ -87,6 +90,26 @@ function HandMatrix({ rangeId }) {
     }));
   };
 
+  useEffect(() => {
+    const preventTouchScroll = (event) => event.preventDefault();
+    document.addEventListener("touchmove", preventTouchScroll, { passive: false });
+  
+    return () => {
+      document.removeEventListener("touchmove", preventTouchScroll);
+    };
+  }, []);
+
+  const handleSave = async () => {
+    try {
+      await saveRangeToFirebase(currentRangeId, rangeName, blinds, heroPosition, spot, villainPosition, handColors);
+      setIsModalOpen(false);
+      window.location.reload(); // 🔄 Rafraîchit la page après l'enregistrement
+    } catch (error) {
+      console.error("🚨 Erreur lors de l'enregistrement :", error);
+    }
+  };
+  
+
   // ✅ Permet de sélectionner plusieurs cases en maintenant le clic de la souris
   const handleMouseDown = (combo) => {
     setIsMouseDown(true);
@@ -110,12 +133,13 @@ const handleTouchStart = (combo) => {
 };
 
 const handleTouchMove = (event) => {
-  if (isTouching) {
-    const touch = event.touches[0];
-    const target = document.elementFromPoint(touch.clientX, touch.clientY);
-    if (target && target.dataset.combo) {
-      handleComboSelection(target.dataset.combo);
-    }
+  event.preventDefault(); // ✅ Bloque le scroll mobile
+  if (!isTouching) return;
+
+  const touch = event.touches[0];
+  const target = document.elementFromPoint(touch.clientX, touch.clientY);
+  if (target?.dataset?.combo) {
+    handleComboSelection(target.dataset.combo);
   }
 };
 
@@ -222,10 +246,31 @@ const handleTouchEnd = () => {
             {action.toUpperCase()}
           </button>
         ))}
-        <button className="action-btn reset-btn" onClick={handleReset}>
-          RESET
-        </button>
+       
       </div>
+
+      <button className="btn buttonTraining" onClick={() => setIsModalOpen(true)}>
+  Enregistrer la range
+</button>
+<Modal
+  isOpen={isModalOpen}
+  onRequestClose={() => setIsModalOpen(false)}
+  contentLabel="Confirmation de l'enregistrement"
+  className="modal-content"
+  overlayClassName="modal-overlay"
+  ariaHideApp={false}
+>
+  <h2>Confirmer l&apos;enregistrement</h2>
+  <p>Voulez-vous enregistrer cette range ?</p>
+  <div className="modal-buttons">
+    <button className="confirm-btn" onClick={handleSave}>
+      Enregistrer
+    </button>
+    <button className="cancel-btn" onClick={() => setIsModalOpen(false)}>
+      Annuler
+    </button>
+  </div>
+</Modal>
 
       {/* 📌 Matrice des mains */}
       <div 
@@ -254,10 +299,10 @@ const handleTouchEnd = () => {
           </div>
         ))}
       </div>
-      <button className="btn buttonTraining" 
-   onClick={() => saveRangeToFirebase(currentRangeId, rangeName, blinds, heroPosition, spot, villainPosition, handColors)}>
-  Enregistrer la range
-</button>
+      
+      <button className="action-btn reset-btn" onClick={handleReset}>
+          RESET
+        </button>
 
     </div>
   );

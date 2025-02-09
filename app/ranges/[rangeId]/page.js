@@ -72,7 +72,7 @@ const chunk = (arr, size) =>
 
 return (
   <div>
-    <h1>Détails de la Range : {range.rangeName}</h1>
+    <h1 className="h1Ranges">Détails de la Range : {range.rangeName}</h1>
     <p>Blinds : {range.blinds}BB</p>
     <p>Héros : {range.heroPosition}</p>
     <p>Spot : {range.spot}</p>
