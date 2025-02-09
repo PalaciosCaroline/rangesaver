@@ -362,7 +362,7 @@ body.lock-scroll {
 .save-container {
   display: flex;
   justify-content: center;
-  margin-top: 20px; /* Ajuste l'espacement au besoin */
+  margin-top: 5px; /* Ajuste l'espacement au besoin */
 }
 
 .save-btn {

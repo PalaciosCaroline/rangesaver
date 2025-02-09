@@ -234,6 +234,31 @@ const handleTouchEnd = () => {
 )}
       </div>
 
+      <div className="save-container">
+      <button className="btn buttonTraining save-btn" onClick={() => setIsModalOpen(true)}>
+  Enregistrer la range
+</button>
+</div>
+<Modal
+  isOpen={isModalOpen}
+  onRequestClose={() => setIsModalOpen(false)}
+  contentLabel="Confirmation de l'enregistrement"
+  className="modal-content"
+  overlayClassName="modal-overlay"
+  ariaHideApp={false}
+>
+  <h2>Confirmer l&apos;enregistrement</h2>
+  <p>Voulez-vous enregistrer cette range ?</p>
+  <div className="modal-buttons">
+    <button className="confirm-btn" onClick={handleSave}>
+      Enregistrer
+    </button>
+    <button className="cancel-btn" onClick={() => setIsModalOpen(false)}>
+      Annuler
+    </button>
+  </div>
+</Modal>
+
       {/* 📌 Matrice des actions */}
       <div className="actions">
         {Object.keys(actions).map((action) => (
@@ -276,30 +301,7 @@ const handleTouchEnd = () => {
           </div>
         ))}
       </div>
-      <div className="save-container">
-      <button className="btn buttonTraining save-btn" onClick={() => setIsModalOpen(true)}>
-  Enregistrer la range
-</button>
-</div>
-<Modal
-  isOpen={isModalOpen}
-  onRequestClose={() => setIsModalOpen(false)}
-  contentLabel="Confirmation de l'enregistrement"
-  className="modal-content"
-  overlayClassName="modal-overlay"
-  ariaHideApp={false}
->
-  <h2>Confirmer l&apos;enregistrement</h2>
-  <p>Voulez-vous enregistrer cette range ?</p>
-  <div className="modal-buttons">
-    <button className="confirm-btn" onClick={handleSave}>
-      Enregistrer
-    </button>
-    <button className="cancel-btn" onClick={() => setIsModalOpen(false)}>
-      Annuler
-    </button>
-  </div>
-</Modal>
+     
 
       <button className="action-btn reset-btn" onClick={handleReset}>
           RESET
