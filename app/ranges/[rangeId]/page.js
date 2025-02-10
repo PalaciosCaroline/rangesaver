@@ -3,9 +3,8 @@ import React, { useState, useEffect } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useParams, useRouter } from "next/navigation";
-import { combos } from "../../../data/combos"; // Vérifie le chemin correct de `combos`
+import { COMBOS } from "../../../data/combos"; // Vérifie le chemin correct de `combos`
 import "./../../styles/handMatrix.css"; // Assure-toi d'inclure les styles
-
 
 
 export default function RangeDetail() {
@@ -80,7 +79,7 @@ return (
 
     {/* 📌 Matrice des mains */}
     <div className="hand-matrix">
-      {chunk(combos, 13).map((row, rowIndex) => (
+      {chunk(COMBOS, 13).map((row, rowIndex) => (
         <div key={rowIndex} className="hand-matrix-row">
           {row.map((combo) => (
             <div
