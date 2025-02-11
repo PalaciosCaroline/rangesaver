@@ -12,16 +12,16 @@
   position: relative;
   width: 90%; /* Responsive */
   width: 600px;
-  height: 230px;
-  padding: 20px 10px;
+  height: 280px;
   background: radial-gradient(circle, #838395, #100f13);
   border-radius: 40%;
-  border: 15px solid #4e463b;;
+  border: 14px solid #4e463b;
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   margin: auto; /* ✅ Meilleur centrage */
+  box-sizing: border-box;
 }
 
 
@@ -130,7 +130,7 @@
   }
 
   .poker-table {
-      width: 280px;
+      width: 320px;
       height: 180px;
       border-radius: 100px;
   }
@@ -152,11 +152,11 @@
   }
 
   /* ✅ Ajustement des positions des joueurs sur petits écrans */
-  .top { top: -50px; left: 140px; transform: translateX(-50%); }
-  .bottom { bottom: -50px; left: 180px; transform: translateX(-50%); }
-  .left-top { top: 30px; left: 0px; }
-  .left-bottom { bottom: -100px; left: -18px; }
-  .right-top { top: 30px; right: 0%; }
-  .right-bottom { bottom: -100px; right: -18px; }
+  .top { top: -50px; left: 160px; transform: translateX(-50%); }
+  .bottom { bottom: -50px; left: 190px; transform: translateX(-50%); }
+  .left-top { top: 15px; left: 0px; }
+  .left-bottom { top: 110px; left: -18px; }
+  .right-top { top: 15px; right: 0px; }
+  .right-bottom { top: 110px; right: -18px; }
       
 }
