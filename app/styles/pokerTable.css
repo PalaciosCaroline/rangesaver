@@ -145,17 +145,17 @@
 
   .hero-cards {
       bottom: -1vw; /* Ajustement pour mobile */
-      left: -100%;
+      left: -68px;
   }
 
   .card-img {
-      width: 50px;
+      width: 60px;
       top:0;
   }
 
   /* ✅ Ajustement des positions des joueurs sur petits écrans */
   .top { top: -50px; left: 155px; transform: translateX(-50%); }
-  .bottom { bottom: -50px; left: 190px; transform: translateX(-50%); }
+  .bottom { bottom: -50px; left: 210px; transform: translateX(-50%); }
   .left-top { top: 15px; left: 0px; }
   .left-bottom { top: 110px; left: -18px; }
   .right-top { top: 15px; right: 0px; }
