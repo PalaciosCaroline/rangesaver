@@ -119,7 +119,8 @@ const villainImage = "/images/requin.png";
   return (
     <div className="poker-containerTraining">
      
-      
+    
+
      {!sessionStarted ? (
         <div>
           <p>Choisissez la position du héros ou laissez le hasard décider :</p>
@@ -143,6 +144,7 @@ const villainImage = "/images/requin.png";
                 <p>Spot Villain : <strong>{villainSpot}</strong></p>
 
                 <div className="training-container">
+            
                 <PokerTable 
   heroCards={Array.isArray(cardImages) ? cardImages.filter(Boolean) : []} // ✅ Vérifie que les cartes sont valides
   heroImage={heroImage || "/images/default_hero.png"}  

@@ -4,12 +4,12 @@ import "./../styles/pokerTable.css";
 
 export default function PokerTable({ heroCards, heroImage, villainImage, villainPosition }) {
   const players = [
-    { id: 1, name: "Joueur 1", position: "top" },
-    { id: 2, name: "Joueur 2", position: "left-top" },
-    { id: 3, name: "Joueur 3", position: "left-bottom" },
-    { id: 4, name: "Joueur 4", position: "right-top" },
-    { id: 5, name: "Joueur 5", position: "right-bottom" },
-    { id: 6, name: "HÉROS", position: "bottom", hero: true },
+    { id: 1, name: "HÉROS", position: "bottom", hero: true },
+    { id: 2, name: "Joueur 2", position: "left-bottom" },
+    { id: 3, name: "Joueur 3", position: "left-top" },
+    { id: 4, name: "Joueur 4", position: "top" },
+    { id: 5, name: "Joueur 5", position: "right-top" },  
+    { id: 6, name: "Joueur 6", position: "right-bottom" }, 
   ];
 
   return (
@@ -22,6 +22,7 @@ export default function PokerTable({ heroCards, heroImage, villainImage, villain
 
           return (
             <div key={player.id} className={`player ${player.position}`}>
+                <div className="avatar-container">
               <div className={`avatar ${hasImage ? "has-image" : "no-image"}`}>
                 {hasImage && typeof hasImage === "string" && hasImage.trim() !== "" ? (
                   <Image 
@@ -33,8 +34,12 @@ export default function PokerTable({ heroCards, heroImage, villainImage, villain
                     unoptimized 
                   />
                 ) : (
-                  <span>{player.name}</span>  
+                  <span className="player-name">{player.name}</span>  
                 )}
+              </div>
+              <div className="player-name-box">
+                  {player.name}
+                </div>
               </div>
 
               {/* ✅ Vérification stricte avant d'afficher les cartes */}
