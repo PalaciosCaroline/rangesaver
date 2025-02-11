@@ -3,7 +3,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 40px 50px 90px 50px;
+  padding: 60px 50px 100px 50px;
   overflow: hidden; /* ✅ Empêche les débordements */
 }
 
@@ -38,18 +38,18 @@
 
 
 /* ✅ Positions des joueurs */
-.top { top: -40px; left: 50%; transform: translateX(-50%); }  /* Siège en haut */
-.left-top{ left: -60px; top: 20%; transform: translateY(-50%); }  /* Haut gauche */
-.left-bottom   { left: -60px; top: 70%; transform: translateY(-50%); } /* Gauche milieu */
-.right-top  { right: -60px; top: 20%; transform: translateY(-50%); }  /* Haut droite */
-.right-bottom { right: -60px; top: 70%; transform: translateY(-50%); } /* Côté droit bas */
-.bottom { bottom: -18%; left: 50%; transform: translateX(-50%); }
+.top { top: -60px; left: 240px; transform: translateX(-50%); }  /* Siège en haut */
+.left-top{ left: -60px; top: 60px; transform: translateY(-50%); }  /* Haut gauche */
+.left-bottom   { left: -60px; top: 200px; transform: translateY(-50%); } /* Gauche milieu */
+.right-top  { right: -60px; top: 60px; transform: translateY(-50%); }  /* Haut droite */
+.right-bottom { right: -60px; top: 200px; transform: translateY(-50%); } /* Côté droit bas */
+.bottom { bottom: -60px; left: 300px; transform: translateX(-50%); }
 
 /* ✅ Cartes du héros bien alignées */
 .hero-cards {
   position: absolute;
   bottom: 0;
-  left: -70%;
+  left: -90px;
   transform: translateX(-50%);
   display: flex;
   gap: 5px;
@@ -57,8 +57,8 @@
 
 /* ✅ Style des cartes */
 .card-img {
-  width: 8vw;
-  max-width: 50px;
+  width: 70px;
+  max-width: 70px;
   height: auto;
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -126,11 +126,11 @@
       width: 100%;
       flex-direction: column;
       justify-content: center;
-      padding:30px 0 60px 0;
+      padding:40px 0 60px 0;
   }
 
   .poker-table {
-      width: 290px;
+      width: 280px;
       height: 180px;
       border-radius: 100px;
   }
@@ -147,16 +147,16 @@
   }
 
   .card-img {
-      width: 14vw;
+      width: 50px;
       top:0;
   }
 
   /* ✅ Ajustement des positions des joueurs sur petits écrans */
-  .top { top: -18%; left: 50%; transform: translateX(-50%); }
-  .bottom { bottom: -30%; left: 65%; transform: translateX(-50%); }
-  .left-top { top: 10%; left: 0%; }
-  .left-bottom { bottom: -18%; left: -8%; }
-  .right-top { top: 10%; right: 0%; }
-  .right-bottom { bottom: -18%; right: -8%; }
+  .top { top: -50px; left: 140px; transform: translateX(-50%); }
+  .bottom { bottom: -50px; left: 180px; transform: translateX(-50%); }
+  .left-top { top: 30px; left: 0px; }
+  .left-bottom { bottom: -100px; left: -18px; }
+  .right-top { top: 30px; right: 0%; }
+  .right-bottom { bottom: -100px; right: -18px; }
       
 }
