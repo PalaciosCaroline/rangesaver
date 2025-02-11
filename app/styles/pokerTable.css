@@ -15,13 +15,17 @@
   height: 280px;
   background: radial-gradient(circle, #838395, #100f13);
   border-radius: 40%;
-  border: 14px solid #4e463b;
+  border: 14px solid #262728;
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   margin: auto; /* ✅ Meilleur centrage */
   box-sizing: border-box;
+
+    /* ✅ Remplacement du fond CSS par une image */
+    background: url('/images/table-bg.jpg') no-repeat center center;
+    background-size: cover; /* ✅ Adapte l'image à la taille */
 }
 
 
@@ -57,8 +61,7 @@
 
 /* ✅ Style des cartes */
 .card-img {
-  width: 70px;
-  max-width: 70px;
+ max-width: 70px;
   height: auto;
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -149,7 +152,8 @@
   }
 
   .card-img {
-      width: 60px;
+    max-width: 60px;
+    height: auto;
       top:0;
   }
 
