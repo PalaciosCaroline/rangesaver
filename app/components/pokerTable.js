@@ -2,15 +2,34 @@ import React from "react";
 import Image from "next/image"; 
 import "./../styles/pokerTable.css"; 
 
-export default function PokerTable({ heroCards, heroImage, villainImage, villainPosition }) {
-  const players = [
-    { id: 1, name: "HÉROS", position: "bottom", hero: true },
-    { id: 2, name: "Joueur 2", position: "left-bottom" },
-    { id: 3, name: "Joueur 3", position: "left-top" },
-    { id: 4, name: "Joueur 4", position: "top" },
-    { id: 5, name: "Joueur 5", position: "right-top" },  
-    { id: 6, name: "Joueur 6", position: "right-bottom" }, 
-  ];
+export default function PokerTable({ heroCards, heroImage, villainImage, villainPosition,heroPosition }) {
+
+  // Ordre fixe des positions visuelles sur la table
+  const TABLE_POSITIONS = ["bottom", "left-bottom", "left-top", "top", "right-top", "right-bottom"];
+
+  // Ordre des positions de poker dans le sens horaire
+  const POSITIONS = ["LJ", "HJ", "CO", "BTN", "SB", "BB"];
+
+  // Trouver l'index du héros pour assigner les autres positions dynamiquement
+  const heroIndex = POSITIONS.indexOf(heroPosition);
+
+  // Générer les noms des positions dynamiquement en fonction du héros
+  const seatMapping = {};
+  if (heroIndex !== -1) {
+    let seatIndex = 0;
+    for (let i = 0; i < POSITIONS.length; i++) {
+      const currentPosition = POSITIONS[(heroIndex + i) % POSITIONS.length];
+      seatMapping[TABLE_POSITIONS[seatIndex++]] = currentPosition;
+    }
+  }
+
+  // Définir les joueurs avec leurs vraies positions
+  const players = TABLE_POSITIONS.map((tablePos, index) => ({
+    id: index + 1,
+    name: seatMapping[tablePos] || "", // Afficher la vraie position LJ, HJ, etc.
+    position: tablePos,
+    hero: tablePos === "bottom",
+  }));
 
   return (
     <div className="poker-container">

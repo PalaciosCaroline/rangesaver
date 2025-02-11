@@ -104,14 +104,56 @@ export default function TrainingSession() {
     return `action-${action.replace(/\s+/g, "")}`; 
 };
 
-const TABLE_POSITIONS = ["top", "left-top", "left-bottom", "right-bottom", "right-top", "bottom"];
+// Ordre fixe des sièges autour de la table
+const TABLE_POSITIONS = ["bottom", "left-bottom", "left-top", "top", "right-top", "right-bottom"];
 
+// Ordre des positions de poker dans le sens horaire
+const POSITIONS = ["LJ", "HJ", "CO", "BTN", "SB", "BB"];
+
+// Mapping pour convertir les abréviations en noms de positions complètes
+const POSITION_ABBREVIATIONS = {
+    "LJ": "LJ",
+    "HJ": "HJ",
+    "CO": "CO",
+    "BT": "BTN",  // Correction ici : BT → BTN
+    "SB": "SB",
+    "BB": "BB"
+};
+
+// Trouver l'index du héros dans la liste des positions
 const heroIndex = heroPosition ? POSITIONS.indexOf(heroPosition) : -1;
-const villainIndex = villainSpot && heroIndex !== -1 
-  ? (POSITIONS.indexOf(villainSpot) - heroIndex + POSITIONS.length) % POSITIONS.length
-  : -1;
 
-const villainPosition = villainIndex !== -1 ? TABLE_POSITIONS[villainIndex] : "";
+// Mapping pour assigner les positions aux sièges
+const seatMapping = {};
+
+// Si le héros a une position
+if (heroIndex !== -1) {
+    let seatIndex = 0; // Indice dans TABLE_POSITIONS
+
+    for (let i = 0; i < POSITIONS.length; i++) {
+        const currentPosition = POSITIONS[(heroIndex + i) % POSITIONS.length];
+
+        // Le héros est toujours en bottom
+        if (i === 0) {
+            seatMapping[currentPosition] = "bottom";
+        } else {
+            seatMapping[currentPosition] = TABLE_POSITIONS[++seatIndex];
+        }
+    }
+}
+
+// Extraction du villain depuis villainSpot
+let villain = "";
+if (villainSpot && villainSpot !== "RFI") {
+    const villainAbbr = villainSpot.slice(0, 2); // Prend les deux premières lettres
+    villain = POSITION_ABBREVIATIONS[villainAbbr] || ""; // Convertit l'abréviation en nom de position
+}
+
+// Déterminer la position du villain à la table
+const villainPosition = villain && seatMapping[villain] ? seatMapping[villain] : "";
+
+
+
 
 const heroImage = "/images/poisson_globe.png"; 
 const villainImage = "/images/requin.png"; 
@@ -150,6 +192,7 @@ const villainImage = "/images/requin.png";
   heroImage={heroImage || "/images/default_hero.png"}  
   villainImage={villainImage || "/images/default_villain.png"}
   villainPosition={villainPosition}  
+  heroPosition={heroPosition}
 />
 
       
