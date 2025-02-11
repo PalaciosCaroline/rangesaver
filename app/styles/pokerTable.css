@@ -166,3 +166,124 @@
   .right-bottom { top: 110px; right: -18px; }
       
 }
+
+/* Style général des marqueurs (Dealer, Blinds) */
+.player-marker {
+  position: absolute;
+  background-color: #f8d210; /* Jaune pour ressembler à un jeton */
+  color: black;
+  font-weight: bold;
+  font-size: 14px;
+  padding: 5px 10px;
+  border-radius: 50%; /* Forme de jeton */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #000;
+}
+
+/* Variation pour le bouton de Dealer */
+.player-marker.dealer {
+  background-color: red; /* Rouge pour le Dealer */
+  color: white;
+}
+
+/* Variation pour la Small Blind */
+.player-marker.sb {
+  background-color: blue; /* Bleu pour SB */
+  color: white;
+}
+
+/* Variation pour la Big Blind */
+.player-marker.bb {
+  background-color: green; /* Vert pour BB */
+  color: white;
+}
+
+/* Position des marqueurs selon la place du joueur */
+
+/* Joueur en bas (Héro) → Marqueur au-dessus */
+.player.bottom .player-marker {
+  bottom: 120px;
+  left: -20px;
+  transform: translateX(-50%);
+}
+
+/* Joueur en bas à gauche */
+.player.left-bottom .player-marker {
+  top: 25px;
+  left: 100px;
+}
+
+/* Joueur en haut à gauche */
+.player.left-top .player-marker {
+  top: 15px;
+  left: 100px;
+}
+
+/* Joueur en haut (centre) */
+.player.top .player-marker {
+  top: -40px;
+  left: 50%;
+}
+
+/* Joueur en haut à droite */
+.player.right-top .player-marker {
+  top:15px;
+  right: 100px;
+}
+
+/* Joueur en bas à droite */
+.player.right-bottom .player-marker {
+  top: 25px;
+  right: 100px;
+}
+
+@media (max-width: 600px) {
+  .player-marker {
+    width: 15px;
+    height: 15px;
+  }
+
+  /* Position des marqueurs selon la place du joueur */
+
+/* Joueur en bas (Héro) → Marqueur au-dessus */
+.player.bottom .player-marker {
+  bottom: 80px;
+  left: 0px;
+  transform: translateX(-50%);
+}
+
+/* Joueur en bas à gauche */
+.player.left-bottom .player-marker {
+  top: 15px;
+  left: 65px;
+}
+
+/* Joueur en haut à gauche */
+.player.left-top .player-marker {
+  top: 50px;
+  left: 50px;
+}
+
+/* Joueur en haut (centre) */
+.player.top .player-marker {
+  top: -40px;
+  left: 50%;
+}
+
+/* Joueur en haut à droite */
+.player.right-top .player-marker {
+  top:50px;
+  right: 50px;
+}
+
+/* Joueur en bas à droite */
+.player.right-bottom .player-marker {
+  top: 15px;
+  right: 60px;
+}
+}

@@ -6,6 +6,7 @@ import "./../styles/training.css";
 import { POSITIONS } from "@/data/positions";
 import { RANGES } from "@/data/ranges";
 import { VILLAIN_DECISIONS } from "@/data/villainDecisions";
+import { TABLE_POSITIONS } from "@/data/positions";
 import { COMBOS } from "@/data/combos";
 import PokerTable from "./../components/pokerTable";
 import getCardFilenames from "./../utils/getCardFileName";
@@ -104,8 +105,6 @@ export default function TrainingSession() {
     return `action-${action.replace(/\s+/g, "")}`; 
 };
 
-// Ordre fixe des sièges autour de la table
-const TABLE_POSITIONS = ["bottom", "left-bottom", "left-top", "top", "right-top", "right-bottom"];
 
 // Ordre des positions de poker dans le sens horaire
 const POSITIONS = ["LJ", "HJ", "CO", "BTN", "SB", "BB"];
@@ -151,9 +150,6 @@ if (villainSpot && villainSpot !== "RFI") {
 
 // Déterminer la position du villain à la table
 const villainPosition = villain && seatMapping[villain] ? seatMapping[villain] : "";
-
-
-
 
 const heroImage = "/images/poisson_globe.png"; 
 const villainImage = "/images/requin.png"; 

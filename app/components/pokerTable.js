@@ -1,14 +1,17 @@
 import React from "react";
-import Image from "next/image"; 
+import Image from "next/image";
+import { POSITIONS } from "@/data/positions";
+import { TABLE_POSITIONS } from "@/data/positions";
 import "./../styles/pokerTable.css"; 
 
 export default function PokerTable({ heroCards, heroImage, villainImage, villainPosition,heroPosition }) {
 
-  // Ordre fixe des positions visuelles sur la table
-  const TABLE_POSITIONS = ["bottom", "left-bottom", "left-top", "top", "right-top", "right-bottom"];
-
-  // Ordre des positions de poker dans le sens horaire
-  const POSITIONS = ["LJ", "HJ", "CO", "BTN", "SB", "BB"];
+ // Mapping des positions spéciales (Dealer, Blinds)
+ const POSITION_MARKERS = {
+  "BTN": "D",
+  "SB": "0.5BB",
+  "BB": "1BB",
+};
 
   // Trouver l'index du héros pour assigner les autres positions dynamiquement
   const heroIndex = POSITIONS.indexOf(heroPosition);
@@ -23,13 +26,16 @@ export default function PokerTable({ heroCards, heroImage, villainImage, villain
     }
   }
 
-  // Définir les joueurs avec leurs vraies positions
-  const players = TABLE_POSITIONS.map((tablePos, index) => ({
-    id: index + 1,
-    name: seatMapping[tablePos] || "", // Afficher la vraie position LJ, HJ, etc.
-    position: tablePos,
-    hero: tablePos === "bottom",
-  }));
+  const players = TABLE_POSITIONS.map((tablePos, index) => {
+    const positionName = seatMapping[tablePos] || ""; // Récupère la vraie position LJ, HJ, CO, etc.
+    return {
+      id: index + 1,
+      name: positionName,
+      position: tablePos,
+      hero: tablePos === "bottom",
+      marker: POSITION_MARKERS[positionName] || "", // Utilise `positionName` au lieu de `playerPosition`
+    };
+});
 
   return (
     <div className="poker-container">
@@ -59,6 +65,12 @@ export default function PokerTable({ heroCards, heroImage, villainImage, villain
               <div className="player-name-box">
                   {player.name}
                 </div>
+
+                {player.marker && (
+  <div className={`player-marker ${player.name === "BTN" ? "dealer" : player.name === "SB" ? "sb" : player.name === "BB" ? "bb" : ""}`}>
+    {player.marker}
+  </div>
+)}
               </div>
 
               {/* ✅ Vérification stricte avant d'afficher les cartes */}
