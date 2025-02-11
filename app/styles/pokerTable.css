@@ -15,7 +15,7 @@
   height: 280px;
   background: radial-gradient(circle, #838395, #100f13);
   border-radius: 40%;
-  border: 14px solid #262728;
+  border: 14px solid #312e2a;
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
@@ -24,8 +24,8 @@
   box-sizing: border-box;
 
     /* ✅ Remplacement du fond CSS par une image */
-    background: url('/images/table-bg.jpg') no-repeat center center;
-    background-size: cover; /* ✅ Adapte l'image à la taille */
+    /* background: url('/images/table-bg.jpg') no-repeat center center;
+    background-size: cover;  */
 }
 
 
