@@ -1,3 +1,4 @@
+// trainingSession.js
 "use client";
 
 import { useState, useEffect } from "react";
@@ -6,6 +7,7 @@ import { POSITIONS } from "@/data/positions";
 import { RANGES } from "@/data/ranges";
 import { VILLAIN_DECISIONS } from "@/data/villainDecisions";
 import { COMBOS } from "@/data/combos";
+import PokerTable from "./../components/pokerTable";
 import getCardFilenames from "./../utils/getCardFileName";
 import getRandomElement from "./../utils/getRandomElement";
 import handleAction from "../utils/handleAction";
@@ -48,37 +50,24 @@ export default function TrainingSession() {
     console.clear();
   
     if (!heroPosition) {
-      const randomHero = getRandomElement(Object.keys(RANGES));
-      setHeroPosition(randomHero);
-      console.log(`🎲 Position aléatoire du héros : ${randomHero}`);
+      setHeroPosition(getRandomElement(Object.keys(RANGES)));
       return;
     }
   
     console.log(`🎯 Héros sélectionné : ${heroPosition}`);
   
-    let selectedVillainSpot = null;
-    let villainRangeKey = null;
+    // Sélectionne un adversaire (RFI inclus)
+    const possibleVillains = Object.keys(VILLAIN_DECISIONS[heroPosition] || []);
   
-    // Cas RFI : Pas d'adversaire encore connu
-    if (RANGES[heroPosition]?.["RFI"]) {
-      selectedVillainSpot = null;  // Aucun adversaire encore défini
-      villainRangeKey = "RFI"; 
-      console.log(`💡 Héros en Open-Raise (RFI) → Pas encore d’adversaire`);
-    } else {
-      // Cas où un adversaire est déjà présent (3-bet, limp, etc.)
-      const villainSpots = Object.keys(VILLAIN_DECISIONS[heroPosition] || {});
-  
-      if (!villainSpots.length) {
-        console.warn(`⚠️ Aucune situation trouvée pour ${heroPosition}. Relance...`);
-        return startNewHand();
-      }
-  
-      selectedVillainSpot = getRandomElement(villainSpots);
-      villainRangeKey = VILLAIN_DECISIONS[heroPosition][selectedVillainSpot];
+    if (!possibleVillains.length) {
+      console.warn(`⚠️ Aucune situation trouvée pour ${heroPosition}. Relance...`);
+      return startNewHand();
     }
   
-    console.log(`🧐 Spot Villain sélectionné : ${selectedVillainSpot ?? "Aucun (RFI en attente)"}`);
-    console.log(`📌 Clé de range associée : ${villainRangeKey}`);
+    const selectedSpot = getRandomElement(possibleVillains);
+    const villainRangeKey = VILLAIN_DECISIONS[heroPosition][selectedSpot];
+  
+    console.log(`👥 Spot sélectionné : ${selectedSpot} → Key: ${villainRangeKey}`);
   
     const newHeroHand = getRandomElement(COMBOS);
     if (!newHeroHand) {
@@ -90,24 +79,22 @@ export default function TrainingSession() {
     const heroRanges = RANGES[heroPosition]?.[villainRangeKey];
   
     if (!heroRanges) {
-      console.warn(`⚠️ Aucune range trouvée pour ${heroPosition} contre ${selectedVillainSpot ?? "RFI"}`);
+      console.warn(`⚠️ Aucune range trouvée pour ${heroPosition} contre ${selectedSpot}`);
       return;
     }
   
-    const possibleActions = Object.keys(heroRanges).filter(action => heroRanges[action] && heroRanges[action].length > 0);
+    const possibleActions = Object.keys(heroRanges).filter(action => heroRanges[action]?.length > 0);
     if (!possibleActions.length) {
-      console.warn(`⚠️ Aucune action trouvée pour ${heroPosition} vs ${selectedVillainSpot ?? "RFI"}`);
+      console.warn(`⚠️ Aucune action trouvée pour ${heroPosition} vs ${selectedSpot}`);
       return;
     }
   
-    const allActions = [...possibleActions, "Fold"];
-    console.log(`🎯 Actions disponibles : ${allActions.join(", ")}`);
+    console.log(`🎯 Actions disponibles : ${[...possibleActions, "Fold"].join(", ")}`);
   
-    // ✅ Mettre à jour l'état
-    setVillainSpot(selectedVillainSpot); // Peut être null si en RFI
+    setVillainSpot(selectedSpot);
     setHeroHand(newHeroHand);
     setCardImages(cardFilenames);
-    setAvailableActions(allActions);
+    setAvailableActions([...possibleActions, "Fold"]);
     setFeedback("");
     setSessionStarted(true);
   };
@@ -116,7 +103,18 @@ export default function TrainingSession() {
   const getActionClass = (action) => {
     return `action-${action.replace(/\s+/g, "")}`; 
 };
-  
+
+const TABLE_POSITIONS = ["top", "left-top", "left-bottom", "right-bottom", "right-top", "bottom"];
+
+const heroIndex = heroPosition ? POSITIONS.indexOf(heroPosition) : -1;
+const villainIndex = villainSpot && heroIndex !== -1 
+  ? (POSITIONS.indexOf(villainSpot) - heroIndex + POSITIONS.length) % POSITIONS.length
+  : -1;
+
+const villainPosition = villainIndex !== -1 ? TABLE_POSITIONS[villainIndex] : "";
+
+const heroImage = "/images/poisson_globe.png"; 
+const villainImage = "/images/requin.png"; 
 
   return (
     <div className="poker-containerTraining">
@@ -139,14 +137,22 @@ export default function TrainingSession() {
         </div>
       ) : (
         <>
-          <div className="card-container">
-            {cardImages.map((filename, index) => (
-              <img key={index} src={`/cards/${filename}`} alt={filename} className="card-img" />
-            ))}
-          </div>
+        
        
                 <p>Position Héros : <strong>{heroPosition}</strong></p>
                 <p>Spot Villain : <strong>{villainSpot}</strong></p>
+
+                <div className="training-container">
+                <PokerTable 
+  heroCards={Array.isArray(cardImages) ? cardImages.filter(Boolean) : []} // ✅ Vérifie que les cartes sont valides
+  heroImage={heroImage || "/images/default_hero.png"}  
+  villainImage={villainImage || "/images/default_villain.png"}
+  villainPosition={villainPosition}  
+/>
+
+      
+    
+    </div>
 
           <div className="mt-2">
             {availableActions.map((action) => (

@@ -1,3 +1,4 @@
+//handMatrix.js
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
@@ -6,17 +7,9 @@ import PropTypes from "prop-types";
 import "./../styles/handMatrix.css";
 import { doc } from "firebase/firestore";
 import { COMBOS } from "@/data/combos";
+import { chunk } from "../utils/chunk";
 import Modal from "react-modal";
-
-
-// 🎯 Actions et couleurs pour la matrice
-const actions = {
-  allin: "#c72727",
-  "3bet": "#FFD700",
-  raise: "#ea3b3b",
-  call: "#5dd85d",
-  fold: "#F5F5F5",
-};
+import {actions} from "@/data/actions"
 
 // 📌 Positions et blinds
 const positions = ["UTG", "MP", "CO", "BTN", "SB", "BB"];
@@ -25,11 +18,6 @@ const blindsOptions = [5, 20, 50, 100];
 // 📌 Spots possibles
 const spotOptions = ["Open", "Single Action", "3bet", "Overcall & Squeeze"];
 
-// 📌 Fonction pour découper la liste en lignes de 13 colonnes
-const chunk = (arr, size) =>
-  Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
-    arr.slice(i * size, i * size + size)
-  );
 
 function HandMatrix({ rangeId }) {
   const [rangeName, setRangeName] = useState(""); 
@@ -265,7 +253,7 @@ const handleTouchEnd = () => {
           <button
             key={action}
             className={`action-btn ${selectedAction === action ? "selected" : ""}`}
-            style={{ backgroundColor: actions[action] }}
+            style={{ background: actions[action] }}
             onClick={() => setSelectedAction(action)}
           >
             {action.toUpperCase()}
@@ -287,7 +275,7 @@ const handleTouchEnd = () => {
               <div
                 key={combo}
                 className="hand-matrix-cell"
-                style={{ backgroundColor: actions[handColors[combo]] || "#F5F5F5" }}
+                style={{ background: actions[handColors[combo]] || "#F5F5F5" }}
                 onMouseDown={() => handleMouseDown(combo)}
                 onMouseEnter={() => handleMouseEnter(combo)}
                 onTouchStart={() => handleTouchStart(combo)}

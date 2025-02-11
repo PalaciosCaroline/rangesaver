@@ -12,7 +12,7 @@ export default function RangesList() {
   useEffect(() => {
     const fetchRanges = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "ranges")); // ✅ Correction ici
+        const querySnapshot = await getDocs(collection(db, "ranges")); 
         const rangesData = querySnapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data(),

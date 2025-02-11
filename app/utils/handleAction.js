@@ -8,31 +8,31 @@ export default function handleAction(action, heroPosition, villainSpot, heroHand
     }
 
     let villainRangeKey;
-    let heroRanges;
+let heroRanges;
 
-    // 1️⃣ Cas où le héros est en RFI (Raise First In)
-    if (!villainSpot) {
-        console.log(`💡 Héros en Open-Raise (RFI) → Aucun villain encore défini.`);
-        villainRangeKey = "RFI"; // RFI est directement utilisé
-        heroRanges = RANGES[heroPosition]?.["RFI"];
-    } else {
-        // 2️⃣ Cas normal où un villain existe (3-bet, limp, etc.)
-        villainRangeKey = VILLAIN_DECISIONS[heroPosition]?.[villainSpot];
+// 1️⃣ Cas où le héros est en RFI (Raise First In)
+if (!villainSpot) {
+    console.log(`💡 Héros en Open-Raise (RFI) → Aucun villain encore défini.`);
+    villainRangeKey = "RFI";
+    heroRanges = RANGES[heroPosition]?.["RFI"];
+} else {
+    // 2️⃣ Cas où un villain existe
+    villainRangeKey = VILLAIN_DECISIONS[heroPosition]?.[villainSpot];
 
-        if (!villainRangeKey) {
-            console.warn(`⚠️ Clé du Villain non trouvée pour ${heroPosition} contre ${villainSpot}`);
-            setFeedback("❌ Erreur : Situation non trouvée.");
-            return false;
-        }
-
-        heroRanges = RANGES[heroPosition]?.[villainRangeKey];
+    if (!villainRangeKey) {
+        console.warn(`⚠️ Clé du Villain non trouvée pour ${heroPosition} contre ${villainSpot}`);
+        setFeedback("❌ Erreur : Situation non trouvée.");
+        return false;
     }
 
+    heroRanges = RANGES[heroPosition]?.[villainRangeKey];
+
     if (!heroRanges) {
-        console.warn(`⚠️ Aucune range trouvée pour ${heroPosition} contre ${villainSpot ?? "RFI"}`);
+        console.warn(`⚠️ Aucune range trouvée pour ${heroPosition} contre ${villainSpot}`);
         setFeedback("❌ Impossible de trouver une range.");
         return false;
     }
+}
 
     // 3️⃣ Récupération de toutes les mains jouables
     let allValidHands = new Set();

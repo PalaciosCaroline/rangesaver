@@ -1,17 +1,17 @@
 /* 🌟 Navbar Responsive avec Menu Burger - Animation fluide 🌟 */
 
 .navbar {
-    width: 100%;
-    background: rgb(38, 39, 39);
     position: fixed;
     top: 0;
     left: 0;
+    width: 100%;
+    height: 60px; /* Hauteur fixe */
+    background: rgb(38, 39, 39);
     z-index: 1000;
-    padding: 5px 20px;
     display: flex;
+    align-items: center; /* Centre le contenu */
     justify-content: center;
-    min-height: 60px;
-    transition: all 0.3s ease-in-out;
+    transition: none; /* Désactive les animations inutiles */
 }
 
 .nav-container {
@@ -79,7 +79,7 @@
     align-items: center;
     cursor: pointer;
     width: 35px;
-    height: 30px;
+    height: 31px;
     position: relative;
 }
 
@@ -124,16 +124,31 @@
 @media (max-width: 768px) {
     .nav-container {
         padding: 0 10px;
+      
     }
 
     nav.navbar {
         padding: 0;
+        height: 45px;
+        display: flex;
+        justify-content: flex-start;
+        background: rgba(38, 39, 39, 0);
     }
+
+    .logo {
+        display: none;
+    }
+
+    .burger-menu {
+        background: rgb(38, 39, 39);
+    }
+
 
     /* Animation du menu burger (slide de gauche à droite) */
     .nav-links {
         position: absolute;
-        top: 60px;
+      top:0;
+        padding:0 0 0 0;
         margin-top:0;
         left: 0;
         width: 100%;
@@ -153,6 +168,7 @@
         opacity: 1;
         visibility: visible;
         padding-left:0;
+        padding-top: 70px;
     }
 
     .burger-menu {

@@ -1,0 +1,119 @@
+/* ✅ Conteneur global qui garde la table bien centrée */
+.poker-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  overflow: hidden; /* ✅ Empêche les débordements */
+}
+
+/* ✅ Table de poker bien centrée */
+.poker-table {
+  position: relative;
+  width: 90%; /* Responsive */
+  max-width: 600px; /* Taille max pour grands écrans */
+  padding: 20px 10px;
+  max-height: 350px;
+  background: radial-gradient(circle, #0d6834 50%, #024e1a 100%);
+  border-radius: 50%;
+  border: 6px solid #ffd700;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto; /* ✅ Meilleur centrage */
+}
+
+/* ✅ Joueurs bien positionnés autour de la table */
+.player {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* ✅ Avatar des joueurs */
+.avatar {
+  width: 10vw;
+  max-width: 80px;
+  height: 10vw;
+  max-height: 80px;
+  background-color: #333;
+  color: white;
+  font-size: 1rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid white;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* ✅ Positions des joueurs */
+.top { top: -12%; left: 50%; transform: translateX(-50%); }
+.left-top { top: 12%; left: 10%; }
+.left-bottom { bottom: 12%; left: 10%; }
+.right-top { top: 12%; right: 10%; }
+.right-bottom { bottom: 12%; right: 10%; }
+.bottom { bottom: -12%; left: 50%; transform: translateX(-50%); }
+
+/* ✅ Cartes du héros bien alignées */
+.hero-cards {
+  position: absolute;
+  bottom: -4vw;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 5px;
+}
+
+/* ✅ Style des cartes */
+.card-img {
+  width: 8vw;
+  max-width: 50px;
+  height: auto;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* ✅ Ajustements pour les petits écrans */
+@media (max-width: 600px) {
+  .poker-container {
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+      justify-content: center;
+      padding:30px 0;
+  }
+
+  .poker-table {
+      width: 75vw;
+      height: 30vw;
+  }
+
+  .avatar {
+      width: 12vw;
+      height: 12vw;
+      font-size: 0.8rem;
+  }
+
+  .hero-cards {
+      bottom: -6vw; /* Ajustement pour mobile */
+  }
+
+  .card-img {
+      width: 10vw;
+      max-width: 40px;
+  }
+
+  /* ✅ Ajustement des positions des joueurs sur petits écrans */
+  .top { top: -8%; left: 50%; transform: translateX(-50%); }
+  .bottom { bottom: -8%; left: 50%; transform: translateX(-50%); }
+  .left-top { top: 18%; left: 8%; }
+  .left-bottom { bottom: 18%; left: 8%; }
+  .right-top { top: 18%; right: 8%; }
+  .right-bottom { bottom: 18%; right: 8%; }
+}

@@ -1,5 +1,6 @@
 export const VILLAIN_DECISIONS = {
   "LJ": {
+    "RFI": "RFI",
     "HJ 3Bet": "LJ vs HJ 3bet",
     "CO 3Bet": "LJ vs CO 3bet",
     "BTN 3Bet": "LJ vs BTN 3bet",
@@ -7,6 +8,7 @@ export const VILLAIN_DECISIONS = {
     "BB 3Bet": "LJ vs BB 3bet"
   },
   "HJ": {
+    "RFI": "RFI",
     "LJ RFI": "HJ vs LJ RFI",
     "CO 3Bet": "HJ vs CO 3bet",
     "BTN 3Bet": "HJ vs BTN 3bet",
@@ -14,6 +16,7 @@ export const VILLAIN_DECISIONS = {
     "BB 3Bet": "HJ vs BB 3bet"
   },
   "CO": {
+    "RFI": "RFI",
     "LJ RFI": "CO vs LJ RFI",
     "HJ RFI": "CO vs HJ RFI",
     "BTN 3Bet": "CO vs BTN/SB 3bet",
@@ -21,6 +24,7 @@ export const VILLAIN_DECISIONS = {
     "BB 3Bet": "CO vs BB 3bet"
   },
   "BTN": {
+    "RFI": "RFI",
     "LJ RFI": "BTN vs LJ RFI",
     "HJ RFI": "BTN vs HJ RFI",
     "CO RFI": "BTN vs CO RFI",
@@ -28,7 +32,7 @@ export const VILLAIN_DECISIONS = {
     "BB 3Bet": "BTN vs BB 3bet"
   },
   "SB": {
-   
+    "RFI": "RFI",
     "LJ RFI": "SB vs LJ RFI",
     "HJ RFI": "SB vs HJ RFI",
     "CO RFI": "SB vs CO RFI",

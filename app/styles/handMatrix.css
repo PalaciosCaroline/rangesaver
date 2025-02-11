@@ -235,7 +235,7 @@ body.lock-scroll {
 .action-btn {
   flex: 1;
   padding: 6px 8px;
-  font-size: 0.8rem; /* Texte compact */
+  font-size: 0.6rem; /* Texte compact */
   font-weight: bold;
   border: 1px solid black;
   text-align: center;
