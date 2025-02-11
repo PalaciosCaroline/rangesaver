@@ -133,6 +133,8 @@
       width: 320px;
       height: 180px;
       border-radius: 100px;
+      border: 10px solid #4e463b;
+      box-sizing: border-box;
   }
 
   .avatar {
@@ -152,7 +154,7 @@
   }
 
   /* ✅ Ajustement des positions des joueurs sur petits écrans */
-  .top { top: -50px; left: 160px; transform: translateX(-50%); }
+  .top { top: -50px; left: 155px; transform: translateX(-50%); }
   .bottom { bottom: -50px; left: 190px; transform: translateX(-50%); }
   .left-top { top: 15px; left: 0px; }
   .left-bottom { top: 110px; left: -18px; }
