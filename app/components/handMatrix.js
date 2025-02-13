@@ -67,9 +67,15 @@ function HandMatrix({ rangeData, setRangeData, selectedAction, readOnly = false 
 
   /** ✅ Empêche le scroll mobile pendant la sélection tactile */
   useEffect(() => {
-    const preventScroll = (event) => event.preventDefault();
+    const preventScroll = (event) => {
+      // ✅ Bloquer le scroll uniquement quand l'utilisateur interagit avec la matrice
+      if (matrixRef.current && matrixRef.current.contains(event.target)) {
+        event.preventDefault();
+      }
+    };
+  
     document.addEventListener("touchmove", preventScroll, { passive: false });
-
+  
     return () => {
       document.removeEventListener("touchmove", preventScroll);
     };
