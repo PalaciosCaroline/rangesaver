@@ -13,6 +13,7 @@ import "./../styles/rangeEditor.css";
 
 function RangeEditor({ rangeId }) {
   const [errors, setErrors] = useState({});
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const router = useRouter();
   const isNewRange = !rangeId;
@@ -73,8 +74,6 @@ function RangeEditor({ rangeId }) {
   
     setErrors(newErrors); // Met à jour `errors` avec les erreurs trouvées
   
-    console.log("DEBUG - newErrors après validation :", newErrors); // Vérifie si l'erreur est bien enregistrée
-  
     return Object.keys(newErrors).length === 0; // Retourne `true` si aucune erreur
   };
   
@@ -82,10 +81,12 @@ function RangeEditor({ rangeId }) {
 
   //  Enregistrement de la range (nouvelle ou existante)
   const handleSave = async () => {
-    console.log("DEBUG - errors.blinds :", errors.blinds);
-    if (!validateFields()) return; // Annule l’enregistrement si un champ obligatoire manque
+    setIsSubmitted(true); // ✅ L'utilisateur tente d'enregistrer
+  
+    if (!validateFields()) return; // ✅ Vérifie et bloque si erreur
+  
     const id = rangeId || uuidv4(); // Génère un ID pour une nouvelle range
-
+  
     try {
       await saveRangeToFirebase(
         id,
@@ -98,7 +99,7 @@ function RangeEditor({ rangeId }) {
         rangeData.villainPosition,
         rangeData.handColors
       );
-
+  
       alert("✅ Modifications enregistrées !");
       setIsEditing(false);
       if (isNewRange) router.push(`/ranges/${id}`);
@@ -142,6 +143,7 @@ function RangeEditor({ rangeId }) {
             rangeData={rangeData} 
             setRangeData={setRangeData} 
             errors={errors}
+            isSubmitted={isSubmitted}
           />
 
           {/* ✅ Ajout d'un sélecteur unique pour éviter le doublon */}

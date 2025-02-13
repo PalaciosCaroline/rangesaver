@@ -5,7 +5,7 @@ import { VILLAIN_POSITIONS_BY_SEATS } from "@/data/positions";
 import { CONTEXT_OPTIONS } from "@/data/positions";
 import "./../styles/rangeSettings.css";
 
-function RangeSettings({ rangeData, setRangeData, errors}) {
+function RangeSettings({ rangeData, setRangeData, errors, isSubmitted}) {
   const [numSeats, setNumSeats] = useState(6); // ✅ Par défaut, 6 joueurs
 
   useEffect(() => {
@@ -80,6 +80,8 @@ const handleBlindsChange = (e) => {
 
   return (
     <div className="selectors">
+
+<div className="input-container">
  <label>Contexte :</label>
 <select 
   value={rangeData.context} 
@@ -89,24 +91,29 @@ const handleBlindsChange = (e) => {
     <option key={ctx} value={ctx}>{ctx}</option>
   ))}
 </select>
+</div>
 
+<div className="input-container">
       <label>Nom de la Range :</label>
       <input type="text" value={rangeData.rangeName} onChange={(e) => setRangeData({ ...rangeData, rangeName: e.target.value })} 
       placeholder="Nom de la Range"
       />
+</div>
 
+<div className="input-container">
 <label>BB</label>
 <input 
   type="text"
   value={rangeData.blinds}
   onChange={handleBlindsChange}
   placeholder="Ex: 15 < BB < 19 ou 20"
-  className={`${errors?.blinds ? "error" : rangeData.blinds === "" ? "input-error" : ""}`}
+  className={`${isSubmitted && errors?.blinds ? "error" : ""}`}
 />
-{errors?.blinds && <p className="error-message">{errors.blinds}</p>}
+{isSubmitted && errors?.blinds && <p className="error-message">{errors.blinds}</p>}
+</div>
 
 
-
+<div className="input-container">
 <label>Table :</label>
       <select 
         value={numSeats} 
@@ -116,7 +123,9 @@ const handleBlindsChange = (e) => {
         <option value="8">8 joueurs</option>
         <option value="9">9 joueurs</option>
       </select>
+      </div>
 
+      <div className="input-container">     
       <label>Position du Héros :</label>
 <select 
   value={rangeData.heroPosition} 
@@ -127,16 +136,18 @@ const handleBlindsChange = (e) => {
     <option key={pos} value={pos}>{pos}</option>
   ))}
 </select>
+</div>
 
-
+<div className="input-container">    
       <label>Spot :</label>
       <select value={rangeData.spot} onChange={(e) => setRangeData({ ...rangeData, spot: e.target.value })}>
         {["Open", "Single Action", "3bet", "Overcall & Squeeze"].map((s) => (
           <option key={s} value={s}>{s}</option>
         ))}
-
       </select>
+      </div>
 
+      <div className="input-container">
       <label>Position du Villain :</label>
 <select 
   value={rangeData.villainPosition || "Aucun"} // ✅ Définit "Aucun" si aucune valeur
@@ -148,7 +159,7 @@ const handleBlindsChange = (e) => {
     <option key={pos} value={pos}>{pos}</option>
   ))}
 </select>
-
+</div>
 
       </div>
   );
