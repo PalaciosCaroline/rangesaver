@@ -24,8 +24,9 @@ export default function Navbar() {
 
         {/* 📌 Liens principaux + Déconnexion en mobile */}
         <ul className={`nav-links ${menuOpen ? "open" : ""}`}>
-          <li><Link href="/handmatrix" onClick={() => setMenuOpen(false)}>Créer un range</Link></li> 
-          <li><Link href="/ranges" onClick={() => setMenuOpen(false)}>Voir ses ranges</Link></li>
+        <li><Link href="/ranges" onClick={() => setMenuOpen(false)}>Voir ses ranges</Link></li>
+          <li><Link href="/ranges/new" onClick={() => setMenuOpen(false)}>Créer un range</Link></li> 
+          
           <li><Link href="/training" onClick={() => setMenuOpen(false)}>S&apos;entraîner</Link></li>
           
           {/* 📌 Bouton Déconnexion en version mobile */}

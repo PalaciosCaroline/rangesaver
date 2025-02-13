@@ -1,6 +1,6 @@
+import { getAuth } from "firebase/auth"; // ✅ Ajout de getAuth
 import { initializeApp } from "firebase/app";
-import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import { getFirestore, collection, getDocs, doc, setDoc, getDoc } from "firebase/firestore";
 
 // 📌 Vérification des variables d’environnement Firebase
 const firebaseConfig = {
@@ -12,38 +12,79 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
 };
 
-// 🔹 Initialise Firebase AVANT d'utiliser Firestore
+
+// 🔥 Initialisation Firebase
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app)
 const db = getFirestore(app);
-const auth = getAuth(app);
 
-// 🔹 Fonction pour sauvegarder les ranges
-const saveRangeToFirebase = async (rangeId, rangeName, blinds, heroPosition, spot, villainPosition, handColors) => {
-  console.log("🔍 Données avant validation :", {
-    rangeId, rangeName, blinds, heroPosition, spot, villainPosition, handColors
-  });
+/**
+ * 📌 Enregistre une range dans Firestore
+ * @param {string} rangeId - Identifiant unique de la range
+ * @param {string} rangeName - Nom de la range
+ * @param {number} blinds - Valeur des blinds (ex: 20 BB)
+ * @param {string} heroPosition - Position du Héros
+ * @param {string} spot - Type de spot joué
+ * @param {string} villainPosition - Position du Villain (si applicable)
+ * @param {object} handColors - Actions prises pour chaque main
+ */
 
-  if (!heroPosition || !spot) {
-    console.error("🚨 Position du héros ou spot manquant !");
-    return;
-  }
-
+export async function saveRangeToFirebase(rangeId, rangeName, blinds, heroPosition, spot, villainPosition, handColors) {
   try {
-    const docRef = doc(db, "ranges", rangeId);
-    await setDoc(docRef, {
-      rangeName: rangeName || "Sans Nom",
+    const rangeRef = doc(db, "ranges", rangeId);
+
+    await setDoc(rangeRef, {
+      rangeName,
       blinds,
       heroPosition,
       spot,
-      villainPosition: villainPosition || "", 
-      handColors: handColors || {}
-    }, { merge: true });
+      villainPosition,
+      handColors,
+      timestamp: new Date().toISOString(),
+    });
 
-    console.log("✅ Range enregistrée avec succès !");
+    console.log("✅ Range enregistrée avec succès :", rangeId);
   } catch (error) {
-    console.error("🚨 Erreur lors de la sauvegarde :", error);
+    console.error("🚨 Erreur lors de l'enregistrement de la range :", error);
   }
-};
+}
 
-export { db, saveRangeToFirebase, getDoc, auth };
+/**
+ * 📌 Récupère une range depuis Firestore
+ * @param {string} rangeId - Identifiant unique de la range
+ * @returns {object|null} - Les données de la range ou null si elle n'existe pas
+ */
+export async function getRangeData(rangeId) {
+  try {
+    const rangeRef = doc(db, "ranges", rangeId);
+    const docSnap = await getDoc(rangeRef);
 
+    if (docSnap.exists()) {
+      console.log("📌 Données récupérées depuis Firebase :", docSnap.data());
+      return docSnap.data();
+    } else {
+      console.log("❌ Aucune range trouvée pour l'ID :", rangeId);
+      return null;
+    }
+  } catch (error) {
+    console.error("🚨 Erreur lors de la récupération de la range :", error);
+    return null;
+  }
+}
+
+/**
+ * 📌 Récupère toutes les ranges stockées dans Firebase
+ * @returns {Array} - Tableau des ranges { id, rangeName }
+ */
+export async function getAllRanges() {
+  try {
+    const querySnapshot = await getDocs(collection(db, "ranges"));
+    return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  } catch (error) {
+    console.error("🚨 Erreur lors de la récupération des ranges :", error);
+    return [];
+  }
+}
+
+
+export { auth,db };

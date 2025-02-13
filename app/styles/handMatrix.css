@@ -1,374 +1,54 @@
+.hand-matrix-container {
+  display: flex;
+  justify-content: center;  /* ✅ Centre horizontalement */
+  align-items: center;  /* ✅ Centre verticalement */
+margin:20px auto;
+}
 
-html, body {
-  overflow-y: overlay; /* 🔹 Scrollbar cachée jusqu'à interaction */
-}
-body.lock-scroll {
-  overflow: hidden;
-}
-.h1handMatrix {
-  margin-top: 75px;
-  font-size: 1.5rem;
-margin-bottom:10px;
-text-align: center;
-}
 
 .hand-matrix {
-  text-align: center;
-  user-select: none;
-  width: 100%;
-  max-width: 350px;
-  min-width: 320px;
-  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-direction: column; 
   margin: 20px auto;
-  overflow: hidden;
-  touch-action: none;
-  position: relative; 
+  width: 350px; 
+  height: 350px; 
+  user-select: none;
+  color: rgb(46, 46, 46);
 }
 
 .hand-matrix-row {
   display: flex;
-  justify-content: center;
-  flex-wrap: nowrap;
+  flex-direction: row;
+  flex: 1;  /* ✅ Pour répartir l’espace uniformément */
 }
 
 .hand-matrix-cell {
-  border: 1px solid #D0D0D0; /* Bordure plus claire par défaut */
+  flex: 1; /* ✅ Ajuste automatiquement la taille */
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.8rem;
-  width: 7.691%;
-  aspect-ratio: 1 / 1;
-  position: relative;
-  overflow: hidden;
-}
-.hand-matrix-cell:focus {
-  outline: none;
-}
-
-/* Centrage du texte dans les cases */
-.hand-matrix-cell > div {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   text-align: center;
-  width: 100%;
-}
-
-/* Bordure plus foncée pour les paires */
-.hand-matrix-cell.pair {
-  border-color: #A0A0A0; /* Bordure plus foncée */
-  border-color:black; /* Bordure plus foncée */
-}
-
-/* Couleurs des autres cases */
-.hand-matrix-cell.suited {
-  background-color: #FFFFFF;
-}
-
-.hand-matrix-cell.offsuit {
-  background-color: #F5F5F5;
-}
-
-
-/* Empêche le mouvement de la page lors de la sélection */
-body.lock-scroll {
-  overflow: hidden;
-}
-
-/* Ajustement de la taille du texte sur mobile */
-@media screen and (max-width: 768px) {
-  .hand-matrix-cell {
-    font-size: 0.6rem;
-  }
-  .h1handMatrix {
-    margin-top: 65 px;
-  }
-
-}
-
-
-/* ============================= */
-/* 📌 Conteneur principal des sélecteurs */
-/* ============================= */
-
-.selectors {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px; /* Espacement équilibré */
-  padding: 12px;
-  width: 100%;
-  max-width: 500px; /* 📌 Largeur augmentée pour éviter le débordement */
-  margin: 0 auto;
-
-}
-
-/* 📌 Chaque ligne de sélecteurs */
-.selectors .row {
-  display: flex;
-  justify-content: center; /* 📌 Centre les éléments */
-  align-items: center;
-  gap: 16px; /* 📌 Espacement entre les éléments */
-  width: 100%;
-  flex-wrap: nowrap; /* 📌 Empêche les retours à la ligne */
-}
-
-/* 📌 Groupement des labels + sélecteurs */
-.selectors .selector-group {
-  display: flex;
-  align-items: center;
-  gap: 6px; /* 📌 Espacement léger */
-  white-space: nowrap;
-}
-
-/* 📌 Labels */
-.selectors label {
-  font-size: 0.9rem;
-  font-weight: bold;
-  color: #444;
-}
-
-/* 📌 Sélecteurs */
-.selectors select {
-  padding: 8px 12px;
-  font-size: 0.9rem;
-  font-weight: bold;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  background: #f9f9f9;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  outline: none;
-  min-width: 120px; /* 📌 Augmente la taille pour l’uniformité */
-  text-align: center;
-}
-
-/* 📌 Champ pour nommer la range */
-.range-input {
-  padding: 8px 12px;
-  font-size: 0.9rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  width: 100%;
-  max-width: 250px;
-  background: #f9f9f9;
-  outline: none;
-  transition: all 0.2s ease-in-out;
-}
-
-.range-input:hover {
-  border-color: #d4de4a;
-}
-
-.range-input:focus {
-  border-color: #0056b3;
-  box-shadow: 0px 0px 4px rgba(0, 91, 187, 0.3);
-}
-
-/* ✅ Ajustement pour les grands écrans */
-@media screen and (min-width: 768px) {
-  .selectors {
-    max-width: 600px;
-  }
-
-  .selectors .row {
-    gap: 20px; /* 📌 Espacement plus grand sur desktop */
-  }
-
-  .selectors select {
-    min-width: 140px; /* 📌 Sélecteurs plus larges sur desktop */
-  }
-}
-
-/* ✅ Ajustement pour les petits écrans */
-@media screen and (max-width: 480px) {
-  .selectors {
-    max-width: 100%;
-    gap: 6px; /* 📌 Réduction de l’espace pour mobile */
-  }
-
-  .selectors .row {
-    flex-wrap: nowrap; /* 📌 Permet un retour à la ligne uniquement si nécessaire */
-    justify-content: center;
-    gap: 4px;
-  }
-
-  .selectors select {
-    font-size: 0.75rem;
-    padding: 4px 6px;
-    border-radius: 5px;
-    height: 32px;
-    min-width: 90px;
-  }
-  .selectors label {
-    font-size: 0.75rem; 
-  }
-}
-
-
-/* ============================= */
-/* 🎮 Réorganisation des boutons */
-/* ============================= */
-
-.actions {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 6px; /* Espacement réduit */
-  padding: 5px;
-  max-width: 320px;
-  margin: 0 auto;
-}
-
-/* Regroupement spécifique de Call, Fold et Reset */
-.action-group {
-  display: flex;
-  justify-content: center;
-  gap: 6px;
-  flex-wrap: nowrap;
-}
-
-/* Boutons */
-.action-btn {
-  flex: 1;
-  padding: 6px 8px;
-  font-size: 0.6rem; /* Texte compact */
-  font-weight: bold;
-  border: 1px solid black;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  height: 32px; /* Hauteur réduite */
-  min-width: 80px;
-  text-transform: uppercase;
-  background: white;
-  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
-}
-
-/* Effet hover */
-.action-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-/* Bouton sélectionné */
-.action-btn.selected {
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.4);
-  border-color: rgb(42, 42, 42);
-}
-
-/* Responsive : Boutons encore plus petits sur mobile */
-@media screen and (max-width: 480px) {
-  .actions {
-    gap: 4px;
-    max-width: 100%;
-  }
-
-  .action-group {
-    gap: 4px;
-  }
-
-  .action-btn {
-    padding: 4px 6px;
-    font-size: 0.7rem;
-    height: 26px; /* Encore plus compact */
-    min-width: 65px;
-  }
-}
-
-.btn {
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-  padding: 8px 8px;
-  border: none;
-  border-radius: 2px;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out, filter 0.2s ease-in-out;
-  margin: 5px;
-  min-width: 120px;
-}
-
-/* Supprime l'effet d'agrandissement et assombrit le bouton */
-.btn:hover {
-  filter: brightness(85%); /* Assombrit le bouton */
-}
-
-.buttonTraining {
-  background-color: #ffc107; 
-
-}
-
-.buttonTraining:hover {
-  background-color: #ffcc00; /* Jaune doré */
-}
-
-.hand-matrix {
-  touch-action: none; /* ✅ Empêche le swipe et le scroll */
-}
-
-.hand-matrix-cell {
-  user-select: none; /* ✅ Empêche la sélection de texte sur mobile */
-}
-
-.modal-overlay {
-  background: rgba(0, 0, 0, 0.6);
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.modal-content {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  width: 350px;
-  text-align: center;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-}
-
-.modal-buttons {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 15px;
-}
-
-.confirm-btn {
-  background-color: #28a745;
-  color: white;
-  padding: 10px;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.cancel-btn {
-  background-color: #dc3545;
-  color: white;
-  padding: 10px;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.save-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 5px; /* Ajuste l'espacement au besoin */
-}
-
-.save-btn {
-  padding: 8px 8px;
-  font-size: 16px;
-  border: none;
+  font-size: 12px; /* ✅ Ajuste la taille du texte */
+  width: calc(350px / 13); /* ✅ Calcul automatique */
+  height: calc(350px / 13); /* ✅ Assure un carré */
+  border: 1px solid #dedede;
+  background-color: #f9f8f8;
   cursor: pointer;
 }
+
+
+/* ✅ Applique un effet visuel lors de la sélection */
+.hand-matrix-cell:hover {
+  filter: brightness(0.9);
+}
+
+.hand-matrix-cell.selected {
+  outline: 2px solid black;
+}
+
+.hand-matrix-cell.read-only {
+  background-color: #e0e0e0;
+  cursor: not-allowed;
+}
+
 

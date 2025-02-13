@@ -1,47 +1,44 @@
+//ranges/page.js;
 "use client";
-import React, { useState, useEffect } from "react";
-import { db } from "@/lib/firebase"; // ✅ db est importé depuis firebase.js
-import { collection, getDocs } from "firebase/firestore"; // ✅ Importé directement depuis Firestore
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { getAllRanges } from "@/lib/firebase"; // 🔥 On ne fait plus `saveRangeToFirebase` ici
+import { v4 as uuidv4 } from "uuid"; 
+import Link from "next/link";
+import "./../styles/rangeList.css";
 
-export default function RangesList() {
+
+function RangesPage() {
   const [ranges, setRanges] = useState([]);
-  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
     const fetchRanges = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "ranges")); 
-        const rangesData = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setRanges(rangesData);
+        const data = await getAllRanges();
+        if (data) setRanges(data);
       } catch (error) {
-        console.error("🚨 Erreur lors de la récupération des ranges :", error);
-      } finally {
-        setLoading(false);
+        console.error("🚨 Erreur lors du chargement des ranges :", error);
       }
     };
 
     fetchRanges();
   }, []);
 
-  if (loading) return <p>Chargement des ranges...</p>;
-
   return (
-    <div>
-      <h1 className="h1Ranges">Ranges Enregistrées</h1>
+    <div className="range-list-container">
+      <h1>Mes Ranges</h1>
+      <button className="new-range-button" onClick={() => router.push("/ranges/new")}>+</button>
+
       {ranges.length === 0 ? (
-        <p>Aucune range trouvée.</p>
+        <p>Aucune range enregistrée.</p>
       ) : (
         <ul>
-          {ranges.map(range => (
-            <li key={range.id}>
-              <button onClick={() => router.push(`/ranges/${range.id}`)}>
-                {range.rangeName} - {range.blinds}BB ({range.heroPosition})
-              </button>
+          {ranges.map(({ id, rangeName }) => (
+            <li key={id}>
+              <Link href={`/ranges/${id}`}>
+                {rangeName || "Range sans nom"}
+              </Link>
             </li>
           ))}
         </ul>
@@ -49,3 +46,5 @@ export default function RangesList() {
     </div>
   );
 }
+
+export default RangesPage;

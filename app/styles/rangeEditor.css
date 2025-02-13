@@ -1,0 +1,109 @@
+/* ✅ Conteneur principal */
+.range-editor-container {
+    margin: 20px auto;
+    padding: 10px;
+  }
+  
+  /* ✅ Titres */
+  .range-editor-container h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  /* ✅ Boutons */
+  .back-button,
+  .edit-button,
+  .save-button,
+  .cancel-button {
+    display: block;
+    width: fit-content;
+    padding: 10px 15px;
+    margin: 10px auto;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+  }
+  
+  .back-button {
+    background: #333333;
+    color: #dddddd;
+    margin-top:20px;
+  }
+  
+  .edit-button {
+    background: #333333;
+    color: white;
+  }
+  
+  .save-button {
+    background: #ffc107;
+    color: white;
+  }
+  
+  .cancel-button {
+    background: #dc3545;
+    color: white;
+  }
+  
+  /* ✅ Infos de la range en mode lecture */
+  .range-info {
+    margin-bottom: 20px;
+    padding: 10px;
+    background: #565555;
+    border-radius: 5px;
+  }
+  
+  .range-info p {
+    font-size: 16px;
+    margin: 5px 0;
+  }
+  
+  /* ✅ Actions spécifiques à RangeEditor (évite le conflit) */
+  .actions-selector{
+    margin-top:20px;
+}
+  .range-editor-actions {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .range-editor-actions .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+  
+  .range-editor-actions .action-btn {
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    min-width: 80px;
+    transition: transform 0.2s;
+  }
+  
+  .range-editor-actions .action-btn:hover {
+    transform: scale(1.05);
+  }
+  
+  .range-editor-actions .action-btn.selected {
+    border: 2px solid black;
+  }
+  
+  /* ✅ Responsive */
+  @media (max-width: 768px) {
+    .range-editor-container {
+      max-width: 95%;
+    }
+  
+    .range-editor-actions .action-btn {
+      font-size: 12px;
+      min-width: 70px;
+    }
+  }
+  
