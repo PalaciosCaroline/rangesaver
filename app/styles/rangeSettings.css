@@ -69,4 +69,21 @@
       grid-template-columns: repeat(2, 1fr);
     }
   }
+
+  /* ✅ Ajoute une bordure rouge aux inputs en erreur */
+  .selectors .input-error {
+    border: 1px solid orange; /* ✅ Bordure orange si vide */
+  }
+  
+  /* ✅ Bordure orange si l'input est vide */
+  .selectors .input-error {
+  border: 2px solid orange;
+  background-color: #805f5f; /* Fond légèrement orange */
+}
+
+/* ✅ Bordure rouge si erreur */
+.selectors .error {
+  border: 2px solid red;
+  background-color: #805f5f; /* Fond légèrement rouge */
+}
   

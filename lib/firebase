@@ -19,29 +19,67 @@ const auth = getAuth(app)
 const db = getFirestore(app);
 
 /**
- * 📌 Enregistre une range dans Firestore
+ * Enregistre une range dans Firestore
  * @param {string} rangeId - Identifiant unique de la range
+ * @param {string} context - Contexte du jeu (ex: MTT, Cash Game, etc.)
  * @param {string} rangeName - Nom de la range
- * @param {number} blinds - Valeur des blinds (ex: 20 BB)
- * @param {string} heroPosition - Position du Héros
- * @param {string} spot - Type de spot joué
- * @param {string} villainPosition - Position du Villain (si applicable)
- * @param {object} handColors - Actions prises pour chaque main
+ * @param {string | number} blinds - Valeur des blinds (ex: 20, "20 < BB < 80", "BB < 60")
+ * @param {number} numSeats - Nombre de sièges à la table (ex: 6, 8, 9)
+ * @param {string} heroPosition - Position du Héros à la table (ex: "CO", "BTN")
+ * @param {string} spot - Type de spot joué (ex: "Open", "3bet", "Overcall & Squeeze")
+ * @param {string} villainPosition - Position du Villain si applicable, sinon vide
+ * @param {object} handColors - Actions prises pour chaque main sous forme { "AA": "raise", "AKs": "call" }
  */
-
-export async function saveRangeToFirebase(rangeId, rangeName, blinds, heroPosition, spot, villainPosition, handColors) {
+export async function saveRangeToFirebase(rangeId, context, rangeName, blinds, numSeats, heroPosition, spot, villainPosition, handColors) {
   try {
     const rangeRef = doc(db, "ranges", rangeId);
 
-    await setDoc(rangeRef, {
-      rangeName,
-      blinds,
-      heroPosition,
-      spot,
-      villainPosition,
-      handColors,
+    // ✅ Extraction des valeurs min et max pour le filtrage Firestore
+    let blindsMin = null, blindsMax = null;
+    let sanitizedBlinds = blinds.trim();
+
+    if (/^\d+$/.test(sanitizedBlinds)) {
+      // ✅ Si c'est un nombre, le stocker en tant que `number`
+      const num = parseInt(sanitizedBlinds, 10);
+      if (num >= 5 && num <= 100) {
+        blindsMin = num;
+        blindsMax = num;
+      } else {
+        console.warn("🚨 Valeur des blinds invalide, doit être entre 5 et 100.");
+        return;
+      }
+    } else if (/^\d+\s*<\s*BB\s*<\s*\d+$/.test(sanitizedBlinds)) {
+      // ✅ Si c'est une fourchette (ex: "20 < BB < 80")
+      const matches = sanitizedBlinds.match(/\d+/g);
+      blindsMin = parseInt(matches[0], 10);
+      blindsMax = parseInt(matches[1], 10);
+    } else if (/^BB\s*<\s*\d+$/.test(sanitizedBlinds)) {
+      // ✅ Si c'est un maximum (ex: "BB < 60")
+      blindsMax = parseInt(sanitizedBlinds.match(/\d+/)[0], 10);
+    } else if (/^\d+\s*<\s*BB$/.test(sanitizedBlinds)) {
+      // ✅ Si c'est un minimum (ex: "30 < BB")
+      blindsMin = parseInt(sanitizedBlinds.match(/\d+/)[0], 10);
+    } else {
+      console.warn("🚨 Format invalide. Utilisez un nombre (20), une fourchette (20 < BB < 80), un max (BB < 60) ou un min (30 < BB).");
+      return;
+    }
+
+    // ✅ Prépare les données à enregistrer
+    const rangeData = {
+      context: context || "MTT", // ✅ MTT par défaut
+      rangeName: rangeName || "Range",
+      blindsRaw: sanitizedBlinds, // ✅ Garde l'entrée originale
+      blindsMin, // ✅ Valeur min pour le filtrage
+      blindsMax, // ✅ Valeur max pour le filtrage
+      numSeats: numSeats || 6, // ✅ Par défaut 6 joueurs
+      heroPosition: heroPosition || "CO", // ✅ Valeur par défaut
+      spot: spot || "Open",
+      villainPosition: spot === "Open" ? "Aucun": villainPosition,
+      handColors: handColors || {},
       timestamp: new Date().toISOString(),
-    });
+    };
+
+    await setDoc(rangeRef, rangeData);
 
     console.log("✅ Range enregistrée avec succès :", rangeId);
   } catch (error) {
