@@ -65,18 +65,39 @@ function RangeEditor({ rangeId }) {
   }, [rangeData.blinds]); // Se déclenche uniquement quand `blinds` change
   
 
-  const validateFields = () => {
-    let newErrors = {}; // ✅ Initialise un objet vide pour stocker les erreurs
-  
-    if (!rangeData.blinds) {
-      newErrors.blinds = "🚨 Veuillez indiquer une valeur pour les blinds !";
+  // ✅ Validation des blinds
+  const validateBlinds = (value) => {
+    let sanitizedValue = value.trim();
+
+    if (sanitizedValue === "") return "🚨 Veuillez indiquer une valeur pour les blinds !";
+
+    // ✅ Nombre entre 5 et 100
+    if (/^\d+$/.test(sanitizedValue)) {
+      const num = parseInt(sanitizedValue, 10);
+      if (num < 5 || num > 100) return "🚨 Les blinds doivent être entre 5 et 100 !";
+      return ""; // ✅ Pas d'erreur
     }
-  
-    setErrors(newErrors); // Met à jour `errors` avec les erreurs trouvées
-  
-    return Object.keys(newErrors).length === 0; // Retourne `true` si aucune erreur
+
+    // ✅ Accepte une fourchette (ex: "20 < BB < 80")
+    if (/^\d+\s*<\s*BB\s*<\s*\d+$/.test(sanitizedValue) ||
+        /^BB\s*<\s*\d+$/.test(sanitizedValue) ||
+        /^\d+\s*<\s*BB$/.test(sanitizedValue)) {
+      return ""; // ✅ Pas d'erreur
+    }
+
+    return "🚨 Format invalide. Exemples : '20', '20 < BB < 80', 'BB < 60', '30 < BB'";
   };
-  
+
+  // ✅ Vérification globale
+  const validateFields = () => {
+    let newErrors = {};
+
+    const blindsError = validateBlinds(rangeData.blinds);
+    if (blindsError) newErrors.blinds = blindsError;
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
   
 
   //  Enregistrement de la range (nouvelle ou existante)
@@ -91,12 +112,12 @@ function RangeEditor({ rangeId }) {
       await saveRangeToFirebase(
         id,
         rangeData.context,
-        rangeData.rangeName,
         rangeData.blinds,
         rangeData.numSeats,
         rangeData.heroPosition,
         rangeData.spot,
         rangeData.villainPosition,
+        rangeData.rangeDescription,
         rangeData.handColors
       );
   
@@ -123,14 +144,9 @@ function RangeEditor({ rangeId }) {
         <>
         {!isEditing && (
   <div className="range-info">
-    <p><strong>Contexte :</strong> {rangeData.context || "Non défini"}</p>
-            <p><strong>BB :</strong> {rangeData.blinds} BB</p>
-            <p><strong>Table :</strong> {rangeData.numSeats} joueurs</p>
-            <p><strong>Héros :</strong> {rangeData.heroPosition || "Non défini"}</p>
-            <p><strong>Spot :</strong> {rangeData.spot || "Non défini"}</p>
-            {rangeData.spot !== "Open" && (
+    <p><strong> {rangeData.context || "Non défini"}  {rangeData.blinds} BB {rangeData.numSeats} joueurs Héros en {rangeData.heroPosition || "Non défini"}  spot {rangeData.spot || "Non défini"}</strong></p>{rangeData.spot !== "Open" && (
               <p><strong>Villain :</strong> {rangeData.villainPosition || "Non défini"}</p>
-            )}
+            )}   
   </div>
 )}
 
@@ -142,7 +158,8 @@ function RangeEditor({ rangeId }) {
           <RangeSettings 
             rangeData={rangeData} 
             setRangeData={setRangeData} 
-            errors={errors}
+            setErrors={setErrors}
+            validateBlinds={validateBlinds}
             isSubmitted={isSubmitted}
           />
 

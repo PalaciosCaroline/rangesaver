@@ -151,7 +151,8 @@ if (villainSpot && villainSpot !== "RFI") {
 // Déterminer la position du villain à la table
 const villainPosition = villain && seatMapping[villain] ? seatMapping[villain] : "";
 
-const heroImage = "/images/poisson_globe.png"; 
+//const heroImage = "/images/poisson_globe.png"; 
+const heroImage = "/images/poisson_globe.svg"; 
 const villainImage = "/images/requin.png"; 
 
   return (

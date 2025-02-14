@@ -22,7 +22,7 @@ const db = getFirestore(app);
  * Enregistre une range dans Firestore
  * @param {string} rangeId - Identifiant unique de la range
  * @param {string} context - Contexte du jeu (ex: MTT, Cash Game, etc.)
- * @param {string} rangeName - Nom de la range
+ * @param {string} rangeDescrition - Description de la range
  * @param {string | number} blinds - Valeur des blinds (ex: 20, "20 < BB < 80", "BB < 60")
  * @param {number} numSeats - Nombre de sièges à la table (ex: 6, 8, 9)
  * @param {string} heroPosition - Position du Héros à la table (ex: "CO", "BTN")
@@ -67,7 +67,6 @@ export async function saveRangeToFirebase(rangeId, context, rangeName, blinds, n
     // ✅ Prépare les données à enregistrer
     const rangeData = {
       context: context || "MTT", // ✅ MTT par défaut
-      rangeName: rangeName || "Range",
       blindsRaw: sanitizedBlinds, // ✅ Garde l'entrée originale
       blindsMin, // ✅ Valeur min pour le filtrage
       blindsMax, // ✅ Valeur max pour le filtrage
@@ -75,6 +74,7 @@ export async function saveRangeToFirebase(rangeId, context, rangeName, blinds, n
       heroPosition: heroPosition || "CO", // ✅ Valeur par défaut
       spot: spot || "Open",
       villainPosition: spot === "Open" ? "Aucun": villainPosition,
+      rangeDescription: rangeDescription || "",
       handColors: handColors || {},
       timestamp: new Date().toISOString(),
     };

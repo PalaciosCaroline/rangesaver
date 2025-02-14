@@ -97,6 +97,10 @@
   
   /* ✅ Responsive */
   @media (max-width: 768px) {
+    .range-editor-container h1 {
+      margin-bottom: 10px;
+    }
+
     .range-editor-container {
       max-width: 95%;
     }

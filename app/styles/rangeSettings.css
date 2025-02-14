@@ -1,119 +1,166 @@
-/* 🌙 Mode sombre moderne */
-.selectors {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 5px;
-    max-width: 500px;
-    margin: auto;
-    padding: 10px;
-    border-radius: 12px;
-  }
-  
-  /* ✅ Modernisation des labels */
-  .selectors label {
-    font-size: 10px;
-    font-weight: bold;
-    color: #ffcc00; /* Jaune vif pour un bon contraste */
-    text-transform: uppercase;
-    margin-bottom: 3px;
-  }
-  
-  /* ✅ Modernisation des champs de saisie et sélecteurs */
-  .selectors input,
-  .selectors select {
-    width: 95%;
-    padding: 8px;
-    font-size: 12px;
-    border: 2px solid transparent;
-    border-radius: 6px;
-    background-color: #2a2a2a;
-    color: white;
-    transition: all 0.3s ease-in-out;
-  }
-  
-  
-  .selectors input::placeholder {
-    color: #999;
-  }
-  
-  /* ✅ Effet moderne sur focus */
-  .selectors input:focus,
-  .selectors select:focus {
-    border-color: #ffcc00; /* Highlight jaune */
-    box-shadow: 0px 0px 8px rgba(255, 204, 0, 0.6);
-    outline: none;
-  }
-  
-  /* ✅ Boutons modernes */
-  .button-primary {
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    font-weight: bold;
-    background: linear-gradient(135deg, #ffcc00, #ff9900);
-    border: none;
-    color: black;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s ease-in-out;
-  }
-  
-  .button-primary:hover {
-    background: linear-gradient(135deg, #ff9900, #ffcc00);
-    box-shadow: 0px 4px 10px rgba(255, 204, 0, 0.6);
-  }
-  
-  /* ✅ Adaptation responsive */
-  @media screen and (min-width: 600px) {
-    .range-editor-container .selectors {
-      grid-template-columns: repeat(2, 1fr);
-      padding:0px 10px;
-    }
-  }
-
-  /* ✅ Ajoute une bordure rouge aux inputs en erreur */
-  .selectors .input-error {
-    border: 1px solid orange; /* ✅ Bordure orange si vide */
-  }
-  
-  /* ✅ Bordure orange si l'input est vide */
-  .selectors .input-error {
-  border: 2px solid orange;
-  background-color: #805f5f; /* Fond légèrement orange */
+.input-container, .input-containerBlinds, .input-containerDescription {
+  position: relative;
+  /* width: 100%; */
+  margin-top:15px;
+  height:40px;
 }
 
- 
-/* ✅ Ajoute une bordure rouge aux inputs en erreur */
-.selectors .error {
-  border: 2px solid red;
-  background-color: #4a2d2d; /* Fond légèrement rouge */
+.input-containerDescription {
+  width: 95%; 
+  grid-column: span 2; 
 }
 
-/* ✅ Aligne label + input sur une seule ligne */
-.input-container {
-  display: flex;
-  align-items: center; /* ✅ Centre verticalement */
-  justify-content: space-between; /* ✅ Équilibre entre le label et l'input */
-  gap: 10px; /* ✅ Espacement entre le label et l'input */
+.selectors .input-container , .input-containerBlinds{
+  width:150px;
+  box-sizing: border-box;
+}
+.selectors .input-containerBlinds{
+  width:130px;
+  box-sizing: border-box;
 }
 
-/* ✅ Ajuste la largeur pour éviter un écrasement */
-.input-container label {
-  flex: 1; /* ✅ Permet au label de prendre un espace naturel */
-  text-align: left;
-  white-space: nowrap; /* ✅ Évite le retour à la ligne */
-}
-
-.input-container input {
-  flex: 2; /* ✅ Donne plus d’espace à l’input */
-  width: 100%; /* ✅ Prend toute la place disponible */
-}
-
-/* ✅ Message d'erreur s'affiche sous l'input sans casser la mise en page */
-.input-container .error-message {
+.input-container label, .input-containerBlinds label, .input-containerDescription label{
+  position: absolute;
+  top: -8px; /* On place le label au-dessus */
+  left: 15px;
+  background: #2a2a2a; /* Masque la bordure derrière */
+  padding: 0 5px; /* Crée une encoche sans pseudo-élément */
   font-size: 10px;
-  color: red;
-  margin-top: 2px;
-  text-align: left;
-  width: 100%; /* ✅ S'assure que le message suit l'input */
+  color: #ffc107;
+  font-weight: bold;
+  border-right:1px solid #ccc;
+  border-left:1px solid #ccc;
 }
+
+.input-container input, .input-containerBlinds input, .input-containerDescription input {
+  width: 100%;
+  padding: 8px 8px;
+  height:18px;
+  color:#ccc;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  font-size: 12px;
+  outline: none;
+  transition: border 0.3s;
+  background-color: #2a2a2a;
+  border-color: #363636;
+  outline: 1px solid rgb(54, 55, 55);
+ 
+}
+
+.input-container input:focus, .input-containerBlinds input:focus, .input-containerDescription input:focus {
+
+  box-shadow: inset 6px 6px 6px #4e4e4e, inset -6px -6px 6px rgb(99, 99, 99);
+  border-color: #ffcc00; /* Highlight jaune */
+    box-shadow: 0px 0px 8px rgba(255, 204, 0, 0.6);
+}
+
+input::placeholder {
+  color: gray;
+}
+
+
+/* Bouton du dropdown */
+.dropdownToggle {
+  width: 100%;
+  padding: 8px 8px;
+  border: 2px solid #363636;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #ffc107;
+  color: #ccc;
+  background: #2a2a2a;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+.dropdownToggle:hover {
+  background: #333;
+}
+
+/* Icône flèche */
+.arrow {
+  color: #ffc107;
+  color: #ccc;
+  transition: transform 0.3s ease;
+}
+
+/* Rotation de l'icône */
+.dropdown.open .arrow {
+  transform: rotate(180deg);
+}
+
+/* Menu déroulant */
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: #2a2a2a;
+  border: 1px solid #363636;
+  border-radius: 5px;
+  box-shadow: 0px 4px 8px rgba(255, 204, 0, 0.15);
+  z-index: 10;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Masquer la liste quand elle est fermée */
+.dropdown:not(.open) .dropdownMenu {
+  display: none;
+}
+
+/* Options du menu */
+.dropdownOption {
+  padding: 10px 15px;
+  font-size: 14px;
+  color: #ffc107;
+  background: #2a2a2a;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  border-bottom: 1px solid #444;
+}
+
+.dropdownOption:last-child {
+  border-bottom: none;
+}
+
+/* Effet hover */
+.dropdownOption:hover {
+  background-color: #444;
+}
+
+
+.selectors {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);  /* ✅ 1 colonne par défaut (mobile) */
+  gap: 5px; /* ✅ Espace entre les éléments */
+  max-width: 500px;
+  margin: auto;
+  padding: 10px;
+  border-radius: 12px;
+}
+
+/* ✅ Passage en 2 colonnes à partir de 600px */
+@media screen and (min-width: 600px) {
+  .range-editor-container .selectors {
+   
+    padding: 0px 10px;
+ 
+  }
+}
+
+/* ✅ Optionnel : Ajustement des labels et inputs pour meilleure lisibilité */
+.selectors .input-container,  .input-containerBlinds,.input-containerDescription {
+  display: flex;
+  flex-direction: column; /* ✅ Assure que label + champ sont bien empilés */
+
+}
+
