@@ -7,7 +7,7 @@
 
 .input-containerDescription {
   width: 95%; 
-  grid-column: span 2; 
+  grid-column: span 3; 
 }
 
 .selectors .input-container , .input-containerBlinds{
@@ -146,7 +146,7 @@ input::placeholder {
 .selectors {
   display: grid;
   grid-template-columns: repeat(3, 1fr);  /* ✅ 1 colonne par défaut (mobile) */
-  gap: 5px; /* ✅ Espace entre les éléments */
+  gap: 3px; /* ✅ Espace entre les éléments */
   max-width: 500px;
   margin: auto;
   border-radius: 12px;
