@@ -11,11 +11,11 @@
 }
 
 .selectors .input-container , .input-containerBlinds{
-  width:150px;
+  width:95%;
   box-sizing: border-box;
 }
 .selectors .input-containerBlinds{
-  width:130px;
+
   box-sizing: border-box;
 }
 
@@ -46,6 +46,11 @@
   border-color: #363636;
   outline: 1px solid rgb(54, 55, 55);
  
+}
+
+.input-containerBlinds input{
+
+padding:8px 0px;
 }
 
 .input-container input:focus, .input-containerBlinds input:focus, .input-containerDescription input:focus {
@@ -140,11 +145,10 @@ input::placeholder {
 
 .selectors {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);  /* ✅ 1 colonne par défaut (mobile) */
+  grid-template-columns: repeat(3, 1fr);  /* ✅ 1 colonne par défaut (mobile) */
   gap: 5px; /* ✅ Espace entre les éléments */
   max-width: 500px;
   margin: auto;
-  padding: 10px;
   border-radius: 12px;
 }
 
@@ -152,7 +156,7 @@ input::placeholder {
 @media screen and (min-width: 600px) {
   .range-editor-container .selectors {
    
-    padding: 0px 10px;
+    padding: 0px 5px;
  
   }
 }

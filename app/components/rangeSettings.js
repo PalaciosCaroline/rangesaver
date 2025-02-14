@@ -9,6 +9,7 @@ import "./../styles/rangeSettings.css";
 function RangeSettings({ rangeData, setRangeData, setErrors,isSubmitted, validateBlinds}) {
   const [numSeats, setNumSeats] = useState(6); // ✅ Par défaut, 6 joueurs
 
+
   useEffect(() => {
     if (rangeData.spot === "Open") {
       setRangeData((prev) => ({
@@ -59,7 +60,7 @@ function RangeSettings({ rangeData, setRangeData, setErrors,isSubmitted, validat
       type="text"
       value={rangeData.blinds}
       onChange={handleBlindsChange}
-      placeholder="Ex: 15 < BB < 19 ou 20"
+      placeholder="15 < BB < 19 ou 20"
       className={`${isSubmitted && errors?.blinds ? "error" : ""}`}
       />
       {isSubmitted && errors?.blinds && (
