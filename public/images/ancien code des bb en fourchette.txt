@@ -22,13 +22,13 @@ function RangeEditor({ rangeId }) {
    // ✅ État initial de la range
    const [rangeData, setRangeData] = useState({
     context: CONTEXT_OPTIONS[0],  //  Met une valeur par défaut
+    rangeName: "",
     blinds: "",
     numSeats: 6, //  Par défaut, 6 joueurs
     heroPosition: "",
     spot: "Open",
     villainPosition: "Aucun",
     handColors: {},
-    rangeDescription: "",
   });
 
   
@@ -67,13 +67,25 @@ function RangeEditor({ rangeId }) {
 
   // ✅ Validation des blinds
   const validateBlinds = (value) => {
-    const num = Number(value); // ✅ Convertit directement en nombre
-  
-    if (isNaN(num) || num < 1 || num > 100) {
-      return "1<=BB<=100"; // ❌ Erreur si hors limite ou invalide
+    let sanitizedValue = value.trim();
+
+    if (sanitizedValue === "") return "Indiquer une valeur";
+
+    // ✅ Nombre entre 5 et 100
+    if (/^\d+$/.test(sanitizedValue)) {
+      const num = parseInt(sanitizedValue, 10);
+      if (num < 0 || num > 100) return "0<BB<105 !";
+      return ""; // ✅ Pas d'erreur
     }
-  
-    return ""; // ✅ Aucune erreur
+
+    // ✅ Accepte une fourchette (ex: "20 < BB < 80")
+    if (/^\d+\s*<\s*BB\s*<\s*\d+$/.test(sanitizedValue) ||
+        /^BB\s*<\s*\d+$/.test(sanitizedValue) ||
+        /^\d+\s*<\s*BB$/.test(sanitizedValue)) {
+      return ""; // ✅ Pas d'erreur
+    }
+
+    return "🚨 Format invalide. Exemples : '20', '20 < BB < 80', 'BB < 60', '30 < BB'";
   };
 
   // ✅ Vérification globale
@@ -90,45 +102,33 @@ function RangeEditor({ rangeId }) {
 
   //  Enregistrement de la range (nouvelle ou existante)
   const handleSave = async () => {
-    setIsSubmitted(true);
-
-    if (!validateFields()) return;
-
-    const id = rangeId || uuidv4();
-
-    // 🛑 Vérification avant l'envoi à Firebase
-    console.log("Données envoyées à Firebase :", {
-        context: rangeData.context,
-        rangeName: rangeData.rangeDescription,
-        blinds: rangeData.blinds,
-        numSeats: rangeData.numSeats,
-        heroPosition: rangeData.heroPosition, // Vérifie si bien défini
-        spot: rangeData.spot,
-        villainPosition: rangeData.villainPosition,
-        handColors: rangeData.handColors
-    });
-
+    setIsSubmitted(true); // ✅ L'utilisateur tente d'enregistrer
+  
+    if (!validateFields()) return; // ✅ Vérifie et bloque si erreur
+  
+    const id = rangeId || uuidv4(); // Génère un ID pour une nouvelle range
+  
     try {
-        await saveRangeToFirebase(
-            id,
-            rangeData.context,
-            rangeData.rangeDescription,
-            rangeData.blinds,
-            rangeData.numSeats,
-            rangeData.heroPosition, // Doit être défini
-            rangeData.spot,
-            rangeData.villainPosition,
-            rangeData.handColors
-        );
-
-        alert("✅ Modifications enregistrées !");
-        setIsEditing(false);
-        if (isNewRange) router.push(`/ranges/${id}`);
+      await saveRangeToFirebase(
+        id,
+        rangeData.context,
+        rangeData.blinds,
+        rangeData.numSeats,
+        rangeData.heroPosition,
+        rangeData.spot,
+        rangeData.villainPosition,
+        rangeData.rangeDescription,
+        rangeData.handColors
+      );
+  
+      alert("✅ Modifications enregistrées !");
+      setIsEditing(false);
+      if (isNewRange) router.push(`/ranges/${id}`);
     } catch (error) {
-        console.error("🚨 Erreur lors de l'enregistrement :", error);
-        alert("❌ Erreur lors de l'enregistrement !");
+      console.error("🚨 Erreur lors de l'enregistrement :", error);
+      alert("❌ Erreur lors de l'enregistrement !");
     }
-};
+  };
 
   return (
     <div className="range-editor-container">
@@ -136,7 +136,7 @@ function RangeEditor({ rangeId }) {
         ⬅ Retour aux Ranges
       </button>
       <h1>
-  {isNewRange ? "Créer une nouvelle range" : isEditing ? "Modifier la Range" : "Range"}
+  {isNewRange ? "Créer une nouvelle range" : isEditing ? "Modifier la Range" : `Range : ${rangeData.rangeName}`}
 </h1>
 
 
@@ -144,9 +144,9 @@ function RangeEditor({ rangeId }) {
         <>
         {!isEditing && (
   <div className="range-info">
-    <p><strong> {rangeData.context}  {rangeData.blinds} BB {rangeData.numSeats} joueurs Héros en {rangeData.heroPosition}  spot {rangeData.spot || "Non défini"}</strong></p>{rangeData.spot !== "Open" && (
+    <p><strong> {rangeData.context || "Non défini"}  {rangeData.blinds} BB {rangeData.numSeats} joueurs Héros en {rangeData.heroPosition || "Non défini"}  spot {rangeData.spot || "Non défini"}</strong></p>{rangeData.spot !== "Open" && (
               <p><strong>Villain :</strong> {rangeData.villainPosition || "Non défini"}</p>
-            )}      <p><strong>{rangeData.rangeDescription}</strong></p>
+            )}   
   </div>
 )}
 
@@ -161,7 +161,7 @@ function RangeEditor({ rangeId }) {
             setErrors={setErrors}
             validateBlinds={validateBlinds}
             isSubmitted={isSubmitted}
-           errors={errors}
+            errors={errors}
           />
 
           {/* ✅ Ajout d'un sélecteur unique pour éviter le doublon */}

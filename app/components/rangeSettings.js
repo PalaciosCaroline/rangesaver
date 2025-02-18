@@ -6,7 +6,7 @@ import { VILLAIN_POSITIONS_BY_SEATS } from "@/data/positions";
 import { CONTEXT_OPTIONS } from "@/data/positions";
 import "./../styles/rangeSettings.css";
 
-function RangeSettings({ rangeData, setRangeData, setErrors,isSubmitted, validateBlinds}) {
+function RangeSettings({ rangeData, setRangeData, setErrors,errors,isSubmitted, validateBlinds}) {
   const [numSeats, setNumSeats] = useState(6); // ✅ Par défaut, 6 joueurs
 
 
@@ -34,11 +34,11 @@ function RangeSettings({ rangeData, setRangeData, setErrors,isSubmitted, validat
     let value = e.target.value.trim();
     setRangeData((prev) => ({ ...prev, blinds: value }));
 
-    // ✅ Met à jour les erreurs en direct si le formulaire a déjà été soumis
-    if (isSubmitted) {
+    // ✅ Vérifie que setErrors est défini avant de l'utiliser
+    if (setErrors && isSubmitted) {
       setErrors((prev) => ({ ...prev, blinds: validateBlinds(value) }));
     }
-  };
+};
 
 
 
@@ -57,15 +57,15 @@ function RangeSettings({ rangeData, setRangeData, setErrors,isSubmitted, validat
   <label>BB</label>
   <div className="input-group">
     <input 
-      type="text"
+      type="number" // ✅ Affiche le clavier numérique sur mobile
+      min="1"
+      max="100"
       value={rangeData.blinds}
       onChange={handleBlindsChange}
-      placeholder="15 < BB < 19 ou 20"
+      placeholder="Ex: 20"
       className={`${isSubmitted && errors?.blinds ? "error" : ""}`}
-      />
-      {isSubmitted && errors?.blinds && (
-        <p className="error-message">{errors.blinds}</p>
-      )}
+    />
+   <p className="error-message">{errors?.blinds || ""}</p>
   </div>
 </div>
 
@@ -105,7 +105,7 @@ function RangeSettings({ rangeData, setRangeData, setErrors,isSubmitted, validat
 
 <div className="input-containerDescription">
       <label>Description</label>
-      <input type="text" value={rangeData.rangeName} onChange={(e) => setRangeData({ ...rangeData, rangeName: e.target.value })} 
+      <input type="text" value={rangeData.rangeDescription} onChange={(e) => setRangeData({ ...rangeData, rangeDescription: e.target.value })} 
       placeholder="Description de la Range"
       />
 </div>
