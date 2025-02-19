@@ -13,24 +13,21 @@ export default function Signup() {
   const [error, setError] = useState("");
   const router = useRouter();
 
-  // Attente d'ouverture d'inscription nouvel
-  // const handleSignup = async (e) => {
-  //   e.preventDefault();
-  //   setError("");
-
-  //   try {
-  //     await createUserWithEmailAndPassword(auth, email, password);
-  //     router.push("/"); 
-  //   } catch (error) {
-  //     setError("Erreur lors de l'inscription.");
-  //     console.error("🚨 Erreur d'inscription :", error);
-  //   }
-  // };
-
+ 
   const handleSignup = async (e) => {
     e.preventDefault();
-    setError("Les inscriptions sont fermées.");
+    setError("");
+
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      router.push("/"); 
+    } catch (error) {
+      setError("Erreur lors de l'inscription.");
+      console.error("🚨 Erreur d'inscription :", error);
+    }
   };
+
+  
 
   return (
     <div className="auth-container">
@@ -39,7 +36,7 @@ export default function Signup() {
   <Image 
     src="/images/poisson_globe.png" 
     alt="Connexion"
-    fill  // ✅ Utilisation de `fill` pour un ajustement automatique
+    fill  // Utilisation de `fill` pour un ajustement automatique
     className="auth-image"
     priority 
   />
@@ -50,7 +47,7 @@ export default function Signup() {
         <form onSubmit={handleSignup}>
           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="Email" />
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="Mot de passe" />
-          <button type="submit" disabled>S&apos;inscrire</button>
+          <button type="submit">S&apos;inscrire</button>
         </form>
         <p>Déjà un compte ? <Link href="/auth/login">Se connecter</Link></p>
       </div>

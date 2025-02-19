@@ -1,13 +1,13 @@
-/* ✅ Conteneur global qui garde la table bien centrée */
+/* Conteneur global qui garde la table bien centrée */
 .poker-container {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 60px 50px 100px 50px;
-  overflow: hidden; /* ✅ Empêche les débordements */
+  overflow: hidden; /* Empêche les débordements */
 }
 
-/* ✅ Table de poker bien centrée */
+/* Table de poker bien centrée */
 .poker-table {
   position: relative;
   width: 90%; /* Responsive */
@@ -20,16 +20,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: auto; /* ✅ Meilleur centrage */
+  margin: auto; /* Meilleur centrage */
   box-sizing: border-box;
 
-    /* ✅ Remplacement du fond CSS par une image */
+    /* Remplacement du fond CSS par une image */
     /* background: url('/images/table-bg.jpg') no-repeat center center;
     background-size: cover;  */
 }
 
 
-/* ✅ Joueurs bien positionnés autour de la table */
+/* Joueurs bien positionnés autour de la table */
 .player {
   position: absolute;
   display: flex;
@@ -41,7 +41,7 @@
 
 
 
-/* ✅ Positions des joueurs */
+/* Positions des joueurs */
 .top { top: -60px; left: 240px; transform: translateX(-50%); }  /* Siège en haut */
 .left-top{ left: -60px; top: 60px; transform: translateY(-50%); }  /* Haut gauche */
 .left-bottom   { left: -60px; top: 200px; transform: translateY(-50%); } /* Gauche milieu */
@@ -49,7 +49,7 @@
 .right-bottom { right: -60px; top: 200px; transform: translateY(-50%); } /* Côté droit bas */
 .bottom { bottom: -60px; left: 300px; transform: translateX(-50%); }
 
-/* ✅ Cartes du héros bien alignées */
+/* Cartes du héros bien alignées */
 .hero-cards {
   position: absolute;
   bottom: 0;
@@ -59,7 +59,7 @@
   gap: 5px;
 }
 
-/* ✅ Style des cartes */
+/* Style des cartes */
 .card-img {
  max-width: 70px;
   height: auto;
@@ -67,14 +67,14 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* ✅ Conteneur Avatar + Nom */
+/* Conteneur Avatar + Nom */
 .avatar-container {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* ✅ Avatar des joueurs */
+/* Avatar des joueurs */
 .avatar {
   width: 90px;
   height: 90px;
@@ -88,25 +88,25 @@
   border: 3px solid white;
   text-align: center;
   box-shadow: 0 4px 5px rgba(0, 0, 0, 0.3);
-  overflow: hidden; /* ✅ Permet aux images d’être bien contenues */
+  overflow: hidden; /* Permet aux images d’être bien contenues */
   position: relative;
 }
 
-/* ✅ Nom du joueur si pas d’image */
+/* Nom du joueur si pas d’image */
 .player-name {
   font-size: 0.6rem;
   padding: 5px;
   color: white;
 }
 
-/* ✅ Images des joueurs */
+/* Images des joueurs */
 .player-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-/* ✅ Vignette sous l'avatar pour afficher le nom */
+/* Vignette sous l'avatar pour afficher le nom */
 .player-name-box {
   margin-top: 0px;
   padding: 5px 8px;
@@ -122,7 +122,7 @@
 
 
 
-/* ✅ Ajustements pour les petits écrans */
+/* Ajustements pour les petits écrans */
 @media (max-width: 600px) {
   .poker-container {
       display: flex;
@@ -157,7 +157,7 @@
       top:0;
   }
 
-  /* ✅ Ajustement des positions des joueurs sur petits écrans */
+  /* Ajustement des positions des joueurs sur petits écrans */
   .top { top: -50px; left: 155px; transform: translateX(-50%); }
   .bottom { bottom: -50px; left: 210px; transform: translateX(-50%); }
   .left-top { top: 15px; left: 0px; }
