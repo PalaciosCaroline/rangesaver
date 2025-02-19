@@ -54,7 +54,7 @@ export default function Login() {
 </div>
           <button type="submit">Se connecter</button>
         </form>
-        <p>Pas encore de compte ? <Link href="/auth/signup">S&apos;inscrire</Link></p>
+        <p>Pas encore de compte ? <Link href="">S&apos;inscrire</Link></p>
          {/* Icônes des réseaux sociaux */}
         <div className="social-icons">
           <i className="fab fa-facebook"></i>

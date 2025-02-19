@@ -13,39 +13,44 @@ export default function Signup() {
   const [error, setError] = useState("");
   const router = useRouter();
 
+  // const handleSignup = async (e) => {
+  //   e.preventDefault();
+  //   setError("");
+
+  //   if (!email || !password) {
+  //     setError("Remplis tous les champs.");
+  //     return;
+  //   }
+
+  //   console.log("Tentative d'inscription avec :", email, password);
+
+  //   try {
+  //     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+  //     console.log("✅ Utilisateur créé :", userCredential.user);
+
+  //     setTimeout(() => router.push("/"), 500);
+  //   } catch (error) {
+  //     console.error("Erreur d'inscription :", error.code, error.message);
+      
+  //     switch (error.code) {
+  //       case "auth/email-already-in-use":
+  //         setError("Cet email est déjà utilisé.");
+  //         break;
+  //       case "auth/invalid-email":
+  //         setError("Email invalide.");
+  //         break;
+  //       case "auth/weak-password":
+  //         setError("Mot de passe trop court (min. 6 caractères).");
+  //         break;
+  //       default:
+  //         setError("Une erreur s'est produite. Réessaie.");
+  //     }
+  //   }
+  // };
+
   const handleSignup = async (e) => {
     e.preventDefault();
-    setError("");
-
-    if (!email || !password) {
-      setError("🚨 Remplis tous les champs.");
-      return;
-    }
-
-    console.log("📌 Tentative d'inscription avec :", email, password);
-
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      console.log("✅ Utilisateur créé :", userCredential.user);
-
-      setTimeout(() => router.push("/"), 500);
-    } catch (error) {
-      console.error("🚨 Erreur d'inscription :", error.code, error.message);
-      
-      switch (error.code) {
-        case "auth/email-already-in-use":
-          setError("🚨 Cet email est déjà utilisé.");
-          break;
-        case "auth/invalid-email":
-          setError("🚨 Email invalide.");
-          break;
-        case "auth/weak-password":
-          setError("🚨 Mot de passe trop court (min. 6 caractères).");
-          break;
-        default:
-          setError("🚨 Une erreur s'est produite. Réessaie.");
-      }
-    }
+    setError("Les inscriptions sont fermées.");
   };
 
   return (
@@ -83,7 +88,7 @@ export default function Signup() {
             autoComplete="new-password"
           />
 
-          <button type="submit">S&apos;inscrire</button>
+          <button type="submit" disabled>S&apos;inscrire</button>
         </form>
 
         <p>Déjà un compte ? <Link href="/auth/login">Se connecter</Link></p>
