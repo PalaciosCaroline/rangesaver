@@ -4,16 +4,28 @@
     padding: 10px;
   }
   
-  /* ✅ Titres */
-  .range-editor-container h1 {
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
+
+  .range-header {
+    display: flex;
+    align-items: center;
+    justify-content:space-evenly; /* Aligne tout à droite */
+    width: 100%;
+    padding: 10px 0;
+    gap: 15px; /* Espacement entre le titre et les boutons */
+  }
+
+  
+  .range-title {
+    margin: 0;
+    font-size: 1.5em;
   }
   
-  /* ✅ Boutons */
-  .back-button,
-  .edit-button,
+  .range-actions {
+    display: flex;
+    gap: 10px; /* Espacement entre les boutons */
+  }
+
+  /* .edit-button,
   .save-button,
   .cancel-button {
     display: block;
@@ -24,8 +36,14 @@
     cursor: pointer;
     font-weight: bold;
     font-size: 16px;
-  }
+  } */
   
+  .edit-button,
+  .save-button,
+  .cancel-button {
+    padding: 5px 8px;
+  } 
+
   .back-button {
     background: #333333;
     color: #dddddd;
@@ -97,8 +115,9 @@
   
   /* ✅ Responsive */
   @media (max-width: 768px) {
-    .range-editor-container h1 {
-      margin-bottom: 10px;
+    .range-header {
+      margin-bottom: 15px;
+      margin-top: 15px;
     }
 
     .range-editor-container {

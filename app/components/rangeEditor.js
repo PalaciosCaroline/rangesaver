@@ -60,10 +60,10 @@ function RangeEditor({ rangeId }) {
           }
           setRangeData(data);
         } else {
-          console.error("🚨 Aucune range trouvée pour cet ID :", rangeId);
+          console.error("Aucune range trouvée pour cet ID :", rangeId);
         }
       } catch (error) {
-        console.error("🚨 Erreur lors du chargement de la range :", error);
+        console.error("Erreur lors du chargement de la range :", error);
       }
     };
 
@@ -138,22 +138,34 @@ function RangeEditor({ rangeId }) {
   };
 
   return (
-    <div className="range-editor-container">
-      <button className="back-button" onClick={() => router.push("/ranges")}>
-        ⬅ Retour aux Ranges
-      </button>
-      <h1>
-  {isNewRange ? "Créer une nouvelle range" : isEditing ? "Modifier la Range" : "Range"}
-</h1>
+//     <div className="range-editor-container">
+//       <button className="back-button" onClick={() => router.push("/ranges")}>
+//         ⬅ Retour aux Ranges
+//       </button>
+//       <h1>
+//   {isNewRange ? "Création" : isEditing ? "Modification" : "Range"}
+// </h1>
+<div className="range-editor-container">
+<div className="range-header">
+    <h1 className="range-title">
+      {isNewRange ? "Création" : isEditing ? "Modification" : "Range"}
+    </h1>
+    {isEditing && (
+      <div className="range-actions">
+        <button className="save-button" onClick={handleSave}>Enregistrer</button>
+        <button className="cancel-button" onClick={() => setIsEditing(false)}>❌ Annuler</button>
+      </div>
+    )}
+  </div>
 
 
       {!isEditing ? (
         <>
         {!isEditing && (
   <div className="range-info">
-    <p><strong> {rangeData.context}  {rangeData.blinds} BB {rangeData.numSeats} joueurs Héros en {rangeData.heroPosition}  spot {rangeData.spot || "Non défini"}</strong></p>{rangeData.spot !== "Open" && (
-              <p><strong>Villain :</strong> {rangeData.villainPosition || "Non défini"}</p>
-            )}      <p><strong>{rangeData.rangeDescription}</strong></p>
+    <span><strong> {rangeData.context}  {rangeData.blinds} BB {rangeData.numSeats} joueurs Héros en {rangeData.heroPosition}  spot {rangeData.spot || "Non défini"}
+             {rangeData.spot !== "Open" ? ` - Villain : ${villainPosition || "Non défini"}` : ""}  -  
+               {rangeData.rangeDescription}</strong></span>
   </div>
 )}
 
@@ -186,8 +198,8 @@ function RangeEditor({ rangeId }) {
             readOnly={false} 
           />
 
-          <button className="save-button" onClick={handleSave}>Enregistrer</button>
-          <button className="cancel-button" onClick={() => setIsEditing(false)}>❌ Annuler</button>
+          {/* <button className="save-button" onClick={handleSave}>Enregistrer</button>
+          <button className="cancel-button" onClick={() => setIsEditing(false)}>❌ Annuler</button> */}
         </>
       )}
     </div>

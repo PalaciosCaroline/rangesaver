@@ -1,12 +1,12 @@
-.input-container, .input-containerBlinds, .input-containerDescription {
+.input-container, .input-containerBlinds, .input-containerDescription, .input-group {
   position: relative;
   /* width: 100%; */
-  margin-top:15px;
+  margin-bottom:12px;
   height:40px;
 }
 
 .input-containerDescription {
-  width: 95%; 
+  width: 98%; 
   grid-column: span 3; 
 }
 
@@ -21,7 +21,7 @@
 
 .input-container label, .input-containerBlinds label, .input-containerDescription label{
   position: absolute;
-  top: -8px; /* On place le label au-dessus */
+  top: -10px; /* On place le label au-dessus */
   left: 15px;
   background: #2a2a2a; /* Masque la bordure derrière */
   padding: 0 5px; /* Crée une encoche sans pseudo-élément */
@@ -35,7 +35,8 @@
 .input-container input, .input-containerBlinds input, .input-containerDescription input {
   width: 100%;
   padding: 8px 8px;
-  height:18px;
+  box-sizing: border-box;
+  height: 32px;
   color:#ccc;
   border: 2px solid #ccc;
   border-radius: 5px;
@@ -46,11 +47,6 @@
   border-color: #363636;
   outline: 1px solid rgb(54, 55, 55);
  
-}
-
-.input-containerBlinds input{
-
-padding:8px 0px;
 }
 
 .input-container input:focus, .input-containerBlinds input:focus, .input-containerDescription input:focus {
@@ -70,6 +66,7 @@ input::placeholder {
   width: 100%;
   padding: 8px 8px;
   border: 2px solid #363636;
+  height: 32px;
   border-radius: 5px;
   font-size: 14px;
   color: #ffc107;

@@ -45,14 +45,22 @@ function RangesPage() {
         <p>Aucune range enregistrée.</p>
       ) : (
         <ul>
-          {ranges.map(({ id, rangeDescription }) => (
-            <li key={id}>
-              <Link href={`/ranges/${id}`}>
-                {rangeDescription || "Range sans nom"}
-              </Link>
-            </li>
-          ))}
-        </ul>
+        {ranges.map(({ id, context, blinds, numSeats, heroPosition, spot, villainPosition, rangeDescription }) => (
+          <li key={id}>
+            <Link href={`/ranges/${id}`}>
+              <div className="range-info">
+                <p>
+                  <strong>
+                    {context} {blinds} BB {numSeats} joueurs - Héros en {heroPosition} - Spot {spot || "Non défini"}
+                    {spot !== "Open" ? ` - Villain : ${villainPosition || "Non défini"}` : ""} -  {rangeDescription || "Aucune description"}
+                  </strong>
+                </p>
+               
+              </div>
+            </Link>
+          </li>
+        ))}
+      </ul>
       )}
     </div>
   );
