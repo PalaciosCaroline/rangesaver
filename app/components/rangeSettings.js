@@ -41,7 +41,6 @@ function RangeSettings({ rangeData, setRangeData, setErrors,errors,isSubmitted, 
 };
 
 
-
   return (
     <div className="selectors">
 

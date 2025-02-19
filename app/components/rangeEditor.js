@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { saveRangeToFirebase, getRangeData } from "@/lib/firebase";
+import { getAuth } from "firebase/auth"; // ✅ Ajout de l'authentification
 import { CONTEXT_OPTIONS } from "@/data/positions";
 import HandMatrix from "@/app/components/handMatrix";
 import RangeSettings from "@/app/components/rangeSettings";
@@ -19,18 +20,26 @@ function RangeEditor({ rangeId }) {
   const isNewRange = !rangeId;
 
 
-   // ✅ État initial de la range
-   const [rangeData, setRangeData] = useState({
-    context: CONTEXT_OPTIONS[0],  //  Met une valeur par défaut
+   // ✅ Récupérer l'utilisateur connecté
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  if (!user) {
+    router.push("/auth/login"); // 🔥 Redirige si non connecté
+    return null;
+  }
+
+  const [rangeData, setRangeData] = useState({
+    context: CONTEXT_OPTIONS[0],
     blinds: "",
-    numSeats: 6, //  Par défaut, 6 joueurs
+    numSeats: 6,
     heroPosition: "",
     spot: "Open",
     villainPosition: "Aucun",
     handColors: {},
     rangeDescription: "",
+    userId: user.uid, // ✅ Associe la range à l'utilisateur connecté
   });
-
   
 
   const [selectedAction, setSelectedAction] = useState("fold");
@@ -44,6 +53,11 @@ function RangeEditor({ rangeId }) {
       try {
         const data = await getRangeData(rangeId);
         if (data) {
+          if (data.userId !== user.uid) {
+            alert("⛔ Accès refusé : cette range ne vous appartient pas !");
+            router.push("/ranges"); // 🔥 Redirige vers la liste des ranges
+            return;
+          }
           setRangeData(data);
         } else {
           console.error("🚨 Aucune range trouvée pour cet ID :", rangeId);
@@ -54,7 +68,7 @@ function RangeEditor({ rangeId }) {
     };
 
     fetchRange();
-  }, [rangeId]);
+  }, [rangeId, user.uid]);
 
   useEffect(() => {
     setErrors((prevErrors) => {
@@ -91,44 +105,37 @@ function RangeEditor({ rangeId }) {
   //  Enregistrement de la range (nouvelle ou existante)
   const handleSave = async () => {
     setIsSubmitted(true);
-
     if (!validateFields()) return;
 
     const id = rangeId || uuidv4();
 
-    // 🛑 Vérification avant l'envoi à Firebase
     console.log("Données envoyées à Firebase :", {
-        context: rangeData.context,
-        rangeName: rangeData.rangeDescription,
-        blinds: rangeData.blinds,
-        numSeats: rangeData.numSeats,
-        heroPosition: rangeData.heroPosition, // Vérifie si bien défini
-        spot: rangeData.spot,
-        villainPosition: rangeData.villainPosition,
-        handColors: rangeData.handColors
+      ...rangeData,
+      userId: user.uid, // ✅ Ajoute l'ID utilisateur
     });
 
     try {
-        await saveRangeToFirebase(
-            id,
-            rangeData.context,
-            rangeData.rangeDescription,
-            rangeData.blinds,
-            rangeData.numSeats,
-            rangeData.heroPosition, // Doit être défini
-            rangeData.spot,
-            rangeData.villainPosition,
-            rangeData.handColors
-        );
+      await saveRangeToFirebase(
+        id,
+        rangeData.context,
+        rangeData.rangeDescription,
+        rangeData.blinds,
+        rangeData.numSeats,
+        rangeData.heroPosition,
+        rangeData.spot,
+        rangeData.villainPosition,
+        rangeData.handColors,
+        user.uid // Passe l'ID utilisateur à Firebase
+      );
 
-        alert("✅ Modifications enregistrées !");
-        setIsEditing(false);
-        if (isNewRange) router.push(`/ranges/${id}`);
+      alert("Modifications enregistrées !");
+      setIsEditing(false);
+      if (isNewRange) router.push(`/ranges/${id}`);
     } catch (error) {
-        console.error("🚨 Erreur lors de l'enregistrement :", error);
-        alert("❌ Erreur lors de l'enregistrement !");
+      console.error("🚨 Erreur lors de l'enregistrement :", error);
+      alert("❌ Erreur lors de l'enregistrement !");
     }
-};
+  };
 
   return (
     <div className="range-editor-container">

@@ -2,28 +2,39 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getAllRanges } from "@/lib/firebase"; // 🔥 On ne fait plus `saveRangeToFirebase` ici
-import { v4 as uuidv4 } from "uuid"; 
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getUserRanges } from "@/lib/firebase"; // ✅ Nouvelle fonction à utiliser
 import Link from "next/link";
 import "./../styles/rangeList.css";
 
-
 function RangesPage() {
   const [ranges, setRanges] = useState([]);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    const fetchRanges = async () => {
-      try {
-        const data = await getAllRanges();
-        if (data) setRanges(data);
-      } catch (error) {
-        console.error("🚨 Erreur lors du chargement des ranges :", error);
-      }
-    };
+    const auth = getAuth();
 
-    fetchRanges();
-  }, []);
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (!currentUser) {
+        router.push("/auth/login"); // 🚨 Redirige si l'utilisateur n'est pas connecté
+      } else {
+        setUser(currentUser);
+        try {
+          const userRanges = await getUserRanges(currentUser.uid); // 🔥 Récupère les ranges de l'utilisateur
+          setRanges(userRanges);
+        } catch (error) {
+          console.error("🚨 Erreur lors du chargement des ranges :", error);
+        }
+      }
+      setLoading(false);
+    });
+
+    return () => unsubscribe(); // Nettoyage de l'écouteur Firebase
+  }, [router]);
+
+  if (loading) return <p>Chargement...</p>;
 
   return (
     <div className="range-list-container">
@@ -34,10 +45,10 @@ function RangesPage() {
         <p>Aucune range enregistrée.</p>
       ) : (
         <ul>
-          {ranges.map(({ id, rangeName }) => (
+          {ranges.map(({ id, rangeDescription }) => (
             <li key={id}>
               <Link href={`/ranges/${id}`}>
-                {rangeName || "Range sans nom"}
+                {rangeDescription || "Range sans nom"}
               </Link>
             </li>
           ))}

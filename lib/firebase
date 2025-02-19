@@ -1,6 +1,7 @@
 import { getAuth } from "firebase/auth"; // ✅ Ajout de getAuth
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs, doc, setDoc, getDoc } from "firebase/firestore";
+import { getFirestore, collection, getDocs, doc, setDoc, getDoc, query, where } from "firebase/firestore";
+
 
 // 📌 Vérification des variables d’environnement Firebase
 const firebaseConfig = {
@@ -42,77 +43,111 @@ export async function saveRangeToFirebase(
   handColors
 ) {
   try {
-    const rangeRef = doc(db, "ranges", rangeId);
-
-    // ✅ Vérification et conversion des blinds
-    let blindsMin = null, blindsMax = null;
-    let sanitizedBlinds = Number(blinds); // Convertit en nombre si ce n'est pas déjà le cas
-
-    if (typeof sanitizedBlinds === "number" && !isNaN(sanitizedBlinds)) {
-      if (sanitizedBlinds >= 1 && sanitizedBlinds <= 100) {
-        blindsMin = sanitizedBlinds;
-        blindsMax = sanitizedBlinds;
-      } else {
-        console.warn("🚨 Valeur des blinds invalide, doit être entre 1 et 100.");
-        return;
-      }
-    } else {
-      console.warn("🚨 Format invalide. Seul un nombre entre 1 et 100 est accepté.");
+    const auth = getAuth();
+    const user = auth.currentUser;
+    
+    if (!user) {
+      console.error("🚨 Erreur : Aucun utilisateur connecté !");
       return;
     }
 
-    // ✅ Prépare les données à enregistrer
+    const rangeRef = doc(db, "ranges", rangeId);
+
     const rangeData = {
-      context: context || "MTT", // Par défaut, "MTT"
-      blinds: blindsMin, // Sauvegarde la valeur unique des blinds
-      numSeats: numSeats || 6, // Par défaut, 6 joueurs
-      heroPosition: heroPosition || "CO", // Par défaut, "CO"
+      userId: user.uid, // ✅ Associe l'UID de l'utilisateur à la range
+      context: context || "MTT",
+      blinds,
+      numSeats: numSeats || 6,
+      heroPosition: heroPosition || "CO",
       spot: spot || "Open",
-      villainPosition: spot === "Open" ? "Aucun" : villainPosition, // Forcé à "Aucun" si Open
+      villainPosition: spot === "Open" ? "Aucun" : villainPosition,
       rangeDescription: rangeDescription || "",
       handColors: handColors || {},
-      timestamp: new Date().toISOString(), // Timestamp pour suivi
+      timestamp: new Date().toISOString(),
     };
 
     await setDoc(rangeRef, rangeData);
-
-    console.log("✅ Range enregistrée avec succès :", rangeId);
+    console.log("Range enregistrée avec succès :", rangeId);
   } catch (error) {
-    console.error("🚨 Erreur lors de l'enregistrement de la range :", error);
+    console.error("Erreur lors de l'enregistrement de la range :", error);
   }
 }
 
 /**
- * 📌 Récupère une range depuis Firestore
+ * Récupère une range depuis Firestore
  * @param {string} rangeId - Identifiant unique de la range
  * @returns {object|null} - Les données de la range ou null si elle n'existe pas
  */
 export async function getRangeData(rangeId) {
   try {
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (!user) {
+      console.error("Erreur : Aucun utilisateur connecté !");
+      return null;
+    }
+
     const rangeRef = doc(db, "ranges", rangeId);
     const docSnap = await getDoc(rangeRef);
 
-    if (docSnap.exists()) {
-      console.log("📌 Données récupérées depuis Firebase :", docSnap.data());
-      return docSnap.data();
-    } else {
+    if (!docSnap.exists()) {
       console.log("❌ Aucune range trouvée pour l'ID :", rangeId);
       return null;
     }
+
+    const rangeData = docSnap.data();
+
+    if (rangeData.userId !== user.uid) {
+      console.warn("Accès refusé : Cette range ne vous appartient pas !");
+      return null;
+    }
+
+    console.log("Données récupérées depuis Firebase :", rangeData);
+    return rangeData;
   } catch (error) {
-    console.error("🚨 Erreur lors de la récupération de la range :", error);
+    console.error("Erreur lors de la récupération de la range :", error);
     return null;
   }
 }
 
 /**
- * 📌 Récupère toutes les ranges stockées dans Firebase
+ * Récupère toutes les ranges stockées dans Firebase
  * @returns {Array} - Tableau des ranges { id, rangeName }
  */
 export async function getAllRanges() {
   try {
-    const querySnapshot = await getDocs(collection(db, "ranges"));
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (!user) {
+      console.error("Erreur : Aucun utilisateur connecté !");
+      return [];
+    }
+
+    const rangesRef = collection(db, "ranges");
+    const q = query(rangesRef, where("userId", "==", user.uid)); // Filtre les ranges de l'utilisateur
+
+    const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  } catch (error) {
+    console.error("Erreur lors de la récupération des ranges :", error);
+    return [];
+  }
+}
+
+/**
+ * 📌 Récupère les ranges d'un utilisateur donné
+ * @param {string} userId - ID Firebase de l'utilisateur
+ * @returns {Promise<Array>} - Tableau des ranges de l'utilisateur
+ */
+export async function getUserRanges(userId) {
+  try {
+    const rangesRef = collection(db, "ranges");
+    const q = query(rangesRef, where("userId", "==", userId)); // 🔥 Filtre par utilisateur
+    const querySnapshot = await getDocs(q);
+
+    return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   } catch (error) {
     console.error("🚨 Erreur lors de la récupération des ranges :", error);
     return [];
