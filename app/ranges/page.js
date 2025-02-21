@@ -34,7 +34,7 @@ function RangesPage() {
     return () => unsubscribe(); // Nettoyage de l'écouteur Firebase
   }, [router]);
 
-  if (loading) return <p>Chargement...</p>;
+  if (loading) return null;
 
   return (
     <div className="range-list-container">

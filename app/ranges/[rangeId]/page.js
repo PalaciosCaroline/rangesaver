@@ -38,7 +38,7 @@ function RangeDetailPage() {
     return () => unsubscribe(); // Nettoie l'écouteur Firebase à la fin
   }, [rangeId, router]);
 
-  if (loading) return <p>Chargement...</p>;
+  if (loading) return null ;
 
   return rangeData ? <RangeEditor rangeId={rangeId} /> : null;
 }

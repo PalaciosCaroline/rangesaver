@@ -26,7 +26,7 @@ function NewRangePage() {
     return () => unsubscribe(); // Nettoie l'écouteur Firebase
   }, [router]);
 
-  if (loading) return <p>Chargement...</p>;
+  if (loading) return null;
 
   return user ? <RangeEditor /> : null;
 }
