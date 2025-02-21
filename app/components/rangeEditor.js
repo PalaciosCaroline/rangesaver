@@ -137,14 +137,10 @@ function RangeEditor({ rangeId }) {
     }
   };
 
+  
+
   return (
-//     <div className="range-editor-container">
-//       <button className="back-button" onClick={() => router.push("/ranges")}>
-//         ⬅ Retour aux Ranges
-//       </button>
-//       <h1>
-//   {isNewRange ? "Création" : isEditing ? "Modification" : "Range"}
-// </h1>
+
 <div className="range-editor-container">
 <div className="range-header">
     <h1 className="range-title">
@@ -153,7 +149,7 @@ function RangeEditor({ rangeId }) {
     {isEditing && (
       <div className="range-actions">
         <button className="save-button" onClick={handleSave}>Enregistrer</button>
-        <button className="cancel-button" onClick={() => setIsEditing(false)}>❌ Annuler</button>
+        <button className="cancel-button" onClick={() => setIsEditing(false)}>Annuler</button>
       </div>
     )}
   </div>
